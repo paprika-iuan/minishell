@@ -10,4 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
 
+void	echo(int argc, char **argv)
+{
+	if (argc == 1)
+		printf("\n");
+	// BUCLE
+	if (ft_strcmp(argv[1], "-n") == 0)
+	{
+
+	}
+
+}
