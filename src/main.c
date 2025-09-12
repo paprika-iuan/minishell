@@ -15,6 +15,7 @@
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
+	char	**input_split;
 
 	//printf("%s", HEADER);
 
@@ -24,7 +25,17 @@ int	main(int argc, char **argv, char **envp)
 		if (!input)
 			break ;
 		add_history(input);
-		printf("You typed: %s\n", input);
+		input_split = ft_split(input, ' ');
+		if (input_split)
+		{
+			if (input_split[0] && ft_strcmp(input_split[0], "echo") == 0)
+				echo(input_split);
+			else if (input_split[0])
+				printf("You typed: %s\n", input);
+			for (int i = 0; input_split[i]; i++)
+				free(input_split[i]);
+			free(input_split);
+		}
 		free(input);
 	}
 	rl_clear_history();

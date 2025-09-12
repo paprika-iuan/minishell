@@ -12,14 +12,31 @@
 
 #include "../../inc/minishell.h"
 
-void	echo(int argc, char **argv)
+int	echo(char **argv)
 {
-	if (argc == 1)
-		printf("\n");
-	// BUCLE
-	if (ft_strcmp(argv[1], "-n") == 0)
+	int	i;
+	int	n_flag;
+
+	if (!argv || !argv[0] || !argv[1])
 	{
-
+		printf("\n");
+		return (0);
 	}
-
+	i = 1;
+	n_flag = 0;
+	while (argv[i] && ft_strcmp(argv[i], "-n") == 0)
+	{
+		n_flag = 1;
+		i++;
+	}
+	while (argv[i])
+	{
+		printf("%s", argv[i]);
+		if (argv[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (!n_flag)
+		printf("\n");
+	return (0);
 }
