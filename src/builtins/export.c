@@ -85,7 +85,7 @@ t_env	dup_var_handler(t_cmd *token, t_env *cp_env)
 
 int	dup_checker(t_env *cp_env, t_env *new_node)
 {
-	t_env	iter;
+	t_env	*iter;
 	int		a;
 
 	iter = cp_env;
