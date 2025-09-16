@@ -120,7 +120,7 @@ int	export(t_cmd *token, t_env **cp_env)
 			new_node = dup_var_handler(token, *cp_env);
 			basic_err(new_node);
 			if (dup_checker(*cp_env, new_node))
-				ft_lstadd_back(*cp_env, new_node);
+				ft_lstadd_back(cp_env, new_node);
 		}
 		token = token->next;
 	}
