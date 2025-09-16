@@ -61,10 +61,10 @@ int	export_arg_checker(char *args)
 // com a token per separat, per tant, en el else tan sols hauria de iterar 
 // entre nodes, no ha de fer cas a espais.
 
-t_env	dup_var_handler(t_cmd *token, t_env *cp_env)
+t_env	*dup_var_handler(t_cmd *token, t_env *cp_env)
 {
 	int		len;
-	t_env	iter;
+	t_env	*iter;
 
 	len = 0;
 	while (token->content && token->content[len++] != '=')
