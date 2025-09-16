@@ -17,7 +17,7 @@ int	env(t_env *cp_env)
 	basic_err(cp_env);
 	while (cp_env)
 	{
-		if (ft_strchr(cp_env->content, "="))
+		if (ft_strchr(cp_env->content, '='))
 			printf("%s\n", cp_env->content);
 		cp_env = cp_env->next;
 	}
