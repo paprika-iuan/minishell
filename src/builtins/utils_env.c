@@ -11,11 +11,12 @@
 /* ************************************************************************** */
 
 #include "env.h"
+#include <stdlib.h>
 
 void	basic_err(char *x)
 {
 	if (!x)
-		exit (NULL);
+		exit (EXIT_FAILURE);
 }
 
 t_env	*ft_lstlast(t_env *lst)
