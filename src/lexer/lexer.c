@@ -18,6 +18,11 @@ int is_operand(char c)
             c == P_CLOSE || c == RED_IN || c == RED_OUT);
 }
 
+int	is_whitespace(char c)
+{
+	return (c == ' ' || c == '\t') ;
+}
+
 int	count_tokens(char *line)
 {
 	int		count;
