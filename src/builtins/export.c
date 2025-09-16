@@ -47,7 +47,7 @@ int	export_arg_checker(char *args)
 	}
 	while (args[i] && args[i] != '=')
 	{
-		else if (!ft_isalnum(args[i]) || args[i] != '_')
+		else if (!ft_isalnum(args[i]) && args[i] != '_')
 		{
 			perror(export: (printf("%s:", args)) not a valid identifier);
 			return (0);
