@@ -13,8 +13,8 @@ void print_char_array(char **arr) {
     }
 }
 
-// Function that returns a char** containing your commands
-char **get_commands() {
+char **get_commands()
+{
     static char *commands[] = {
         "",
         "pwd",
@@ -51,8 +51,7 @@ char **get_commands() {
         "grep foo <<< < file.txt",
         "sleep 10 & | grep \"done\"",
         "echo \"$(echo $(echo unbalanced)\"",
-        NULL  // important terminator
+        NULL
     };
-
     return commands;
 }

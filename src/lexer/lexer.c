@@ -12,55 +12,74 @@
 
 #include "../../inc/minishell.h"
 
-int is_operand(char c)
+char	*allocate_token(int size)
 {
-    return (c == AND || c == PIPE || c == P_OPEN ||
-            c == P_CLOSE || c == RED_IN || c == RED_OUT);
+	char	*token;
+
+	token = malloc(size * sizeof(char));
+	if (!token)
+		return (NULL);
+	return (token);
 }
 
-int	is_whitespace(char c)
+void	fill_word(char **line)
 {
-	return (c == ' ' || c == '\t') ;
+
 }
 
-int	count_tokens(char *line)
+char	*fill_operand(char **line)
 {
-	int		count;
-	char	quote_type;
+	char	*token;
 
-	count = 0;
-	while (*line == ' ' || *line == '\t')
-		line++;
+	token = NULL;
+	if (**line == PIPE || **line == RED_IN || **line == RED_OUT)
+	{
+		if (*(*line + 1) == **line)
+		{
+			token = allocate_token(3);
+		}
+	}
+	else if (**line == AND)
+	{}
+	else if (**line == P_OPEN || **line == P_CLOSE)
+	{}
+	return (token);
+}
+
+void	fill_quote()
+{
+
+}
+
+int	fill_tokens(char **tokens, char *line)
+{
+
 	while (*line)
 	{
-		if (*line == '\'' || *line == '"')
-		{
-			quote_type = *line;
+		while (is_whitespace(*line))
 			line++;
-			while (*line && *line != quote_type)
-				line++;
-			if (*line)
-				count++;
-		}
+		if (is_quote(*line))
+			fill_quote(&line);
 		else if (is_operand(*line))
-		line++;
+			fill_operand(&line);
+		else
+			fill_word(&line);
 	}
-	return (count);
+	return (SUCCESS);
 }
 
 char	**tokenizer(char *line)
 {
-	char **tokens;
-	int	num_tokens;
+	char	**tokens;
+	int		num_tokens;
 
-	tokens = malloc(num_tokens * sizeof(char *));
 	if (!line)
 		return (NULL);
-	while (*line)
-	{
-
-		line++;
-	}
-
+	num_tokens = count_tokens(line);
+	tokens = malloc((num_tokens + 1) * sizeof(char *));
+	if (!tokens)
+		return (NULL);
+	if (!fill_tokens(tokens, line))
+		return (NULL);
 	return (tokens);
 }

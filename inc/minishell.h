@@ -23,6 +23,7 @@
 \033[0m"
 
 # define READLINE_MSG "\033[1;31m[🏓wanghao]\033[35m$> \033[0m"
+# define SUCCESS 1
 
 # include "../libft/libft.h"
 
@@ -31,7 +32,11 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-enum operand_types
+int	echo(char **argv);
+
+/****** LEXER ******/
+
+enum e_operand_types
 {
 	AND = '&',
 	PIPE = '|',
@@ -41,7 +46,8 @@ enum operand_types
 	RED_OUT = '>'
 };
 
-int	echo(char **argv);
+int is_operand(char c);
+int	count_tokens(char *line);
 char	**tokenizer(char *line);
 
 #endif
