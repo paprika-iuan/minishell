@@ -91,7 +91,7 @@ int	dup_checker(t_env *cp_env, t_env *new_node)
 	iter = cp_env;
 	while (iter)
 	{
-		a = ft_strcmp(iter, new_node);
+		a = ft_strcmp(iter->content, new_node->content);
 		if (a)
 			iter = iter->next;
 		else
