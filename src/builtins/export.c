@@ -40,7 +40,7 @@ int	export_arg_checker(char *args)
 	int	i;
 
 	i = 0;
-	if (!ft_isalpha(args[0]) || args[0] != '_')
+	if (!ft_isalpha(args[0]) && args[0] != '_')
 	{
 		perror(export: (printf("%s:", args)) invalid option);
 		return (0);
