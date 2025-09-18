@@ -36,6 +36,8 @@ int			ft_isalpha(int c);
 int			ft_isascii(int c);
 int			ft_isdigit(int c);
 int			ft_isprint(int c);
+int			is_whitespace(char c);
+int			is_quote(char c);
 char		*ft_itoa(int n);
 void		ft_lstadd_back(t_list **lst, t_list *newnode);
 void		ft_lstadd_front(t_list **lst, t_list *newnode);
