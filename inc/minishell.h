@@ -36,18 +36,30 @@ int	echo(char **argv);
 
 /****** LEXER ******/
 
-enum e_operand_types
+int is_operand(char c);
+int get_operand_length(char *line);
+int get_quote_length(char *line);
+int get_word_length(char *line);
+int	handle_quote_length(char **line, int len);
+int	count_tokens(char *line);
+char	*allocate_token(int size);
+char	**lexer(char *line);
+
+/****** IDENTIFIER ******/
+
+enum token_type
 {
-	AND = '&',
-	PIPE = '|',
-	P_OPEN = '(',
-	P_CLOSE = ')',
-	RED_IN = '<',
-	RED_OUT = '>'
+	AND_OR,
+	PIPE,
+	SUBSHELL,
+	WORD,
+	REDIR
 };
 
-int is_operand(char c);
-int	count_tokens(char *line);
-char	**tokenizer(char *line);
+typedef struct s_token
+{
+	enum token_type	type;
+	char		*content;
+}	t_token;
 
 #endif
