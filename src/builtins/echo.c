@@ -14,7 +14,6 @@
 
 int	echo(char **argv)
 {
-	// echo -n -n -n -nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn hola
 	int	i;
 	int	n_flag;
 

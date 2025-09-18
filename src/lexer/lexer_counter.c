@@ -12,68 +12,59 @@
 
 #include "../../inc/minishell.h"
 
-int is_operand(char c)
+int	get_operand_length(char *line)
 {
-	return (c == AND || c == PIPE || c == P_OPEN ||
-		c == P_CLOSE || c == RED_IN || c == RED_OUT);
+	if (*line == '|' || *line == '<' || *line == '>' || *line == '&')
+	{
+		if (*(line + 1) == *line)
+			return (2);
+		else
+			return (1);
+	}
+	else if (*line == '(' || *line == ')')
+		return (1);
+	return (0);
+}
+
+int	get_word_length(char *line)
+{
+	int		len;
+
+	len = 0;
+	while (*line && !is_whitespace(*line) && !is_operand(*line))
+	{
+		if (is_quote(*line))
+			len = handle_quote_length(&line, len);
+		else
+		{
+			len++;
+			line++;
+		}
+	}
+	return (len);
 }
 
 void	count_word(char **line, int *count)
 {
-	while (**line && !is_whitespace(**line)
-		&& !is_operand(**line) && !is_quote(**line))
-		(*line)++;
+	int	len;
+
+	len = get_word_length(*line);
+	(*line) += len;
 	(*count)++;
-}
-
-void	count_quote(char **line, int *count)
-{
-	char	quote_type;
-	char	*line_start;
-
-	quote_type = **line;
-	line_start = *line;
-	(*line)++;
-	while (**line && **line != quote_type)
-		(*line)++;
-	if (**line == quote_type)
-	{
-		(*count)++;
-		(*line)++;
-	}
-	else
-	{
-		*line = line_start;
-		(*count)++;
-		(*line)++;
-	}
 }
 
 void	count_operand(char **line, int *count)
 {
-	if (**line == PIPE || **line == RED_IN || **line == RED_OUT)
+	int	len;
+
+	len = get_operand_length(*line);
+	if (len > 0)
 	{
-		if (*(*line + 1) == **line)
-			*line += 2;
-		else
-			*line += 1;
+		(*line) += len;
 		(*count)++;
 	}
-	else if (**line == AND)
-	{
-		if (*(*line + 1) == AND)
-		{
-			*line += 2;
-			(*count)++;
-		}
-		else
-			(*line)++;
-	}
-	else if (**line == P_OPEN || **line == P_CLOSE)
-	{
+	else if (**line == '&')
 		(*line)++;
-		(*count)++;
-	}
 }
 
 int	count_tokens(char *line)
@@ -85,9 +76,7 @@ int	count_tokens(char *line)
 		line++;
 	while (*line)
 	{
-		if (is_quote(*line))
-			count_quote(&line, &count);
-		else if (is_operand(*line))
+		if (is_operand(*line))
 			count_operand(&line, &count);
 		else if (!is_whitespace(*line))
 			count_word(&line, &count);

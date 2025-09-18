@@ -12,63 +12,73 @@
 
 #include "../../inc/minishell.h"
 
-char	*allocate_token(int size)
+static char	*create_and_fill_token(char **line, int len)
 {
 	char	*token;
+	int		i;
 
-	token = malloc(size * sizeof(char));
+	if (len == 0)
+		return (NULL);
+	token = allocate_token(len);
 	if (!token)
 		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		token[i] = **line;
+		(*line)++;
+		i++;
+	}
+	token[i] = '\0';
 	return (token);
 }
 
-void	fill_word(char **line)
+char	*fill_word(char **line)
 {
+	int	len;
 
+	len = get_word_length(*line);
+	return (create_and_fill_token(line, len));
 }
 
 char	*fill_operand(char **line)
 {
-	char	*token;
+	int	len;
 
-	token = NULL;
-	if (**line == PIPE || **line == RED_IN || **line == RED_OUT)
-	{
-		if (*(*line + 1) == **line)
-		{
-			token = allocate_token(3);
-		}
-	}
-	else if (**line == AND)
-	{}
-	else if (**line == P_OPEN || **line == P_CLOSE)
-	{}
-	return (token);
-}
-
-void	fill_quote()
-{
-
+	len = get_operand_length(*line);
+	return (create_and_fill_token(line, len));
 }
 
 int	fill_tokens(char **tokens, char *line)
 {
+	int		i;
+	char	*new_token;
 
+	i = 0;
 	while (*line)
 	{
 		while (is_whitespace(*line))
 			line++;
-		if (is_quote(*line))
-			fill_quote(&line);
-		else if (is_operand(*line))
-			fill_operand(&line);
+		if (is_operand(*line))
+		{
+			new_token = fill_operand(&line);
+			if (new_token)
+				tokens[i++] = new_token;
+		}
+		else if (!is_whitespace(*line))
+		{
+			new_token = fill_word(&line);
+			if (new_token)
+				tokens[i++] = new_token;
+		}
 		else
-			fill_word(&line);
+			line++;
 	}
+	tokens[i] = NULL;
 	return (SUCCESS);
 }
 
-char	**tokenizer(char *line)
+char	**lexer(char *line)
 {
 	char	**tokens;
 	int		num_tokens;
