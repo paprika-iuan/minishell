@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../inc/minishell.h"
-
+/*
 void print_char_array(char **arr) {
     if (!arr) return;
     for (int i = 0; arr[i] != NULL; i++) {
@@ -83,9 +83,8 @@ int main()
     for (int i = 0; commands[i] != NULL; i++)
     {
         printf("Command %d: \"%s\"\n", i, commands[i]);
-        token_count = count_tokens(commands[i]);
         printf("Token count: %d\n", token_count);
-        tokens = lexer(commands[i]);
+        tokens = lexer(commands[i], &token_count);
         if (tokens)
         {
             printf("Tokens:\n");
@@ -98,5 +97,93 @@ int main()
         }
         printf("----------------------------------------\n");
     }
+    return 0;
+}
+*/
+
+const char *token_type_to_string(enum token_type type)
+{
+    switch (type) {
+        case WORD: return "WORD";
+        case PIPE: return "PIPE";
+        case REDIR: return "REDIR";
+        case AND_OR: return "AND_OR";
+        case SUBSHELL: return "SUBSHELL";
+        default: return "UNKNOWN";
+    }
+}
+
+void print_tokens(t_token *head)
+{
+    t_token *current;
+    int count;
+
+    if (!head) {
+        printf("Error: token list is NULL\n");
+        return;
+    }
+
+    printf("=== TOKEN ANALYSIS ===\n");
+    current = head;
+    count = 0;
+
+    while (current != NULL) {
+        printf("Token %d:\n", count);
+        printf("  Content: \"%s\"\n", current->content ? current->content : "(NULL)");
+        printf("  Type: %s\n", token_type_to_string(current->type));
+        printf("  Position: %d\n", current->position);
+        printf("  ---\n");
+        current = current->next;
+        count++;
+    }
+    printf("=== END TOKENS ===\n\n");
+}
+
+void free_tokens(t_token *head)
+{
+    t_token *current;
+    t_token *next;
+
+    current = head;
+    while (current != NULL) {
+        next = current->next;
+        free(current->content);  // Free the string content
+        free(current);           // Free the token struct
+        current = next;
+    }
+}
+
+int main()
+{
+    // Test cases
+    char *test_commands[] = {
+        "ls -l | grep .txt",
+        "echo \"hello world\" > file.txt",
+        "cat < input.txt",
+        "ls && echo success",
+        "false || echo fallback",
+        "(echo test)",
+        "error&and",
+        "ls ||| wc",
+        "echo 'unclosed quote",
+        "var=\"hello world\"",
+        NULL
+    };
+
+    printf("=== TOKENIZER AND IDENTIFIER TEST ===\n\n");
+
+    for (int i = 0; test_commands[i] != NULL; i++) {
+        printf("Command: \"%s\"\n", test_commands[i]);
+        t_token *tokens = tokenizer(test_commands[i]);  // Returns t_token* now
+
+        if (tokens) {
+            print_tokens(tokens);
+            free_tokens(tokens);
+        } else {
+            printf("Error: tokenizer() returned NULL (syntax error or allocation failure)\n\n");
+        }
+        printf("========================================\n\n");
+    }
+
     return 0;
 }
