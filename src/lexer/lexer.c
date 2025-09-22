@@ -12,6 +12,13 @@
 
 #include "../../inc/minishell.h"
 
+void	free_tokens(char **tokens, int i)
+{
+	while (--i >= 0)
+		free(tokens[i]);
+	free(tokens);
+}
+
 static char	*create_and_fill_token(char **line, int len)
 {
 	char	*token;
@@ -59,20 +66,15 @@ int	fill_tokens(char **tokens, char *line)
 	{
 		while (is_whitespace(*line))
 			line++;
+		if (!*line)
+			break ;
 		if (is_operand(*line))
-		{
 			new_token = fill_operand(&line);
-			if (new_token)
-				tokens[i++] = new_token;
-		}
-		else if (!is_whitespace(*line))
-		{
-			new_token = fill_word(&line);
-			if (new_token)
-				tokens[i++] = new_token;
-		}
 		else
-			line++;
+			new_token = fill_word(&line);
+		if (!new_token)
+			return (free_tokens(tokens, i), FAILURE);
+		tokens[i++] = new_token;
 	}
 	tokens[i] = NULL;
 	return (SUCCESS);

@@ -22,7 +22,6 @@ char	*allocate_token(int size)
 {
 	char	*token;
 
-	// TO DO: gestio del malloc fail
 	token = malloc((size + 1) * sizeof(char));
 	if (!token)
 		return (NULL);

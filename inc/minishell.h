@@ -24,6 +24,7 @@
 
 # define READLINE_MSG "\033[1;31m[🏓wanghao]\033[35m$> \033[0m"
 # define SUCCESS 1
+# define FAILURE 0
 
 # include "../libft/libft.h"
 
@@ -43,6 +44,7 @@ int get_word_length(char *line);
 int	handle_quote_length(char **line, int len);
 int	count_tokens(char *line);
 char	*allocate_token(int size);
+void	free_tokens(char **tokens, int i);
 char	**lexer(char *line, int	*num_tokens);
 
 /****** IDENTIFIER ******/
@@ -69,5 +71,10 @@ typedef struct s_token
 }	t_token;
 
 t_token	*tokenizer(char *line);
+void	free_token_list(t_token *head);
+
+/****** ERROR ******/
+
+void	syntax_error(char *message);
 
 #endif

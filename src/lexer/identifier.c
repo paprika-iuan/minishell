@@ -17,11 +17,31 @@ t_token	*create_token(char *content)
 	t_token	*new_token;
 
 	new_token = (t_token *)malloc(sizeof(t_token));
-	if (new_token == NULL)
+	if (!new_token)
 		return (NULL);
-	new_token->content = content;
+	new_token->content = ft_strndup(content, ft_strlen(content));
+	if (!new_token->content)
+	{
+		free(new_token);
+		return (NULL);
+	}
 	new_token->next = NULL;
 	return (new_token);
+}
+
+void	free_token_list(t_token *head)
+{
+	t_token *current;
+	t_token *next;
+
+	current = head;
+	while (current)
+	{
+		next = current->next;
+		free(current->content);
+		free(current);
+		current = next;
+	}
 }
 
 t_token	*tag_operand(char *op)
@@ -78,13 +98,17 @@ t_token	*identifier(char **tokens, int	*num_tokens)
 		if (is_operand(tokens[i][0]))
 		{
 			if (tokens[i][0] == '&' && ft_strlen(tokens[i]) == 1)
-				return (NULL); // syntax error
+			{
+				free_token_list(head);
+				free_tokens(tokens, *num_tokens);
+				syntax_error("syntax error near unexpected token `&'");
+			}
 			new_token = tag_operand(tokens[i]);
 		}
 		else
 			new_token = tag_word(tokens[i]);
 		if (!new_token)
-			return (NULL);
+			return (free_token_list(head), NULL);
 		new_token->position = i;
 		if (head == NULL)
 		{
@@ -108,6 +132,12 @@ t_token	*tokenizer(char *line)
 	int		num_tokens;
 
 	raw_tokens = lexer(line, &num_tokens);
+	if (!raw_tokens)
+		return (NULL);
 	id_tokens = identifier(raw_tokens, &num_tokens);
-	return (id_tokens);
+	free_tokens(raw_tokens, num_tokens);
+	if (!id_tokens)
+		return (NULL);
+	else
+		return (id_tokens);
 }

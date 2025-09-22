@@ -14,11 +14,12 @@
 
 int	main(int argc, char **argv, char **envp)
 {
+
+
 	char	*input;
 	char	**input_split;
 
 	//printf("%s", HEADER);
-
 	while (1)
 	{
 		input = readline(READLINE_MSG);

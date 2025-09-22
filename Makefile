@@ -5,6 +5,7 @@ SRC = src/main.c \
 		src/lexer/lexer.c \
 		src/lexer/lexer_counter.c \
 		src/lexer/lexer_utils.c \
+		src/errors/errors.c
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
