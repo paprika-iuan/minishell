@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 15:41:30 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/15 17:08:03 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/16 10:30:57 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ t_env	*envcpy(char **envp)
 	head = NULL;
 	current = NULL;
 	node = NULL;
-	basic_err(envp);
+	basic_err(*envp);
 	while (envp[i])
 	{
 		node = malloc(sizeof(t_env));
-		basic_err(node);
-		node->content = strdup(envp[i]);
+		if (!node)
+			return (NULL);
+		node->content = ft_strdup(envp[i]);
 		node->next = NULL;
 		if (!head)
 			head = node;

@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/15 15:49:10 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/15 18:11:03 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/16 10:51:14 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	del_token(t_cmd *token, t_env **envp)
 				prev->next = current->next;
 			else
 				*envp = current->next;
-			ft_lstdelone(current);
+			ft_lstdelone(current, free);
 			break;
 		}
 		prev = current;

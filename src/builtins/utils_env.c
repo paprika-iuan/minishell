@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:19:07 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/15 17:42:51 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/16 10:48:11 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	basic_err(char *x)
 {
 	if (!x)
-		exit (NULL);
+		exit (1);
 }
 
 t_env	*ft_lstlast(t_env *lst)
@@ -50,4 +50,12 @@ t_env	*ft_lstnew(void *content)
 	new_node->content = content;
 	new_node->next = NULL;
 	return (new_node);
+}
+
+void	ft_lstdelone(t_env *lst, void (*del)(void *))
+{
+	if (!lst || !del)
+		return ;
+	del(lst->content);
+	free(lst);
 }

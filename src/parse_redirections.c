@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   parse_redirections.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/12 10:50:04 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/16 10:40:50 by jgirbau-         ###   ########.fr       */
+/*   Created: 2025/09/18 14:55:02 by jgirbau-          #+#    #+#             */
+/*   Updated: 2025/09/21 15:22:22 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-
-int	env(t_env *cp_env)
+t_NodeAST	*set_redirect_node(t_token **tokens, int ac)
 {
-	basic_err(cp_env->content);
-	while (cp_env)
-	{
-		if (ft_strchr(cp_env->content, '='))
-			printf("%s\n", cp_env->content);
-		cp_env = cp_env->next;
-	}
-	return (0);
+	t_NodeAST	*node;
+
+	node = malloc(sizeof(t_NodeAST));
+	node->e_NodeType = NODE_REDIRECT;
+	node->RedirType = type;
+	node->redirect.file = what_redir(t_token **tokens, );
+	node->redirect.fd = fd;
+	return (node);
 }
