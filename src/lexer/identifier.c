@@ -31,10 +31,18 @@ t_token	*tag_operand(char *op)
 	new_token = create_token(op);
 	if (!new_token)
 		return (NULL);
-	if (op[0] == '<' || op[0] == '>')
-		new_token->type = REDIR;
-	else if (op[0] == '&' || (op[0] == '|' && op[1]))
-		new_token->type = AND_OR;
+	if (op[0] == '<' && op[1])
+		new_token->type = REDIR_HEREDOC;
+	else if (op[0] == '>' && op[1])
+		new_token->type = REDIR_OUT_APP;
+	else if (op[0] == '<')
+		new_token->type = REDIR_IN;
+	else if (op[0] == '>')
+		new_token->type = REDIR_OUT_TRUNC;
+	else if (op[0] == '&')
+		new_token->type = AND;
+	else if (op[0] == '|' && op[1])
+		new_token->type = OR;
 	else if (op[0] == '|')
 		new_token->type = PIPE;
 	else
@@ -76,7 +84,7 @@ t_token	*identifier(char **tokens, int	*num_tokens)
 		else
 			new_token = tag_word(tokens[i]);
 		if (!new_token)
-            return (NULL);
+			return (NULL);
 		new_token->position = i;
 		if (head == NULL)
 		{
@@ -103,38 +111,3 @@ t_token	*tokenizer(char *line)
 	id_tokens = identifier(raw_tokens, &num_tokens);
 	return (id_tokens);
 }
-
-/*
-t_token	**identifier(char *line)
-{
-	t_token	**id_tokens;
-	char	**tokens;
-	int		num_tokens;
-	int		i;
-
-	tokens = lexer(line, &num_tokens);
-	id_tokens = malloc((num_tokens + 1) * sizeof(t_token*));
-	if (!id_tokens)
-		return (NULL);
-	i = 0;
-	while (i < num_tokens)
-	{
-		if (is_operand(tokens[i][0]))
-		{
-			if (tokens[i][0] == '&' && ft_strlen(tokens[i]) == 1)
-				return (NULL); // handle syntax error
-			id_tokens[i] = tag_operand(tokens[i]); // handle id_tokens[i] == NULL
-			id_tokens[i]->position = i;
-			i++;
-		}
-		else
-		{
-			id_tokens[i] = tag_word(tokens[i]); // handle id_tokens[i] == NULL
-			id_tokens[i]->position = i;
-			i++;
-		}
-	}
-	id_tokens[num_tokens] = NULL;
-	return (id_tokens);
-}
-*/

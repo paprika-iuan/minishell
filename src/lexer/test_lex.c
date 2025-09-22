@@ -1,6 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "../../inc/minishell.h"
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include "../../inc/minishell.h"
+//
 /*
 void print_char_array(char **arr) {
     if (!arr) return;
@@ -100,7 +101,7 @@ int main()
     return 0;
 }
 */
-
+/*
 const char *token_type_to_string(enum token_type type)
 {
     switch (type) {
@@ -187,3 +188,4 @@ int main()
 
     return 0;
 }
+ */
