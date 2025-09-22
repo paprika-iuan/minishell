@@ -15,7 +15,7 @@
 int	is_operand(char c)
 {
 	return (c == '&' || c == '|' || c == '('
-		||c == ')' || c == '<' || c == '>');
+		|| c == ')' || c == '<' || c == '>');
 }
 
 char	*allocate_token(int size)
