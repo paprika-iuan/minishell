@@ -1,6 +1,10 @@
 NAME = minishell
 SRC = src/main.c \
-		src/builtins/echo.c
+		src/builtins/echo.c \
+		src/lexer/identifier.c \
+		src/lexer/lexer.c \
+		src/lexer/lexer_counter.c \
+		src/lexer/lexer_utils.c \
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a

@@ -49,11 +49,15 @@ char	**lexer(char *line, int	*num_tokens);
 
 enum token_type
 {
-	AND_OR,
+	AND,
+	OR,
 	PIPE,
 	SUBSHELL,
 	WORD,
-	REDIR
+	REDIR_IN,
+	REDIR_OUT_APP,
+	REDIR_OUT_TRUNC,
+	REDIR_HEREDOC
 };
 
 typedef struct s_token
