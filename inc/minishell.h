@@ -43,7 +43,7 @@ int get_word_length(char *line);
 int	handle_quote_length(char **line, int len);
 int	count_tokens(char *line);
 char	*allocate_token(int size);
-char	**lexer(char *line);
+char	**lexer(char *line, int	*num_tokens);
 
 /****** IDENTIFIER ******/
 
@@ -60,6 +60,10 @@ typedef struct s_token
 {
 	enum token_type	type;
 	char		*content;
+	int			position;
+	struct s_token *next;
 }	t_token;
+
+t_token	*tokenizer(char *line);
 
 #endif

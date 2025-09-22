@@ -78,15 +78,14 @@ int	fill_tokens(char **tokens, char *line)
 	return (SUCCESS);
 }
 
-char	**lexer(char *line)
+char	**lexer(char *line, int	*num_tokens)
 {
 	char	**tokens;
-	int		num_tokens;
 
 	if (!line)
 		return (NULL);
-	num_tokens = count_tokens(line);
-	tokens = malloc((num_tokens + 1) * sizeof(char *));
+	*num_tokens = count_tokens(line);
+	tokens = malloc((*num_tokens + 1) * sizeof(char *));
 	if (!tokens)
 		return (NULL);
 	if (!fill_tokens(tokens, line))
