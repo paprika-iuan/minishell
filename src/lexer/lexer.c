@@ -12,13 +12,6 @@
 
 #include "../../inc/minishell.h"
 
-void	free_tokens(char **tokens, int i)
-{
-	while (--i >= 0)
-		free(tokens[i]);
-	free(tokens);
-}
-
 static char	*create_and_fill_token(char **line, int len)
 {
 	char	*token;

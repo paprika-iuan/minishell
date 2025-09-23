@@ -28,6 +28,13 @@ char	*allocate_token(int size)
 	return (token);
 }
 
+void	free_tokens(char **tokens, int i)
+{
+	while (--i >= 0)
+		free(tokens[i]);
+	free(tokens);
+}
+
 static int	scan_until_quote(char **line, char quote_type, char **backtrack_pos)
 {
 	int	len;

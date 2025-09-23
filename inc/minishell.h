@@ -72,6 +72,9 @@ typedef struct s_token
 
 t_token	*tokenizer(char *line);
 void	free_token_list(t_token *head);
+t_token	*create_token(char *content);
+void	free_token_list(t_token *head);
+void	append_token(t_token **head, t_token **current, t_token *node);
 
 /****** ERROR ******/
 

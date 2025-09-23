@@ -12,38 +12,6 @@
 
 #include "../../inc/minishell.h"
 
-t_token	*create_token(char *content)
-{
-	t_token	*new_token;
-
-	new_token = (t_token *)malloc(sizeof(t_token));
-	if (!new_token)
-		return (NULL);
-	new_token->content = ft_strndup(content, ft_strlen(content));
-	if (!new_token->content)
-	{
-		free(new_token);
-		return (NULL);
-	}
-	new_token->next = NULL;
-	return (new_token);
-}
-
-void	free_token_list(t_token *head)
-{
-	t_token *current;
-	t_token *next;
-
-	current = head;
-	while (current)
-	{
-		next = current->next;
-		free(current->content);
-		free(current);
-		current = next;
-	}
-}
-
 t_token	*tag_operand(char *op)
 {
 	t_token	*new_token;
@@ -81,11 +49,26 @@ t_token	*tag_word(char *op)
 	return (new_token);
 }
 
-t_token	*identifier(char **tokens, int	*num_tokens)
+t_token	*tag_and_validate(char *token_str, t_token *head, char **tok, int num)
+{
+	if (is_operand(token_str[0]))
+	{
+		if (token_str[0] == '&' && ft_strlen(token_str) == 1)
+		{
+			free_token_list(head);
+			free_tokens(tok, num);
+			syntax_error("syntax error near unexpected token `&'");
+		}
+		return (tag_operand(token_str));
+	}
+	return (tag_word(token_str));
+}
+
+t_token	*identifier(char **tokens, int *num_tokens)
 {
 	t_token	*head;
 	t_token	*current;
-	t_token	*new_token;
+	t_token	*node;
 	int		i;
 
 	if (!tokens)
@@ -95,31 +78,15 @@ t_token	*identifier(char **tokens, int	*num_tokens)
 	i = 0;
 	while (i < *num_tokens)
 	{
-		if (is_operand(tokens[i][0]))
+		node = tag_and_validate(tokens[i], head, tokens, *num_tokens);
+		if (!node)
 		{
-			if (tokens[i][0] == '&' && ft_strlen(tokens[i]) == 1)
-			{
-				free_token_list(head);
-				free_tokens(tokens, *num_tokens);
-				syntax_error("syntax error near unexpected token `&'");
-			}
-			new_token = tag_operand(tokens[i]);
+			free_token_list(head);
+			free_tokens(tokens, *num_tokens);
+			return (NULL);
 		}
-		else
-			new_token = tag_word(tokens[i]);
-		if (!new_token)
-			return (free_token_list(head), NULL);
-		new_token->position = i;
-		if (head == NULL)
-		{
-			head = new_token;
-			current = new_token;
-		}
-		else
-		{
-			current->next = new_token;
-			current = new_token;
-		}
+		node->position = i;
+		append_token(&head, &current, node);
 		i++;
 	}
 	return (head);
