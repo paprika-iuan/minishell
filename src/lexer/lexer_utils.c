@@ -22,11 +22,17 @@ char	*allocate_token(int size)
 {
 	char	*token;
 
-	// TO DO: gestio del malloc fail
 	token = malloc((size + 1) * sizeof(char));
 	if (!token)
 		return (NULL);
 	return (token);
+}
+
+void	free_tokens(char **tokens, int i)
+{
+	while (--i >= 0)
+		free(tokens[i]);
+	free(tokens);
 }
 
 static int	scan_until_quote(char **line, char quote_type, char **backtrack_pos)

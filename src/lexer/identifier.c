@@ -12,18 +12,6 @@
 
 #include "../../inc/minishell.h"
 
-t_token	*create_token(char *content)
-{
-	t_token	*new_token;
-
-	new_token = (t_token *)malloc(sizeof(t_token));
-	if (new_token == NULL)
-		return (NULL);
-	new_token->content = content;
-	new_token->next = NULL;
-	return (new_token);
-}
-
 t_token	*tag_operand(char *op)
 {
 	t_token	*new_token;
@@ -31,10 +19,18 @@ t_token	*tag_operand(char *op)
 	new_token = create_token(op);
 	if (!new_token)
 		return (NULL);
-	if (op[0] == '<' || op[0] == '>')
-		new_token->type = REDIR;
-	else if (op[0] == '&' || (op[0] == '|' && op[1]))
-		new_token->type = AND_OR;
+	if (op[0] == '<' && op[1])
+		new_token->type = REDIR_HEREDOC;
+	else if (op[0] == '>' && op[1])
+		new_token->type = REDIR_OUT_APP;
+	else if (op[0] == '<')
+		new_token->type = REDIR_IN;
+	else if (op[0] == '>')
+		new_token->type = REDIR_OUT_TRUNC;
+	else if (op[0] == '&')
+		new_token->type = AND;
+	else if (op[0] == '|' && op[1])
+		new_token->type = OR;
 	else if (op[0] == '|')
 		new_token->type = PIPE;
 	else
@@ -53,11 +49,26 @@ t_token	*tag_word(char *op)
 	return (new_token);
 }
 
-t_token	*identifier(char **tokens, int	*num_tokens)
+t_token	*tag_and_validate(char *token_str, t_token *head, char **tok, int num)
+{
+	if (is_operand(token_str[0]))
+	{
+		if (token_str[0] == '&' && ft_strlen(token_str) == 1)
+		{
+			free_token_list(head);
+			free_tokens(tok, num);
+			syntax_error("syntax error near unexpected token `&'");
+		}
+		return (tag_operand(token_str));
+	}
+	return (tag_word(token_str));
+}
+
+t_token	*identifier(char **tokens, int *num_tokens)
 {
 	t_token	*head;
 	t_token	*current;
-	t_token	*new_token;
+	t_token	*node;
 	int		i;
 
 	if (!tokens)
@@ -67,27 +78,15 @@ t_token	*identifier(char **tokens, int	*num_tokens)
 	i = 0;
 	while (i < *num_tokens)
 	{
-		if (is_operand(tokens[i][0]))
+		node = tag_and_validate(tokens[i], head, tokens, *num_tokens);
+		if (!node)
 		{
-			if (tokens[i][0] == '&' && ft_strlen(tokens[i]) == 1)
-				return (NULL); // syntax error
-			new_token = tag_operand(tokens[i]);
+			free_token_list(head);
+			free_tokens(tokens, *num_tokens);
+			return (NULL);
 		}
-		else
-			new_token = tag_word(tokens[i]);
-		if (!new_token)
-            return (NULL);
-		new_token->position = i;
-		if (head == NULL)
-		{
-			head = new_token;
-			current = new_token;
-		}
-		else
-		{
-			current->next = new_token;
-			current = new_token;
-		}
+		node->position = i;
+		append_token(&head, &current, node);
 		i++;
 	}
 	return (head);
@@ -100,41 +99,12 @@ t_token	*tokenizer(char *line)
 	int		num_tokens;
 
 	raw_tokens = lexer(line, &num_tokens);
+	if (!raw_tokens)
+		return (NULL);
 	id_tokens = identifier(raw_tokens, &num_tokens);
-	return (id_tokens);
-}
-
-/*
-t_token	**identifier(char *line)
-{
-	t_token	**id_tokens;
-	char	**tokens;
-	int		num_tokens;
-	int		i;
-
-	tokens = lexer(line, &num_tokens);
-	id_tokens = malloc((num_tokens + 1) * sizeof(t_token*));
+	free_tokens(raw_tokens, num_tokens);
 	if (!id_tokens)
 		return (NULL);
-	i = 0;
-	while (i < num_tokens)
-	{
-		if (is_operand(tokens[i][0]))
-		{
-			if (tokens[i][0] == '&' && ft_strlen(tokens[i]) == 1)
-				return (NULL); // handle syntax error
-			id_tokens[i] = tag_operand(tokens[i]); // handle id_tokens[i] == NULL
-			id_tokens[i]->position = i;
-			i++;
-		}
-		else
-		{
-			id_tokens[i] = tag_word(tokens[i]); // handle id_tokens[i] == NULL
-			id_tokens[i]->position = i;
-			i++;
-		}
-	}
-	id_tokens[num_tokens] = NULL;
-	return (id_tokens);
+	else
+		return (id_tokens);
 }
-*/
