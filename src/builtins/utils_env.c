@@ -6,16 +6,17 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:19:07 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/16 10:48:11 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/23 15:34:37 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
+#include <stdlib.h>
 
 void	basic_err(char *x)
 {
 	if (!x)
-		exit (1);
+		exit (EXIT_FAILURE);
 }
 
 t_env	*ft_lstlast(t_env *lst)
