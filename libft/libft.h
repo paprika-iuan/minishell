@@ -16,6 +16,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <stdarg.h>
+# include <stdint.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
@@ -39,15 +41,15 @@ int			ft_isprint(int c);
 int			is_whitespace(char c);
 int			is_quote(char c);
 char		*ft_itoa(int n);
-void		ft_lstadd_back(t_list **lst, t_list *newnode);
-void		ft_lstadd_front(t_list **lst, t_list *newnode);
-void		ft_lstclear(t_list **lst, void (*del)(void*));
-void		ft_lstdelone(t_list *lst, void (*del)(void*));
-void		ft_lstiter(t_list *lst, void (*f)(void *));
-t_list		*ft_lstlast(t_list *lst);
-t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-t_list		*ft_lstnew(void *content);
-int			ft_lstsize(t_list *lst);
+// void		ft_lstadd_back(t_list **lst, t_list *newnode);
+// void		ft_lstadd_front(t_list **lst, t_list *newnode);
+// void		ft_lstclear(t_list **lst, void (*del)(void*));
+// void		ft_lstdelone(t_list *lst, void (*del)(void*));
+// void		ft_lstiter(t_list *lst, void (*f)(void *));
+// t_list		*ft_lstlast(t_list *lst);
+// t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+// t_list		*ft_lstnew(void *content);
+// int			ft_lstsize(t_list *lst);
 int			ft_max(int a, int b);
 void		*ft_memchr(const void *s, int c, size_t n);
 int			ft_memcmp(const void *s1, const void *s2, size_t n);
@@ -78,5 +80,11 @@ char		*ft_substr(char const *s, unsigned int start, size_t len);
 int			ft_tolower(int c);
 int			ft_toupper(int c);
 char		*get_next_line(int fd);
+int			ft_printchar(const char c);
+int			ft_printstr(char *str);
+int			ft_printptr(void *ptr, char *base);
+int			ft_printnbr_base(int nbr, char *base);
+int			ft_printnbr_base_u(uintptr_t nbr, char *base);
+int			ft_printf(const char *str, ...);
 
 #endif

@@ -10,53 +10,82 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include <stdlib.h>
+#include "../../inc/minishell.h"
 
-void	basic_err(char *x)
+void	free_env_list(t_env *head)
 {
-	if (!x)
-		exit (EXIT_FAILURE);
+	t_env	*temp;
+
+	while (head)
+	{
+		temp = head;
+		head = head->next;
+		free(temp->content);
+		free(temp);
+	}
 }
 
-t_env	*ft_lstlast(t_env *lst)
+t_env	*envcpy(char **envp)
 {
+	t_env	*head;
 	t_env	*current;
+	t_env	*node;
+	int		i;
 
-	if (lst == NULL)
-		return (NULL);
-	current = lst;
-	while (current->next != NULL)
-		current = current->next;
-	return (current);
+	i = 0;
+	head = NULL;
+	current = NULL;
+	basic_err(*envp);
+	while (envp[i])
+	{
+		node = create_env_node(envp[i]);
+		if (!node)
+		{
+			free_env_list(head);
+			return (NULL);
+		}
+		if (!head)
+			head = node;
+		else
+			current->next = node;
+		current = node;
+		i++;
+	}
+	return (head);
 }
 
-void	ft_lstadd_back(t_env **lst, t_env *newnode)
+t_env	*last_env_node(t_env *node)
 {
-	if (newnode == NULL)
-		return ;
-	if (*lst == NULL)
-		*lst = newnode;
-	else
-		ft_lstlast(*lst)->next = newnode;
+	if (!node)
+		return (NULL);
+	while (node->next)
+		node = node->next;
+	return (node);
 }
 
-t_env	*ft_lstnew(void *content)
+void	add_to_env_list(t_env **cp_env, t_env *new_node)
+{
+	if (!new_node)
+		return ;
+	if (!*cp_env)
+		*cp_env = new_node;
+	else
+		last_env_node(*cp_env)->next = new_node;
+}
+
+t_env	*create_env_node(char *content)
 {
 	t_env	*new_node;
 
 	new_node = (t_env *)malloc(sizeof(t_env));
-	if (new_node == NULL)
+	if (!new_node)
 		return (NULL);
-	new_node->content = content;
+	new_node->content = ft_strdup(content);
+	if (!new_node->content)
+	{
+		free(new_node);
+		return (NULL);
+	}
 	new_node->next = NULL;
 	return (new_node);
-}
-
-void	ft_lstdelone(t_env *lst, void (*del)(void *))
-{
-	if (!lst || !del)
-		return ;
-	del(lst->content);
-	free(lst);
 }

@@ -11,18 +11,37 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-/*
+
 int	main(int argc, char **argv, char **envp)
 {
-
-
 	char	*input;
 	char	**input_split;
+	t_env	*env_copy;
+	char *tmp;
+	char *pwd;
+	char *prompt;
 
-	//printf("%s", HEADER);
+	env_copy = envcpy(envp);
+	if (!env_copy)
+	{
+		perror("Error: Failed to copy environment\n");
+		return (1);
+	}
+
+	printf("%s", HEADER);
 	while (1)
 	{
-		input = readline(READLINE_MSG);
+		pwd = get_env_value("PWD", env_copy);
+		if (!pwd)
+			pwd = "";
+		tmp = ft_strjoin(READLINE_MSG, "\033[1;36m");
+		prompt = ft_strjoin(tmp, pwd);
+		free(tmp);
+		tmp = ft_strjoin(prompt, "\033[0m ");
+		free(prompt);
+		prompt = tmp;
+		input = readline(prompt);
+		free(prompt);
 		if (!input)
 			break ;
 		add_history(input);
@@ -30,7 +49,33 @@ int	main(int argc, char **argv, char **envp)
 		if (input_split)
 		{
 			if (input_split[0] && ft_strcmp(input_split[0], "echo") == 0)
-				echo(input_split);
+				ft_echo(input_split);
+			else if (input_split[0] && ft_strcmp(input_split[0], "env") == 0)
+				ft_env(env_copy);
+			else if (input_split[0] && ft_strcmp(input_split[0], "export") == 0)
+			{
+				if (input_split[1])
+					ft_export(input_split + 1, &env_copy);
+				else
+					ft_export(NULL, &env_copy);
+			}
+			else if (input_split[0] && ft_strcmp(input_split[0], "unset") == 0)
+			{
+				if (input_split[1])
+					ft_unset(input_split + 1, &env_copy);
+			}
+			else if (input_split[0] && ft_strcmp(input_split[0], "cd") == 0)
+			{
+				ft_cd(env_copy, input_split + 1);
+			}
+			else if (input_split[0] && ft_strcmp(input_split[0], "pwd") == 0)
+			{
+				ft_pwd(input_split + 1);
+			}
+			else if (input_split[0] && ft_strcmp(input_split[0], "exit") == 0)
+			{
+				ft_exit(env_copy, input_split + 1);
+			}
 			else if (input_split[0])
 				printf("You typed: %s\n", input);
 			for (int i = 0; input_split[i]; i++)
@@ -40,10 +85,11 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 	}
 	rl_clear_history();
+	free_env_list(env_copy);
 	return (0);
 }
-*/
 
+/*
 const char *token_type_to_string(enum token_type type)
 {
     switch(type)
@@ -123,3 +169,4 @@ int main(void)
 
     return 0;
 }
+*/
