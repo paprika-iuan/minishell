@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
+#include "../../inc/minishell.h"
 
-void	del_token(t_cmd *token, t_env **envp)
+void	del_token(char *token_content, t_env **envp)
 {
 	t_env	*current;
 	t_env	*prev;
@@ -20,34 +20,36 @@ void	del_token(t_cmd *token, t_env **envp)
 
 	current = *envp;
 	prev = NULL;
-	len = ft_strlen(token->content);
+	len = ft_strlen(token_content);
 	while (current)
 	{
-		if (!ft_strncmp((token)->content, current->content, len) && (
+		if (!ft_strncmp(token_content, current->content, len) && (
 				current->content[len] == '=' || current->content[len] == '\0'))
 		{
 			if (prev)
 				prev->next = current->next;
 			else
 				*envp = current->next;
-			ft_lstdelone(current, free);
-			break;
+			free(current->content);
+			free(current);
+			break ;
 		}
 		prev = current;
 		current = current->next;
 	}
 }
 
-int	unset(t_cmd **token, t_env **envp)
+int	ft_unset(char **args, t_env **envp)
 {
-	t_cmd	*cp_token;
-	if (!(*token) || !(*envp))
+	int	i;
+
+	if (!args || !(*envp))
 		return (1);
-	cp_token = *token;
-	while (cp_token)
+	i = 0;
+	while (args[i])
 	{
-		del_token(cp_token, envp);
-		cp_token = cp_token->next;
+		del_token(args[i], envp);
+		i++;
 	}
 	return (0);
 }

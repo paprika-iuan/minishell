@@ -15,6 +15,8 @@ SRCS =	ft_atoi.c \
 	ft_atol.c \
 	ft_bzero.c \
 	ft_calloc.c \
+	ft_conversions.c \
+	ft_conversions_num.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
 	ft_isascii.c \
@@ -30,6 +32,7 @@ SRCS =	ft_atoi.c \
 	ft_memmove.c \
 	ft_memset.c \
 	ft_min.c \
+	ft_printf.c \
 	ft_putchar_fd.c \
 	ft_putendl_fd.c \
 	ft_putnbr_fd.c \

@@ -92,19 +92,19 @@ t_token	*identifier(char **tokens, int *num_tokens)
 	return (head);
 }
 
-t_token	*tokenizer(char *line)
-{
-	char	**raw_tokens;
-	t_token	*id_tokens;
-	int		num_tokens;
+// t_token	*tokenizer(char *line)
+// {
+// 	char	**raw_tokens;
+// 	t_token	*id_tokens;
+// 	int		num_tokens;
 
-	raw_tokens = lexer(line, &num_tokens);
-	if (!raw_tokens)
-		return (NULL);
-	id_tokens = identifier(raw_tokens, &num_tokens);
-	free_tokens(raw_tokens, num_tokens);
-	if (!id_tokens)
-		return (NULL);
-	else
-		return (id_tokens);
-}
+// 	raw_tokens = lexer(line, &num_tokens);
+// 	if (!raw_tokens)
+// 		return (NULL);
+// 	id_tokens = identifier(raw_tokens, &num_tokens);
+// 	free_tokens(raw_tokens, num_tokens);
+// 	if (!id_tokens)
+// 		return (NULL);
+// 	else
+// 		return (id_tokens);
+// }
