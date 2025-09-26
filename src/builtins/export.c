@@ -102,9 +102,10 @@ int	ft_export(char **args, t_env **cp_env)
 				if (!new_node)
 					return (free(dup), (1));
 				add_to_env_list(cp_env, new_node);
+				free(dup);
 			}
-			i++;
 		}
+		i++;
 	}
 	return (0);
 }
