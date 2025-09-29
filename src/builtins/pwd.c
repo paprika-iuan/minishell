@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 17:11:21 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/22 17:11:22 by amarquez         ###   ########.fr       */
+/*   Created: 2025/09/26 14:36:30 by amarquez          #+#    #+#             */
+/*   Updated: 2025/09/26 14:36:32 by amarquez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	basic_err(char *x)
+int	ft_pwd(char **argv)
 {
-	if (!x)
-		exit (EXIT_FAILURE);
-}
+	char	pwd[PATH_MAX];
 
-void	syntax_error(char *message)
-{
-	perror(message);
-	exit(EXIT_FAILURE);
+	if (argv && argv[0])
+	{
+		ft_printf("pwd: too many arguments\n");
+		return (1);
+	}
+	if (!getcwd(pwd, sizeof(pwd)))
+	{
+		perror("pwd");
+		return (1);
+	}
+	ft_printf("%s\n", pwd);
+	return (0);
 }

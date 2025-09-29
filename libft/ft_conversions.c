@@ -1,25 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_conversions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 17:11:21 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/22 17:11:22 by amarquez         ###   ########.fr       */
+/*   Created: 2025/06/17 16:15:05 by amarquez          #+#    #+#             */
+/*   Updated: 2025/06/17 16:15:07 by amarquez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "libft.h"
 
-void	basic_err(char *x)
+int	ft_printchar(const char c)
 {
-	if (!x)
-		exit (EXIT_FAILURE);
+	ft_putchar_fd(c, 1);
+	return (1);
 }
 
-void	syntax_error(char *message)
+int	ft_printstr(char *str)
 {
-	perror(message);
-	exit(EXIT_FAILURE);
+	if (!str)
+	{
+		ft_putstr_fd("(null)", 1);
+		return (6);
+	}
+	ft_putstr_fd(str, 1);
+	return (ft_strlen(str));
+}
+
+int	ft_printptr(void *ptr, char *base)
+{
+	if (ptr == NULL)
+	{
+		ft_putstr_fd("(nil)", 1);
+		return (5);
+	}
+	ft_putstr_fd("0x", 1);
+	return (ft_printnbr_base_u((uintptr_t)ptr, base) + 2);
 }

@@ -28,7 +28,7 @@ int	is_n_flag(const char *arg)
 	return (1);
 }
 
-int	echo(char **argv)
+int	ft_echo(char **argv)
 {
 	int	i;
 	int	n_flag;

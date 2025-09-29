@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-//ESTA MALAMENT!!!!!!
-//adds quotes when printing export.
+#include "../../inc/minishell.h"
 
 void	var_printer(t_env *current)
 {
@@ -35,8 +33,6 @@ void	var_printer(t_env *current)
 	}
 }
 
-//checks that the var declaration is crrect.
-
 int	export_arg_checker(char *args)
 {
 	int	i;
@@ -49,7 +45,7 @@ int	export_arg_checker(char *args)
 	}
 	while (args[i] && args[i] != '=')
 	{
-		else if (!ft_isalnum(args[i]) || args[i] != '_')
+		if (!ft_isalnum(args[i]) && args[i] != '_')
 		{
 			printf("export: %s: not a valid identifier\n", args);
 			return (1);
@@ -59,71 +55,57 @@ int	export_arg_checker(char *args)
 	return (0);
 }
 
-//Falta fer un merge amb les llistes del parsing. Hauria de rebre cada args 
-// com a token per separat, per tant, en el else tan sols hauria de iterar 
-// entre nodes, no ha de fer cas a espais.
-
-t_env	*dup_var_handler(t_cmd *token, t_env *cp_env)
+int	dup_var_handler(char *arg, t_env *cp_env)
 {
 	int		len;
 	t_env	*iter;
 
 	len = 0;
-	while (token->content[len] && token->content[len] != '=')
+	while (arg[len] && arg[len] != '=')
 		len++;
 	iter = cp_env;
 	while (iter)
 	{
-		if (!ft_strncmp(token->content, iter->content, len) &&
-		(iter->content[len] == '=' || iter->content[len] == '\0'))
+		if (!ft_strncmp(arg, iter->content, len)
+			&& (iter->content[len] == '=' || iter->content[len] == '\0'))
 		{
 			free(iter->content);
-			iter->content = ft_strdup(token->content);
-			return (iter);
+			iter->content = ft_strdup(arg);
+			if (!iter->content)
+				return (0);
+			return (1);
 		}
 		iter = iter->next;
-	}
-	return (ft_lstnew(token->content));
-}
-
-int	is_in_list(t_env *list, t_env *node)
-{
-	t_env	*iter;
-	int		a;
-
-	iter = cp_env;
-	while (iter)
-	{
-		a = ft_strcmp(iter->content, new_node->content);
-		if (a)
-			iter = iter->next;
-		else
-			return (0);
 	}
 	return (0);
 }
 
-int	export(t_cmd *token, t_env **cp_env)
+int	ft_export(char **args, t_env **cp_env)
 {
 	t_env	*new_node;
-	t_env	*current;
+	char	*dup;
+	int		i;
 
-	if (!token)
+	if (!args || !args[0])
+		return (var_printer(*cp_env), 0);
+	i = 0;
+	while (args[i])
 	{
-		current = *cp_env;
-		var_printer(current);
-		return (0);
-	}
-	while (token)
-	{
-		if (token->content && !export_arg_checker(token->content))
+		if (!export_arg_checker(args[i]))
 		{
-			new_node = dup_var_handler(token, *cp_env);
-			basic_err(new_node);
-			if (dup_checker(*cp_env, new_node))
-				ft_lstadd_back(cp_env, new_node);
+			if (!dup_var_handler(args[i], *cp_env))
+			{
+				dup = ft_strdup(args[i]);
+				if (!dup)
+					return (1);
+				new_node = create_env_node(dup);
+				if (!new_node)
+					return (free(dup), (1));
+				add_to_env_list(cp_env, new_node);
+				free(dup);
+			}
 		}
-		token = token->next;
+		i++;
 	}
 	return (0);
 }

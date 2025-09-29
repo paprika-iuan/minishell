@@ -1,10 +1,18 @@
 NAME = minishell
 SRC = src/main.c \
+		src/builtins/cd.c \
 		src/builtins/echo.c \
-		src/lexer/identifier.c \
+		src/builtins/env.c \
+		src/builtins/exit.c \
+		src/builtins/export.c \
+		src/builtins/pwd.c \
+		src/builtins/unset.c \
+		src/builtins/utils_env.c \
 		src/lexer/lexer.c \
 		src/lexer/lexer_counter.c \
 		src/lexer/lexer_utils.c \
+		src/lexer/identifier.c \
+		src/lexer/token_utils.c \
 		src/errors/errors.c
 
 LIBFT_DIR = libft

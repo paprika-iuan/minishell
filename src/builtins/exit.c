@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 17:11:21 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/22 17:11:22 by amarquez         ###   ########.fr       */
+/*   Created: 2025/09/26 16:22:08 by amarquez          #+#    #+#             */
+/*   Updated: 2025/09/26 16:22:13 by amarquez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	basic_err(char *x)
+void	ft_exit(t_env *env, char **argv)
 {
-	if (!x)
-		exit (EXIT_FAILURE);
-}
-
-void	syntax_error(char *message)
-{
-	perror(message);
-	exit(EXIT_FAILURE);
+	ft_printf("exit\n");
+	if (argv && argv[0])
+	{
+		ft_printf("exit: too many arguments\n");
+		return ;
+	}
+	if (env)
+		free_env_list(env);
+	exit(0);
 }
