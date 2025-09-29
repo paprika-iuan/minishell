@@ -6,31 +6,32 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:41:27 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/21 16:14:50 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/26 10:58:06 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// Recorda a gestionar els tokens sobrants a set_error
-//si token encara te valor, error;
-//Recorda a alliberar llistes. Proposta: alliberar t_tokens a linia 34 o fora
-//un cop el parsing fet;
-t_NodeAST	parse_ast(t_token *tokens)
+#include "parser.h"
+
+t_NodeAST	*parse_ast(t_token *tokens)
 {
 	t_NodeAST	*head;
 
 	head = NULL;
+	if (!tokens)
+		return (NULL);
 	if (head == NULL)
 		head = set_ao_node(tokens);
-	else if (head == NULL)
+	if (head == NULL)
 		head = set_pipe_node(tokens);
-	else if (head == NULL)
+	if (head == NULL)
 		head = set_subshell_node(tokens);
-	else if (head == NULL)
+	if (head == NULL)
 		head = set_cmd_node(tokens);
-	else if (head == NULL)
-	{
-		set_error();
-		return (1);
-	}
 	return (head);
 }
+//To do fora del parser:
+//si parse_ast retorna null a la funcio que la crida inicialment gestionar 
+// fora l'error. Hauria de tornar el prompt buit de nou. 
+//Maybe fora crear una funcio per si queden tokens sense utilitzar.  
+//Recorda a alliberar llistes. Proposta: alliberar t_tokens fora un cop el 
+// parsing fet;

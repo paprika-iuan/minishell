@@ -6,11 +6,13 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:13:24 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/21 15:24:53 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 12:04:46 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-t_token	*ft_lstlast(t_token *lst)
+#include "parser.h"
+
+t_token	*ft_lstlast_parse(t_token *lst)
 {
 	t_token	*tmp;
 
@@ -33,24 +35,24 @@ void	ft_lstadd_back_parse(t_token **lst, t_token *new)
 		*lst = new;
 		return ;
 	}
-	tmp = ft_lstlast(*lst);
+	tmp = ft_lstlast_parse(*lst);
 	tmp->next = new;
 }
 
-t_token	*ft_lst_node_cpy(t_node *cpy_from)
+t_token	*ft_lst_node_cpy(t_token *cpy_from)
 {
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return (NULL);
-	new->content = cpy_from->content;
+	new->content = ft_strndup(cpy_from->content, ft_strlen(cpy_from->content));
 	new->type = cpy_from->type;
 	new->next = NULL;
 	return (new);
 }
 
-void	consume_tokens(t_token *token, int moves)
+t_token	*consume_tokens(t_token *token, int moves)
 {
 	int	i;
 
@@ -60,4 +62,5 @@ void	consume_tokens(t_token *token, int moves)
 		token = token->next;
 		i++;
 	}
+	return (token);
 }

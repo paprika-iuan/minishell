@@ -6,34 +6,44 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:31:11 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/22 11:06:10 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 12:05:09 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// you have to figure out how to know the pos of the token. 
+#include "parser.h"
+
 int	parenthesis_close(t_token *tokens)
 {
 	int		i;
+	int		count; 
 	t_token	*dup;
 
 	i = 0;
+	count = 0;
 	dup = tokens;
 	if (dup->content[0] == ')')
 	{
-		set_error(should end the minishell);
-		return (NULL);
+		//set_error(should end the minishell);
+		return (-1);
 	}
 	if (dup->content[0] == '(')
 	{
 		while (dup)
 		{
-			if (dup->content[0] == ')')
-				return (i);
+			if (dup->content[0] == '(')
+				count++;
+			else if (dup->content[0] == ')')
+			{
+				count--;
+				if (count == 0)
+					return (i);
+			}
 			i++;
 			dup = dup->next;
 		}
 	}
-	return (NULL);
+	//set_error(should end the minishell);
+	return (-1);
 }
 
 t_token	*set_reparse(t_token *tokens, int close)
@@ -46,7 +56,7 @@ t_token	*set_reparse(t_token *tokens, int close)
 	i = 0;
 	dup = tokens;
 	head = NULL;
-	while (dup && i < close - 1)
+	while (dup && i < close)
 	{
 		reparse = ft_lst_node_cpy(dup);
 		ft_lstadd_back_parse(&head, reparse);
@@ -55,27 +65,31 @@ t_token	*set_reparse(t_token *tokens, int close)
 	}
 	return (head);
 }
-// De nou, atent a les redireccions. 
-// Gestiona el parenthesis error
 
 t_NodeAST	*set_subshell_node(t_token *tokens)
 {
 	t_NodeAST	*node;
+	t_NodeAST	*redir;
+	t_token		*reparse;
+	t_token		*dup;
 	int			close;
 
+
 	close = parenthesis_close(tokens);
-	if (!close)
+	if (close == -1)
 	{
-		set_error(this will send it to check other operands);
+		//set_error(this will send it to check other operands);
 		return (NULL);
 	}
 	node = malloc(sizeof(t_NodeAST));
 	if (!node)
 		return (NULL);
 	node->type = NODE_SUBSHELL;
-	node->subshell.reparse = set_reparse(tokens, close);
-	parse_ast(node->subshell.reparse);
-	node->subshell.redirect = set_redirect_node(tokens, 0);
-	consume_tokens(tokens, close);
+	reparse = set_reparse(tokens->next, close - 1);
+	node->subshell.reparse = parse_ast(reparse);
+	free_token_list(reparse);
+	dup = consume_tokens(tokens, close - 1);
+	redir = set_redirect_node(dup);
+	node->subshell.redirect = redir;
 	return (node);
 }
