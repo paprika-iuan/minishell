@@ -1,6 +1,5 @@
 #include "parser.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 
 // Helpers para crear tokens manualmente
 t_token *new_token(char *content, int type)

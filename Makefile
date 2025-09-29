@@ -13,12 +13,20 @@ SRC = src/main.c \
 		src/lexer/lexer_utils.c \
 		src/lexer/identifier.c \
 		src/lexer/token_utils.c \
-		src/errors/errors.c
+		src/errors/errors.c \
+		src/parser/parse_ao.c \
+		src/parser/parse_cmd.c \
+		src/parser/parse_pipe.c \
+		src/parser/parse_redirections.c \
+		src/parser/parse_subshell.c \
+		src/parser/parse_utils.c \
+		src/parser/parser.c
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 HEADER_DIR = inc
-HEADER = $(HEADER_DIR)/minishell.h
+HEADER = $(HEADER_DIR)/minishell.h \
+		$(HEADER_DIR)/parser.h
 
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

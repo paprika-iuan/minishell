@@ -3,49 +3,85 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/12 10:49:45 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:05:50 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+#include "../inc/parser.h"
 
-int	main(int argc, char **argv, char **envp)
+// Función para imprimir el AST (más visual)
+void print_ast(t_NodeAST *node, int depth)
 {
-	char	*input;
-	char	**input_split;
-	t_env	*env_copy;
-	char *tmp;
-	char *pwd;
-	char *prompt;
+    if (!node)
+        return;
+    for (int i = 0; i < depth; i++) printf("  ");
+    switch (node->type)
+    {
+        case NODE_CMD:
+            printf("CMD: ");
+            for (int i = 0; node->cmd.args && node->cmd.args[i]; i++)
+                printf("%s ", node->cmd.args[i]);
+            printf("\n");
+            if (node->cmd.redirect)
+                print_ast(node->cmd.redirect, depth + 1);
+            break;
+        case NODE_PIPE:
+            printf("PIPE\n");
+            print_ast(node->binary.left, depth + 1);
+            print_ast(node->binary.right, depth + 1);
+            break;
+        case NODE_AND:
+            printf("AND\n");
+            print_ast(node->binary.left, depth + 1);
+            print_ast(node->binary.right, depth + 1);
+            break;
+        case NODE_OR:
+            printf("OR\n");
+            print_ast(node->binary.left, depth + 1);
+            print_ast(node->binary.right, depth + 1);
+            break;
+        case NODE_SUBSHELL:
+            printf("SUBSHELL\n");
+            print_ast(node->subshell.reparse, depth + 1);
+            if (node->subshell.redirect)
+                print_ast(node->subshell.redirect, depth + 1);
+            break;
+        case NODE_REDIRECT:
+            printf("REDIRECT: type=%d file=%s\n", node->redirect.type, node->redirect.file);
+            if (node->redirect.redirect)
+                print_ast(node->redirect.redirect, depth + 1);
+            break;
+        default:
+            printf("UNKNOWN NODE\n");
+    }
+}
 
-	env_copy = envcpy(envp);
-	if (!env_copy)
-	{
-		perror("Error: Failed to copy environment\n");
-		return (1);
-	}
+int	main(void)
+{
+	char		*input;
+	t_token		*tokens;
+	t_NodeAST	*parseado;
 
 	printf("%s", HEADER);
 	while (1)
 	{
-		pwd = get_env_value("PWD", env_copy);
-		if (!pwd)
-			pwd = "";
-		tmp = ft_strjoin(READLINE_MSG, "\033[1;36m");
-		prompt = ft_strjoin(tmp, pwd);
-		free(tmp);
-		tmp = ft_strjoin(prompt, "\033[0m ");
-		free(prompt);
-		prompt = tmp;
-		input = readline(prompt);
-		free(prompt);
+		input = readline(READLINE_MSG);
 		if (!input)
 			break ;
 		add_history(input);
-		input_split = ft_split(input, ' ');
+		tokens = tokenizer(input);
+		parseado = parse_ast(tokens);
+		print_ast(parseado, 0);
+		free(input);
+		rl_clear_history();
+	}
+	return (0);
+}
+/*
 		if (input_split)
 		{
 			if (input_split[0] && ft_strcmp(input_split[0], "echo") == 0)
@@ -89,7 +125,7 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-/*
+
 const char *token_type_to_string(enum token_type type)
 {
     switch(type)
@@ -168,5 +204,4 @@ int main(void)
     printf("\n=== TEST COMPLETED ===\n");
 
     return 0;
-}
-*/
+}*/

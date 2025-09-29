@@ -6,11 +6,12 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:41:27 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/26 10:58:06 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:04:59 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 t_NodeAST	*parse_ast(t_token *tokens)
 {

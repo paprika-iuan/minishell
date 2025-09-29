@@ -6,11 +6,12 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:31:11 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 12:05:09 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:04:47 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 int	parenthesis_close(t_token *tokens)
 {

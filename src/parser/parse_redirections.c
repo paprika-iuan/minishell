@@ -6,11 +6,12 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:55:02 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 12:02:07 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:04:42 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 int is_redirection(int type)
 {
