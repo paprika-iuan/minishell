@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:54:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 11:47:28 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 12:04:55 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,5 @@ t_token	*ft_lstlast_parse(t_token *lst);
 void	ft_lstadd_back_parse(t_token **lst, t_token *new);
 t_token	*ft_lst_node_cpy(t_token *cpy_from);
 t_token	*consume_tokens(t_token *token, int moves);
-void	free_token_list(t_token *stack);
 
 #endif

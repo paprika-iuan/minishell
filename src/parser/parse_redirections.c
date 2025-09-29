@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:55:02 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/26 17:25:59 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 12:02:07 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	find_redir(t_token *token)
 	{
 		if (is_redirection(token->type))
 		{
-			if (is_redirection(token->next->type))
+			if (is_redirection(token->next && token->next->type))
 			{
 				//set_error(syntax error)
 				exit (1);

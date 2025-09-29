@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:31:11 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/26 17:42:31 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 12:05:09 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	parenthesis_close(t_token *tokens)
 		}
 	}
 	//set_error(should end the minishell);
-	return (-1);;
+	return (-1);
 }
 
 t_token	*set_reparse(t_token *tokens, int close)
@@ -89,7 +89,6 @@ t_NodeAST	*set_subshell_node(t_token *tokens)
 	node->subshell.reparse = parse_ast(reparse);
 	free_token_list(reparse);
 	dup = consume_tokens(tokens, close - 1);
-	dup = tokens;
 	redir = set_redirect_node(dup);
 	node->subshell.redirect = redir;
 	return (node);

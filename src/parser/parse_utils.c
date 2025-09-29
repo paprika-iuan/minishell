@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:13:24 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/26 11:17:26 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 12:04:46 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,4 @@ t_token	*consume_tokens(t_token *token, int moves)
 		i++;
 	}
 	return (token);
-}
-
-void	free_token_list(t_token *stack)
-{
-	t_token	*tmp;
-	t_token	*start;
-
-	if (!stack)
-		return ;
-	start = stack;
-	while (stack && stack->next != start)
-	{
-		tmp = stack->next;
-		free(stack->content);
-		free(stack);
-		stack = tmp;
-	}
 }
