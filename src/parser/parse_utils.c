@@ -6,11 +6,12 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:13:24 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 12:04:46 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:04:51 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 t_token	*ft_lstlast_parse(t_token *lst)
 {

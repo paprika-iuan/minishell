@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   identifier.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:48:30 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/18 15:49:41 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/09/29 13:50:56 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,26 +85,25 @@ t_token	*identifier(char **tokens, int *num_tokens)
 			free_tokens(tokens, *num_tokens);
 			return (NULL);
 		}
-		node->position = i;
 		append_token(&head, &current, node);
 		i++;
 	}
 	return (head);
 }
 
-// t_token	*tokenizer(char *line)
-// {
-// 	char	**raw_tokens;
-// 	t_token	*id_tokens;
-// 	int		num_tokens;
+t_token	*tokenizer(char *line)
+{
+ 	char	**raw_tokens;
+ 	t_token	*id_tokens;
+ 	int		num_tokens;
 
-// 	raw_tokens = lexer(line, &num_tokens);
-// 	if (!raw_tokens)
-// 		return (NULL);
-// 	id_tokens = identifier(raw_tokens, &num_tokens);
-// 	free_tokens(raw_tokens, num_tokens);
-// 	if (!id_tokens)
-// 		return (NULL);
-// 	else
-// 		return (id_tokens);
-// }
+ 	raw_tokens = lexer(line, &num_tokens);
+ 	if (!raw_tokens)
+ 		return (NULL);
+ 	id_tokens = identifier(raw_tokens, &num_tokens);
+ 	free_tokens(raw_tokens, num_tokens);
+ 	if (!id_tokens)
+ 		return (NULL);
+ 	else
+ 		return (id_tokens);
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 16:34:14 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/11 16:34:49 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/09/29 13:34:27 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ typedef struct s_token
 {
 	enum token_type	type;
 	char		*content;
-	int			position;
 	struct s_token *next;
 }	t_token;
 

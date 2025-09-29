@@ -6,11 +6,12 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 15:35:22 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/26 18:00:24 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:04:39 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 int	pipe_location(t_token *tokens)
 {

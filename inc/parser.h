@@ -6,12 +6,14 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:54:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 12:04:55 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 13:33:15 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
+
+# include "minishell.h"
 
 enum e_NodeType
 {
@@ -22,26 +24,6 @@ enum e_NodeType
 	NODE_REDIRECT,
 	NODE_SUBSHELL,
 };
-
-enum token_type
-{
-	AND,
-	OR,
-	PIPE,
-	SUBSHELL,
-	WORD,
-	REDIR_IN,
-	REDIR_OUT_APP,
-	REDIR_OUT_TRUNC,
-	REDIR_HEREDOC
-};
-
-typedef struct s_token
-{
-	enum token_type	type;
-	char		*content;
-	struct s_token *next;
-}	t_token;
 
 typedef struct s_NodeAST
 {

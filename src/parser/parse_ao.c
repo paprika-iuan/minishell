@@ -6,11 +6,12 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:37:40 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/26 18:16:40 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:04:32 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 int	ao_location(t_token *tokens)
 {

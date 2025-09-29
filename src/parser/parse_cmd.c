@@ -6,13 +6,14 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:35:26 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/26 10:53:56 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:07:44 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
-int	count_tokens(t_token *tokens)
+int	count_tokens_cmd(t_token *tokens)
 {
 	int		count;
 	t_token	*dup;
@@ -104,7 +105,7 @@ t_NodeAST	*set_cmd_node(t_token *tokens)
 	int			ac;
 
 	dup = tokens;
-	ac = count_tokens(tokens);
+	ac = count_tokens_cmd(tokens);
 	if (!ac)
 		return (NULL);
 	node = malloc(sizeof(t_NodeAST));
