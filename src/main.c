@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/29 15:05:50 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/30 11:08:56 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	main(void)
 	char		*input;
 	t_token		*tokens;
 	t_NodeAST	*parseado;
+    int         error;
 
 	printf("%s", HEADER);
 	while (1)
@@ -74,8 +75,12 @@ int	main(void)
 			break ;
 		add_history(input);
 		tokens = tokenizer(input);
-		parseado = parse_ast(tokens);
+        error = 0;
+		parseado = parse_ast(tokens, &error);
+        if (error)
+        free_token_list(tokens);
 		print_ast(parseado, 0);
+        printf("Error: %i\n", error);
 		free(input);
 		rl_clear_history();
 	}

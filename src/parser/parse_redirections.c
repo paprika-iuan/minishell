@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:55:02 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 15:04:42 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/30 15:11:37 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,41 +27,37 @@ int	find_redir(t_token *token)
 	while (token)
 	{
 		if (is_redirection(token->type))
-		{
-			if (is_redirection(token->next && token->next->type))
-			{
-				//set_error(syntax error)
-				exit (1);
-			}
-		return (i);
-		}
+			return (i);
 		token = token->next;
 		i++;
 	}
-	return (0);
+	return (-1);
 }
 
-t_NodeAST	*set_redirect_node(t_token *tokens)
+t_NodeAST	*set_redirect_node(t_token *tokens, int *error)
 {
 	t_NodeAST	*node;
 	int			red_pos;
 
+	if (*error != 0)
+		return (NULL);
 	node = malloc(sizeof(t_NodeAST));
 	if (!node)
 		return (NULL);
 	node->type = NODE_REDIRECT;
 	red_pos = find_redir(tokens);
-	if (!red_pos)
+	if (red_pos < 0)
 		return (NULL);
 	tokens = consume_tokens(tokens, red_pos - 1);
 	node->redirect.type = tokens->type;
-	if (!tokens->next->content)
+	if (!tokens->next || !tokens->next->content || tokens->next->type != WORD)
 	{
-		//set_error(syntax error near unexpected token 'newline');
+		printf(SYNTAX_ERROR);
+		*error = 2;
 		return (NULL);
 	}
-	node->redirect.file = tokens->next->content;
+	node->redirect.file = ft_strndup(tokens->next->content, ft_strlen(tokens->next->content));
 	node->redirect.fd = -1;
-	node->redirect.redirect = set_redirect_node(tokens->next->next);
+	node->redirect.redirect = set_redirect_node(tokens->next->next, error);
 	return (node);
 }

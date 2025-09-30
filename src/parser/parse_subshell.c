@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:31:11 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 15:04:47 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/30 15:10:34 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,6 @@ int	parenthesis_close(t_token *tokens)
 	i = 0;
 	count = 0;
 	dup = tokens;
-	if (dup->content[0] == ')')
-	{
-		//set_error(should end the minishell);
-		return (-1);
-	}
 	if (dup->content[0] == '(')
 	{
 		while (dup)
@@ -43,11 +38,10 @@ int	parenthesis_close(t_token *tokens)
 			dup = dup->next;
 		}
 	}
-	//set_error(should end the minishell);
 	return (-1);
 }
 
-t_token	*set_reparse(t_token *tokens, int close)
+t_token	*set_reparse(t_token *tokens, int close, int *error)
 {
 	int		i;
 	t_token	*head;
@@ -64,10 +58,15 @@ t_token	*set_reparse(t_token *tokens, int close)
 		dup = dup->next;
 		i++;
 	}
+	if (!head)
+	{
+		printf(SYNTAX_ERROR);
+		*error = 2;
+	}
 	return (head);
 }
 
-t_NodeAST	*set_subshell_node(t_token *tokens)
+t_NodeAST	*set_subshell_node(t_token *tokens, int *error)
 {
 	t_NodeAST	*node;
 	t_NodeAST	*redir;
@@ -86,11 +85,11 @@ t_NodeAST	*set_subshell_node(t_token *tokens)
 	if (!node)
 		return (NULL);
 	node->type = NODE_SUBSHELL;
-	reparse = set_reparse(tokens->next, close - 1);
-	node->subshell.reparse = parse_ast(reparse);
+	reparse = set_reparse(tokens->next, close - 1, error);
+	node->subshell.reparse = parse_ast(reparse, error);
 	free_token_list(reparse);
 	dup = consume_tokens(tokens, close - 1);
-	redir = set_redirect_node(dup);
+	redir = set_redirect_node(dup, error);
 	node->subshell.redirect = redir;
 	return (node);
 }

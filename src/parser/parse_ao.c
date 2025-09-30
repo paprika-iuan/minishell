@@ -6,14 +6,14 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:37:40 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 15:04:32 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/30 15:11:17 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/parser.h"
 
-int	ao_location(t_token *tokens)
+int	ao_location(t_token *tokens, int *error)
 {
 	int		i;
 	int		paren;
@@ -29,9 +29,23 @@ int	ao_location(t_token *tokens)
 		else if (dup->content[0] == ')')
 			paren--;
 		if ((dup->type == AND || dup->type == OR) && paren == 0)
+		{
+			if (i == 0 || !dup->next || dup->next->type == PIPE || dup->next->type == AND || dup->next->type == OR)
+			{
+				printf(SYNTAX_ERROR);
+				printf("aoloc");
+				*error = 2;
+				return (-1);
+			}
 			return (i);
+		}
 		i++;
 		dup = dup->next;
+	}
+	if (paren != 0)
+	{
+		printf(SYNTAX_ERROR);
+		*error = 2;
 	}
 	return (-1);
 }
@@ -54,31 +68,35 @@ void	ao_type_setter(t_token *token, t_NodeAST *node, int operand)
 	}
 }
 
-t_NodeAST	*set_ao_node(t_token *token)
+t_NodeAST	*set_ao_node(t_token *token, int *error)
 {
 	t_NodeAST	*node;
 	t_token		*left;
 	t_token		*dup;
 	int			operand;
 
-	operand = ao_location(token);
+	operand = ao_location(token, error);
 	if (operand == -1)
-		return (NULL); //parse error near operand.
+		return (NULL);
 	left = token;
 	node = malloc(sizeof(t_NodeAST));
 	if (!node)
 		return (NULL);
 	dup = token;
 	ao_type_setter(dup, node, operand);
-	left = set_reparse(dup, operand);
-	node->binary.left = parse_ast(left);
-	if (!node->binary.left)
+	left = set_reparse(dup, operand, error);
+	node->binary.left = parse_ast(left, error);
+	if (!node->binary.left || *error != 0)
 		return (NULL);
 	free_token_list(left);
 	dup = consume_tokens(dup, operand);
-	if (!dup->content)
+	if (!dup && !dup->content)
+	{
+		printf(SYNTAX_ERROR);
+		*error = 2;
 		return (NULL);
-	node->binary.right = parse_ast(dup);
+	}
+	node->binary.right = parse_ast(dup, error);
 	if (!node->binary.right)
 		return (NULL);
 	return (node);

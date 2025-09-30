@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 16:34:14 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/29 13:34:27 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 17:00:06 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef struct s_token
 t_token	*tokenizer(char *line);
 void	free_token_list(t_token *head);
 t_token	*create_token(char *content);
-void	free_token_list(t_token *head);
 void	append_token(t_token **head, t_token **current, t_token *node);
 
 /****** ERROR ******/
