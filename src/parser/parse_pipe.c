@@ -6,14 +6,14 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 15:35:22 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 15:04:39 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/30 15:11:33 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/parser.h"
 
-int	pipe_location(t_token *tokens)
+int	pipe_location(t_token *tokens, int *error)
 {
 	int		i;
 	int		paren;
@@ -29,21 +29,29 @@ int	pipe_location(t_token *tokens)
 		else if (dup->content[0] == ')')
 			paren--;
 		else if (dup->type == PIPE && paren == 0)
+		{
+			if (i == 0 || !dup->next || dup->next->type == PIPE || dup->next->type == AND || dup->next->type == OR)
+			{
+				printf(SYNTAX_ERROR);
+				*error = 2;
+				return (-1);
+			}
 			return (i);
+		}
 		i++;
 		dup = dup->next;
 	}
 	return (-1);
 }
 
-t_NodeAST	*set_pipe_node(t_token *token)
+t_NodeAST	*set_pipe_node(t_token *token, int *error)
 {
 	t_NodeAST	*node;
 	t_token		*left;
 	t_token		*dup;
 	int			operand;
 
-	operand = pipe_location(token);
+	operand = pipe_location(token, error);
 	if (operand == -1)
 		return (NULL);
 	left = token;
@@ -52,15 +60,19 @@ t_NodeAST	*set_pipe_node(t_token *token)
 		return (NULL);
 	dup = token;
 	node->type = NODE_PIPE;
-	left = set_reparse(dup, operand);
-	node->binary.left = parse_ast(left);
-	if (!node->binary.left)
+	left = set_reparse(dup, operand, error);
+	node->binary.left = parse_ast(left, error);
+	if (!node->binary.left || *error != 0)
 		return (NULL);
 	free_token_list(left);
 	dup = consume_tokens(dup, operand);
-	if (!dup->content)
+	if (!dup || !dup->content)
+	{
+		printf(SYNTAX_ERROR);
+		*error = 2;
 		return (NULL);
-	node->binary.right = parse_ast(dup);
+	}
+	node->binary.right = parse_ast(dup, error);
 	if (!node->binary.right)
 		return (NULL);
 	return (node);

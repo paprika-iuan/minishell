@@ -6,28 +6,29 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:41:27 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 15:04:59 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/29 19:46:40 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/parser.h"
 
-t_NodeAST	*parse_ast(t_token *tokens)
+
+t_NodeAST	*parse_ast(t_token *tokens, int *error)
 {
 	t_NodeAST	*head;
 
 	head = NULL;
 	if (!tokens)
 		return (NULL);
-	if (head == NULL)
-		head = set_ao_node(tokens);
-	if (head == NULL)
-		head = set_pipe_node(tokens);
-	if (head == NULL)
-		head = set_subshell_node(tokens);
-	if (head == NULL)
-		head = set_cmd_node(tokens);
+	if (head == NULL && *error == 0)
+		head = set_ao_node(tokens, error);
+	if (head == NULL && *error == 0)
+		head = set_pipe_node(tokens, error);
+	if (head == NULL && *error == 0)
+		head = set_subshell_node(tokens, error);
+	if (head == NULL && *error == 0)
+		head = set_cmd_node(tokens, error);
 	return (head);
 }
 //To do fora del parser:
