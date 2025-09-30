@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:37:40 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/30 15:11:17 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/30 15:44:05 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	ao_location(t_token *tokens, int *error)
 			if (i == 0 || !dup->next || dup->next->type == PIPE || dup->next->type == AND || dup->next->type == OR)
 			{
 				printf(SYNTAX_ERROR);
-				printf("aoloc");
 				*error = 2;
 				return (-1);
 			}

@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 14:55:02 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/30 15:11:37 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/30 15:42:15 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,12 @@ t_NodeAST	*set_redirect_node(t_token *tokens, int *error)
 		return (NULL);
 	}
 	node->redirect.file = ft_strndup(tokens->next->content, ft_strlen(tokens->next->content));
+	if (tokens->next->next && tokens->next->next->type == SUBSHELL)
+	{
+		printf(SYNTAX_ERROR);
+		*error = 2;
+		return (NULL);
+	}
 	node->redirect.fd = -1;
 	node->redirect.redirect = set_redirect_node(tokens->next->next, error);
 	return (node);
