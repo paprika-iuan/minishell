@@ -6,13 +6,14 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:54:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 13:33:15 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/30 12:52:56 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
+# define SYNTAX_ERROR "wanghao: syntax error near unexpected token\n"
 # include "minishell.h"
 
 enum e_NodeType
@@ -57,25 +58,25 @@ typedef struct s_NodeAST
 }	t_NodeAST;
 
 //parser.c
-t_NodeAST	*parse_ast(t_token *tokens);
+t_NodeAST	*parse_ast(t_token *tokens, int *error);
 
 //parse_ao.c
-t_NodeAST	*set_ao_node(t_token *token);
+t_NodeAST	*set_ao_node(t_token *token, int *error);
 
 //parse_cmd.c
-t_NodeAST	*set_cmd_node(t_token *tokens);
+t_NodeAST	*set_cmd_node(t_token *tokens, int *error);
 
 //parse_pipe.c
-t_NodeAST	*set_pipe_node(t_token *token);
+t_NodeAST	*set_pipe_node(t_token *token, int *error);
 
 //parse_redirections.c
 int 		is_redirection(int type);
-t_NodeAST	*set_redirect_node(t_token *tokens);
+t_NodeAST	*set_redirect_node(t_token *tokens, int *error);
 
 //parse_subshell.c
 int			parenthesis_close(t_token *tokens);
-t_token		*set_reparse(t_token *tokens, int close);
-t_NodeAST	*set_subshell_node(t_token *tokens);
+t_token		*set_reparse(t_token *tokens, int close, int *error);
+t_NodeAST	*set_subshell_node(t_token *tokens, int *error);
 
 //parse_utils.c
 t_token	*ft_lstlast_parse(t_token *lst);

@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:35:26 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/29 15:07:44 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/09/30 15:11:12 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	count_words(t_token *tokens, int ac)
 	{
 		if (is_redirection(dup->type))
 		{
-			if (dup->next->type == WORD)
+			if (dup->next && dup->next->type == WORD)
 				dup = dup->next;
 			else if (!dup->next)
 				return (0);
@@ -96,7 +96,7 @@ char	**cmd_args(t_token *tokens, int ac)
 	return (args);
 }
 
-t_NodeAST	*set_cmd_node(t_token *tokens)
+t_NodeAST	*set_cmd_node(t_token *tokens, int *error)
 {
 	t_NodeAST	*node;
 	t_token	*dup;
@@ -118,7 +118,13 @@ t_NodeAST	*set_cmd_node(t_token *tokens)
 	else
 		node->cmd.args = args;
 	node->cmd.ac = count_words(tokens, ac);
-	redir = set_redirect_node(dup);
+	if (dup->next && dup->next->type == SUBSHELL)
+	{
+		printf(SYNTAX_ERROR);
+		*error = 2;
+		return (NULL);
+	}
+	redir = set_redirect_node(dup, error);
 	node->cmd.redirect = redir;
 	return (node);
 }
