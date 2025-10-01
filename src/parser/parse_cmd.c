@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:35:26 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/01 11:43:57 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/01 17:24:40 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ int	count_words(t_token *tokens, int ac)
 	return (count);
 }
 
-void	cmd_args_loop(t_token *dup, int *i, char **args, int j)
+t_token	*cmd_args_loop(t_token *dup, int *i, char **args, int *j)
 {
 	if (is_redirection(dup->type))
 	{
 		while (dup && is_redirection(dup->type))
 		{
 			dup = dup->next;
-			i++;
+			(*i)++;
 		}
 		if (dup && dup->type == WORD)
 		{
@@ -55,9 +55,10 @@ void	cmd_args_loop(t_token *dup, int *i, char **args, int j)
 	}
 	else if (dup && dup->type == WORD)
 	{
-		args[j++] = ft_strndup(dup->content, ft_strlen(dup->content));
+		args[(*j)++] = ft_strndup(dup->content, ft_strlen(dup->content));
 		dup = dup->next;
 	}
+	return (dup);
 }
 
 char	**cmd_args(t_token *tokens, int ac)
@@ -79,7 +80,7 @@ char	**cmd_args(t_token *tokens, int ac)
 		return (NULL);
 	while (dup && i < ac)
 	{
-		cmd_args_loop(dup, &i, args, j);
+		dup = cmd_args_loop(dup, &i, args, &j);
 		i++;
 	}
 	args[count] = NULL;

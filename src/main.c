@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/30 11:08:56 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/01 12:55:01 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ int	main(void)
 		print_ast(parseado, 0);
         printf("Error: %i\n", error);
 		free(input);
-		rl_clear_history();
 	}
+    rl_clear_history();
 	return (0);
 }
 /*
