@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:31:11 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/30 15:10:34 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/01 11:12:42 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	parenthesis_close(t_token *tokens)
 {
 	int		i;
-	int		count; 
+	int		count;
 	t_token	*dup;
 
 	i = 0;
@@ -66,6 +66,17 @@ t_token	*set_reparse(t_token *tokens, int close, int *error)
 	return (head);
 }
 
+int	is_subshell(t_token *dup, int *error)
+{
+	if (dup->next && dup->next->type == SUBSHELL)
+	{
+		printf(SYNTAX_ERROR);
+		*error = 2;
+		return (1);
+	}
+	return (0);
+}
+
 t_NodeAST	*set_subshell_node(t_token *tokens, int *error)
 {
 	t_NodeAST	*node;
@@ -74,13 +85,9 @@ t_NodeAST	*set_subshell_node(t_token *tokens, int *error)
 	t_token		*dup;
 	int			close;
 
-
 	close = parenthesis_close(tokens);
 	if (close == -1)
-	{
-		//set_error(this will send it to check other operands);
 		return (NULL);
-	}
 	node = malloc(sizeof(t_NodeAST));
 	if (!node)
 		return (NULL);
@@ -89,6 +96,8 @@ t_NodeAST	*set_subshell_node(t_token *tokens, int *error)
 	node->subshell.reparse = parse_ast(reparse, error);
 	free_token_list(reparse);
 	dup = consume_tokens(tokens, close - 1);
+	if (is_subshell(dup, error))
+		return (NULL);
 	redir = set_redirect_node(dup, error);
 	node->subshell.redirect = redir;
 	return (node);
