@@ -6,12 +6,33 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 17:37:40 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/30 15:44:05 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/01 11:57:00 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/parser.h"
+
+void	ao_parenthesis_error(int paren, int *error)
+{
+	if (paren != 0)
+	{
+		printf(SYNTAX_ERROR);
+		*error = 2;
+	}
+}
+
+int	operand_error(int i, t_token *dup, int *error)
+{
+	if (i == 0 || !dup->next || dup->next->type == PIPE || dup->next->type
+		== AND || dup->next->type == OR)
+	{
+		printf(SYNTAX_ERROR);
+		*error = 2;
+		return (-1);
+	}
+	return (i);
+}
 
 int	ao_location(t_token *tokens, int *error)
 {
@@ -30,22 +51,13 @@ int	ao_location(t_token *tokens, int *error)
 			paren--;
 		if ((dup->type == AND || dup->type == OR) && paren == 0)
 		{
-			if (i == 0 || !dup->next || dup->next->type == PIPE || dup->next->type == AND || dup->next->type == OR)
-			{
-				printf(SYNTAX_ERROR);
-				*error = 2;
-				return (-1);
-			}
+			i = operand_error(i, dup, error);
 			return (i);
 		}
 		i++;
 		dup = dup->next;
 	}
-	if (paren != 0)
-	{
-		printf(SYNTAX_ERROR);
-		*error = 2;
-	}
+	ao_parenthesis_error(paren, error);
 	return (-1);
 }
 
@@ -77,24 +89,19 @@ t_NodeAST	*set_ao_node(t_token *token, int *error)
 	operand = ao_location(token, error);
 	if (operand == -1)
 		return (NULL);
-	left = token;
 	node = malloc(sizeof(t_NodeAST));
 	if (!node)
 		return (NULL);
 	dup = token;
+	left = token;
 	ao_type_setter(dup, node, operand);
 	left = set_reparse(dup, operand, error);
 	node->binary.left = parse_ast(left, error);
 	if (!node->binary.left || *error != 0)
 		return (NULL);
-	free_token_list(left);
-	dup = consume_tokens(dup, operand);
-	if (!dup && !dup->content)
-	{
-		printf(SYNTAX_ERROR);
-		*error = 2;
+	free_left_set_right(left, &dup, operand);
+	if (is_right_empty(dup, error))
 		return (NULL);
-	}
 	node->binary.right = parse_ast(dup, error);
 	if (!node->binary.right)
 		return (NULL);
