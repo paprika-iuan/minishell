@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/01 12:55:01 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/03 13:01:01 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,15 @@ int	main(void)
 	printf("%s", HEADER);
 	while (1)
 	{
-		input = readline(READLINE_MSG);
+        signals_intmode();
+        input = readline(READLINE_MSG);
 		if (!input)
-			break ;
-		add_history(input);
-		tokens = tokenizer(input);
+        {
+            printf("exit\n");
+            exit(0);
+        }
+        add_history(input);
+        tokens = tokenizer(input);
         error = 0;
 		parseado = parse_ast(tokens, &error);
         if (error)
@@ -84,6 +88,7 @@ int	main(void)
 		free(input);
 	}
     rl_clear_history();
+    //printf("%s", PITBULL);
 	return (0);
 }
 /*
