@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/30 11:08:56 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/03 13:01:01 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int	main(int ac, char **av, char **env_og)
 	env = envcpy(env_og);
 	while (1)
 	{
-		input = readline(READLINE_MSG);
+        signals_intmode();
+        input = readline(READLINE_MSG);
 		if (!input)
 			break ;
 		add_history(input);
@@ -101,7 +102,12 @@ int	main(int ac, char **av, char **env_og)
         //printf("Error: %i\n", error);
 		free(input);
 	}
+<<<<<<< HEAD
 	rl_clear_history();
+=======
+    rl_clear_history();
+    //printf("%s", PITBULL);
+>>>>>>> origin/main
 	return (0);
 }
 /*
