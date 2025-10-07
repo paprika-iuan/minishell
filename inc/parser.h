@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:54:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/30 12:52:56 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/01 12:41:24 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,27 +62,32 @@ t_NodeAST	*parse_ast(t_token *tokens, int *error);
 
 //parse_ao.c
 t_NodeAST	*set_ao_node(t_token *token, int *error);
+int			operand_error(int i, t_token *dup, int *error);
 
 //parse_cmd.c
 t_NodeAST	*set_cmd_node(t_token *tokens, int *error);
 
 //parse_pipe.c
 t_NodeAST	*set_pipe_node(t_token *token, int *error);
+int			is_right_empty(t_token *dup, int *error);
+void		free_left_set_right(t_token *left, t_token **right, int operand);
 
 //parse_redirections.c
-int 		is_redirection(int type);
+int			is_redirection(int type);
 t_NodeAST	*set_redirect_node(t_token *tokens, int *error);
 
 //parse_subshell.c
 int			parenthesis_close(t_token *tokens);
 t_token		*set_reparse(t_token *tokens, int close, int *error);
 t_NodeAST	*set_subshell_node(t_token *tokens, int *error);
+int			is_subshell(t_token *dup, int *error);
 
 //parse_utils.c
-t_token	*ft_lstlast_parse(t_token *lst);
-void	ft_lstadd_back_parse(t_token **lst, t_token *new);
-t_token	*ft_lst_node_cpy(t_token *cpy_from);
-t_token	*consume_tokens(t_token *token, int moves);
+t_token		*ft_lstlast_parse(t_token *lst);
+void		ft_lstadd_back_parse(t_token **lst, t_token *new);
+t_token		*ft_lst_node_cpy(t_token *cpy_from);
+t_token		*consume_tokens(t_token *token, int moves);
+int			count_tokens_cmd(t_token *tokens);
 
 int		execute_ast(t_NodeAST *node, t_env *env);
 int		execute_and_or(t_NodeAST *node, t_env *env);
