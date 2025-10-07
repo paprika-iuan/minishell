@@ -20,7 +20,8 @@ SRC = src/main.c \
 		src/parser/parse_redirections.c \
 		src/parser/parse_subshell.c \
 		src/parser/parse_utils.c \
-		src/parser/parser.c
+		src/parser/parser.c \
+		src/signals/signals.c
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a

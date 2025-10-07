@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 16:31:11 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/01 11:12:42 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/02 15:43:12 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_token	*set_reparse(t_token *tokens, int close, int *error)
 
 int	is_subshell(t_token *dup, int *error)
 {
-	if (dup->next && dup->next->type == SUBSHELL)
+	if (dup->next && dup->next->type == SUBSHELL && error == 0)
 	{
 		printf(SYNTAX_ERROR);
 		*error = 2;
