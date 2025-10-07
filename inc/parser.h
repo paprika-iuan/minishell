@@ -89,4 +89,21 @@ t_token		*ft_lst_node_cpy(t_token *cpy_from);
 t_token		*consume_tokens(t_token *token, int moves);
 int			count_tokens_cmd(t_token *tokens);
 
+int		execute_ast(t_NodeAST *node, t_env *env);
+int		execute_and_or(t_NodeAST *node, t_env *env);
+int 	execute_pipe_sequence(t_NodeAST *node, t_env *env);
+int		execute_subshell(t_NodeAST *node, t_env *env);
+int		execute_command(t_NodeAST *node, t_env *env);
+int		execute_cmd(t_NodeAST *node, t_env *env);
+int		set_pipes(t_pipe_struct *t_pipe, t_NodeAST *node);
+void	close_pipes(t_pipe_struct *t_pipe);
+char 	*set_cmd_path(t_NodeAST *node, t_env *env);
+int		execute_one_command(t_NodeAST *node, t_env *env);
+
+// broza
+void	cmd_iter(t_NodeAST *node, void (*f)(t_NodeAST *, void *), void *ctx);
+void print_cmd_path_cb(t_NodeAST *node, void *ctx);
+
+void	debug_open_fds(const char *label);
+
 #endif

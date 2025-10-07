@@ -8,12 +8,19 @@ SRC = src/main.c \
 		src/builtins/pwd.c \
 		src/builtins/unset.c \
 		src/builtins/utils_env.c \
+		src/errors/errors.c \
+		src/executor/exec_tests.c \
+		src/executor/execute_and_or.c \
+		src/executor/execute_ast.c \
+		src/executor/execute_pipe_sequence.c \
+		src/executor/pipe_utils.c \
+		src/executor/set_cmd_path.c \
+		src/executor/execute_command.c \
 		src/lexer/lexer.c \
 		src/lexer/lexer_counter.c \
 		src/lexer/lexer_utils.c \
 		src/lexer/identifier.c \
 		src/lexer/token_utils.c \
-		src/errors/errors.c \
 		src/parser/parse_ao.c \
 		src/parser/parse_cmd.c \
 		src/parser/parse_pipe.c \
@@ -48,7 +55,7 @@ libft:
 
 $(OBJ_DIR)/%.o: %.c $(HEADER) Makefile | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
-	$(CC) $(CCFLAGS) -I. -Ilibft -c $< -o $@
+	$(CC) $(CCFLAGS) -I $(HEADER_DIR)/ -Ilibft -c $< -o $@
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
