@@ -97,6 +97,8 @@ int		execute_command(t_NodeAST *node, t_env *env);
 int		execute_cmd(t_NodeAST *node, t_env *env);
 int		set_pipes(t_pipe_struct *t_pipe, t_NodeAST *node);
 void	close_pipes(t_pipe_struct *t_pipe);
+int		allocate_child_pids(t_pipe_struct *t_pipe);
+int		wait_for_children(t_pipe_struct *t_pipe);
 char 	*set_cmd_path(t_NodeAST *node, t_env *env);
 int		execute_one_command(t_NodeAST *node, t_env *env);
 

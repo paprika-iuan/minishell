@@ -1,14 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_cmd_path.c                                     :+:      :+:    :+:   */
+/*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/03 16:50:19 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/03 16:50:21 by amarquez         ###   ########.fr       */
+/*   Created: 2025/10/07 15:24:04 by amarquez          #+#    #+#             */
+/*   Updated: 2025/10/07 15:24:06 by amarquez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "../../inc/parser.h"
 
@@ -45,21 +47,6 @@ char	*pathfinder(char **paths, char *cmd_name)
 	return (NULL);
 }
 
-void	free_paths(char **paths)
-{
-	int	i;
-
-	if (!paths)
-		return ;
-	i = 0;
-	while (paths[i])
-	{
-		free(paths[i]);
-		i++;
-	}
-	free(paths);
-}
-
 char	**set_paths(t_env *env)
 {
 	char	*path_env;
@@ -94,6 +81,6 @@ char	*set_cmd_path(t_NodeAST *node, t_env *env)
 	if (!paths)
 		return (NULL);
 	result = pathfinder(paths, cmd_name);
-	free_paths(paths);
+	free_matrix(paths);
 	return (result);
 }

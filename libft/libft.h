@@ -29,6 +29,7 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+void		free_matrix(char **paths);
 int			ft_atoi(char *str);
 long int	ft_atol(char *str);
 void		ft_bzero(void *s, size_t n);
