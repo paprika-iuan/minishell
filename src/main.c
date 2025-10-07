@@ -60,14 +60,16 @@ void print_ast(t_NodeAST *node, int depth)
     }
 }
 
-int	main(void)
+int	main(int ac, char **av, char **env_og)
 {
 	char		*input;
 	t_token		*tokens;
 	t_NodeAST	*parseado;
-    int         error;
+	t_env		*env;
+	int			error;
 
 	printf("%s", HEADER);
+	env = envcpy(env_og);
 	while (1)
 	{
 		input = readline(READLINE_MSG);
@@ -75,15 +77,31 @@ int	main(void)
 			break ;
 		add_history(input);
 		tokens = tokenizer(input);
-        error = 0;
+		error = 0;
 		parseado = parse_ast(tokens, &error);
-        if (error)
+		if (!parseado)
+		{
+			printf("Parse error: %i\n", error);
+			free_token_list(tokens);
+			free(input);
+			continue;
+		}
+		//print_ast(parseado, 0);
+		//cmd_iter(parseado, print_cmd_path_cb, env);
+		if (parseado->type == NODE_CMD)
+			error = execute_one_command(parseado, env);
+		// if (parseado->type == NODE_CMD)
+		// 	error = execute_one_subshell(parseado, env);
+		else
+			error = execute_ast(parseado, env);
+		//execute_pipe_sequence(parseado);
+        //if (error)
+        printf("%i\n", error);
         free_token_list(tokens);
-		print_ast(parseado, 0);
-        printf("Error: %i\n", error);
+        //printf("Error: %i\n", error);
 		free(input);
-		rl_clear_history();
 	}
+	rl_clear_history();
 	return (0);
 }
 /*
