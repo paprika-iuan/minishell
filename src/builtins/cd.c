@@ -41,7 +41,7 @@ int	ft_cd(t_env *env, char **argv)
 	char	oldpath[PATH_MAX];
 	char	currpath[PATH_MAX];
 
-	if (argv[0] && argv[1])
+	if (argv[0] && argv[2])
 		return (ft_printf("cd: too many arguments\n"), 1);
 	path = resolve_cd_path(argv, env);
 	if (!path)

@@ -16,7 +16,7 @@ int	ft_pwd(char **argv)
 {
 	char	pwd[PATH_MAX];
 
-	if (argv && argv[0])
+	if (argv && argv[1])
 	{
 		ft_printf("pwd: too many arguments\n");
 		return (1);

@@ -12,10 +12,10 @@
 
 #include "../../inc/minishell.h"
 
-void	ft_exit(t_env *env, char **argv)
+void	ft_exit(t_env *env, char **args)
 {
 	ft_printf("exit\n");
-	if (argv && argv[0])
+	if (args && args[1])
 	{
 		ft_printf("exit: too many arguments\n");
 		return ;

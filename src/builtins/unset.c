@@ -45,7 +45,7 @@ int	ft_unset(char **args, t_env **envp)
 
 	if (!args || !(*envp))
 		return (1);
-	i = 0;
+	i = 1;
 	while (args[i])
 	{
 		del_token(args[i], envp);
