@@ -14,10 +14,6 @@
 
 int	execute_and_or_binary(t_NodeAST *node, t_env *env)
 {
-	pid_t	pid;
-	int		status;
-	int		exit_code;
-
 	if (node->type == NODE_AND || node->type == NODE_OR)
 		return (execute_and_or(node, env));
 	else if (node->type == NODE_PIPE)

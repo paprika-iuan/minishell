@@ -32,7 +32,7 @@ static int	allocate_pipes(t_pipe_struct *t_pipe)
 	t_pipe->pipes = malloc((t_pipe->num_pipes * 2) * sizeof(int));
 	if (!t_pipe->pipes)
 	{
-		printf("Memory allocation failed for pipes");
+		printf("Memory allocation failed for pipes\n");
 		return (FAILURE);
 	}
 	t_pipe->pipe_idx = 0;
@@ -48,7 +48,7 @@ static int	create_pipes(t_pipe_struct *pipe_struct)
 	{
 		if (pipe(pipe_struct->pipes + 2 * i) < 0)
 		{
-			printf("Pipe creation failed");
+			printf("Pipe creation failed\n");
 			return (FAILURE);
 		}
 		i++;
