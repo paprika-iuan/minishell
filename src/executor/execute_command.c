@@ -79,7 +79,7 @@ int	execute_cmd(t_NodeAST *node, t_env *env)
 	full_path = set_cmd_path(node, env);
 	if (!full_path)
 	{
-		printf("command not found\n");
+		printf("%s: command not found\n", node->cmd.args[0]);
 		cleanup_child(full_path, env_arr, node);
 		return (COMMAND_NOT_FOUND);
 	}

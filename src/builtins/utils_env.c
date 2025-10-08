@@ -41,10 +41,7 @@ t_env	*envcpy(char **envp)
 	{
 		node = create_env_node(envp[i]);
 		if (!node)
-		{
-			free_env_list(head);
-			return (NULL);
-		}
+			return (free_env_list(head), NULL);
 		if (!head)
 			head = node;
 		else
