@@ -85,11 +85,6 @@ void	free_token_list(t_token *head);
 t_token	*create_token(char *content);
 void	append_token(t_token **head, t_token **current, t_token *node);
 
-/****** ERROR ******/
-
-void	syntax_error(char *message);
-void	basic_err(char *x);
-
 /****** BUILTINS ******/
 
 typedef struct s_env

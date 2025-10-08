@@ -59,6 +59,7 @@ typedef struct s_NodeAST
 
 //parser.c
 t_NodeAST	*parse_ast(t_token *tokens, int *error);
+void		free_ast(t_NodeAST *head);
 
 //parse_ao.c
 t_NodeAST	*set_ao_node(t_token *token, int *error);

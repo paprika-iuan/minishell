@@ -53,10 +53,14 @@ char	**env_converter(t_env *env)
 	return (env_arr);
 }
 
-void	cleanup_child(char *full_path, char **env_arr)
+void	cleanup_child(char *full_path, char **env_arr, t_NodeAST *node)
 {
 	int	i;
 
+	if (node && node->cmd.redirect)
+		fprintf(stderr, "[cleanup_child] redirect is NOT NULL -> freeing\n");
+	else
+		fprintf(stderr, "[cleanup_child] redirect is NULL\n");
 	if (full_path)
 		free(full_path);
 	i = 0;
@@ -66,6 +70,8 @@ void	cleanup_child(char *full_path, char **env_arr)
 			free(env_arr[i++]);
 		free(env_arr);
 	}
+	if (node)
+		free_ast(node);
 }
 
 int	execute_cmd(t_NodeAST *node, t_env *env)
@@ -78,13 +84,14 @@ int	execute_cmd(t_NodeAST *node, t_env *env)
 	if (!full_path)
 	{
 		printf("command not found\n");
+		cleanup_child(full_path, env_arr, node);
 		return (COMMAND_NOT_FOUND);
 	}
 	env_arr = env_converter(env);
 	if (!env_arr)
 		return (free(full_path), MALLOC_FAILED);
 	execve(full_path, node->cmd.args, env_arr);
-	cleanup_child(full_path, env_arr);
+	cleanup_child(full_path, env_arr, node);
 	perror("execve");
 	return (COMMAND_NOT_EXECUTABLE);
 }

@@ -30,9 +30,45 @@ t_NodeAST	*parse_ast(t_token *tokens, int *error)
 		head = set_cmd_node(tokens, error);
 	return (head);
 }
-//To do fora del parser:
-//si parse_ast retorna null a la funcio que la crida inicialment gestionar 
-// fora l'error. Hauria de tornar el prompt buit de nou. 
-//Maybe fora crear una funcio per si queden tokens sense utilitzar.  
-//Recorda a alliberar llistes. Proposta: alliberar t_tokens fora un cop el 
-// parsing fet;
+
+//Maybe fora crear una funcio per si queden tokens sense utilitzar.
+
+void	free_redirect(t_NodeAST *node)
+{
+	t_NodeAST	*tmp;
+
+	while (node)
+	{
+		tmp = node->redirect.redirect;
+		free(node->redirect.file);
+		free(node);
+		node = tmp;
+	}
+}
+
+void	free_ast(t_NodeAST *node)
+{
+	if (!node)
+		return ;
+	if (node->type == NODE_AND || node->type == NODE_OR
+		|| node->type == NODE_PIPE)
+	{
+		free_ast(node->binary.left);
+		free_ast(node->binary.right);
+		free(node);
+	}
+	else if (node->type == NODE_SUBSHELL)
+	{
+		if (node->subshell.redirect)
+			free_redirect(node->subshell.redirect);
+		free_ast(node->subshell.reparse);
+		free(node);
+	}
+	else
+	{
+		if (node->cmd.redirect)
+			free_redirect(node->cmd.redirect);
+		free_matrix(node->cmd.args);
+		free(node);
+	}
+}
