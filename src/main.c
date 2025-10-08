@@ -59,7 +59,6 @@ void print_ast(t_NodeAST *node, int depth)
     }
 }
 
-
 int	main(int ac, char **av, char **env_og)
 {
 	char		*input;
@@ -78,22 +77,32 @@ int	main(int ac, char **av, char **env_og)
 			break ;
 		add_history(input);
 		tokens = tokenizer(input);
+		if (!tokens)
+		{
+			free(input);
+			continue ;
+		}
 		error = 0;
 		ast_tree = parse_ast(tokens, &error);
 		if (!ast_tree)
 		{
-			printf("Parse error: %i\n", error);
+			// printf("Parse error: %i\n", error);
 			free_token_list(tokens);
 			free(input);
 			continue ;
 		}
 		free_token_list(tokens);
+		if (error == 2)
+		{
+			free_ast(ast_tree);
+			free(input);
+			continue ;
+		}
 		//print_ast(ast_tree, 0);
 		if (ast_tree->type == NODE_CMD)
 			error = execute_one_command(ast_tree, env);
 		else
 			error = execute_ast(ast_tree, env);
-		printf("%i\n", error);
 		free_ast(ast_tree);
 		free(input);
 	}

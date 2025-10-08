@@ -84,9 +84,8 @@ int	set_env_value(char *key, char *value, t_env *env)
 
 int	ft_env(t_env *cp_env)
 {
-	if (!cp_env)
+	if (!cp_env || cp_env->content)
 		return (1);
-	basic_err(cp_env->content);
 	while (cp_env)
 	{
 		if (ft_strchr(cp_env->content, '='))

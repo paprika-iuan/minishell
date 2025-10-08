@@ -8,7 +8,6 @@ SRC = src/main.c \
 		src/builtins/pwd.c \
 		src/builtins/unset.c \
 		src/builtins/utils_env.c \
-		src/errors/errors.c \
 		src/executor/child_pipe_utils.c \
 		src/executor/cmd_utils.c \
 		src/executor/execute_and_or.c \

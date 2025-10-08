@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 t_token	*tag_operand(char *op)
 {
@@ -55,9 +56,8 @@ t_token	*tag_and_validate(char *token_str, t_token *head, char **tok, int num)
 	{
 		if (token_str[0] == '&' && ft_strlen(token_str) == 1)
 		{
-			free_token_list(head);
-			free_tokens(tok, num);
-			syntax_error("syntax error near unexpected token `&'");
+			printf(SYNTAX_ERROR);
+			return (NULL);
 		}
 		return (tag_operand(token_str));
 	}
@@ -82,7 +82,6 @@ t_token	*identifier(char **tokens, int *num_tokens)
 		if (!node)
 		{
 			free_token_list(head);
-			free_tokens(tokens, *num_tokens);
 			return (NULL);
 		}
 		append_token(&head, &current, node);
@@ -93,17 +92,17 @@ t_token	*identifier(char **tokens, int *num_tokens)
 
 t_token	*tokenizer(char *line)
 {
- 	char	**raw_tokens;
- 	t_token	*id_tokens;
- 	int		num_tokens;
+	char	**raw_tokens;
+	t_token	*id_tokens;
+	int		num_tokens;
 
- 	raw_tokens = lexer(line, &num_tokens);
- 	if (!raw_tokens)
- 		return (NULL);
- 	id_tokens = identifier(raw_tokens, &num_tokens);
- 	free_tokens(raw_tokens, num_tokens);
- 	if (!id_tokens)
- 		return (NULL);
- 	else
- 		return (id_tokens);
+	raw_tokens = lexer(line, &num_tokens);
+	if (!raw_tokens)
+		return (NULL);
+	id_tokens = identifier(raw_tokens, &num_tokens);
+	free_tokens(raw_tokens, num_tokens);
+	if (!id_tokens)
+		return (NULL);
+	else
+		return (id_tokens);
 }
