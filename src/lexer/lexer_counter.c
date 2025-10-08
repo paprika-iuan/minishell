@@ -34,7 +34,11 @@ int	get_word_length(char *line)
 	while (*line && !is_whitespace(*line) && !is_operand(*line))
 	{
 		if (is_quote(*line))
+		{
 			len = handle_quote_length(&line, len);
+			if (len < 0)
+				return (UNCLOSED_QUOTES);
+		}
 		else
 		{
 			len++;
@@ -49,6 +53,11 @@ void	count_word(char **line, int *count)
 	int	len;
 
 	len = get_word_length(*line);
+	if (len < 0)
+	{
+		*count = -1;
+		return ;
+	}
 	(*line) += len;
 	(*count)++;
 }
@@ -79,7 +88,11 @@ int	count_tokens(char *line)
 		if (is_operand(*line))
 			count_operand(&line, &count);
 		else if (!is_whitespace(*line))
+		{
 			count_word(&line, &count);
+			if (count < 0)
+				return (UNCLOSED_QUOTES);
+		}
 		else
 			line++;
 	}

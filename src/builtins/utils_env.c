@@ -35,7 +35,8 @@ t_env	*envcpy(char **envp)
 	i = 0;
 	head = NULL;
 	current = NULL;
-	basic_err(*envp);
+	if (!*envp)
+		return (NULL);
 	while (envp[i])
 	{
 		node = create_env_node(envp[i]);

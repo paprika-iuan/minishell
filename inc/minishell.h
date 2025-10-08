@@ -33,6 +33,7 @@
 # define WAITPID_FAILED -2
 # define MALLOC_FAILED -3
 # define ERROR 1
+# define UNCLOSED_QUOTES -42
 
 # include "../libft/libft.h"
 
