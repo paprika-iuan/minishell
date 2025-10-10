@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
+#include <stdio.h>
 
 void	init_pipe_struct(t_pipe_struct *t_pipe)
 {
@@ -58,9 +59,7 @@ void	setup_cmd_fds(t_pipe_struct *t_pipe)
 
 int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_env *env)
 {
-	char		**env_char;
 	t_NodeAST	*current_cmd;
-	int			status;
 
 	t_pipe->pid = fork();
 	if (t_pipe->pid < 0)
@@ -68,10 +67,8 @@ int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_env *env)
 	t_pipe->child_pids[t_pipe->pipe_idx] = t_pipe->pid;
 	if (t_pipe->pid == 0)
 	{
-		// do_redirections(node);
 		setup_cmd_fds(t_pipe);
 		close_pipes(t_pipe);
-		// if builtin, movida aparte
 		current_cmd = get_current_cmd(node, t_pipe->pipe_idx);
 		exit(execute_ast(current_cmd, env));
 	}

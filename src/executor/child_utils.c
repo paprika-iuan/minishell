@@ -45,3 +45,18 @@ int	wait_for_children(t_pipe_struct *t_pipe)
 	}
 	return (last_cmd_status);
 }
+
+void	cleanup_child(char *full_path, char **env_arr)
+{
+	int	i;
+
+	if (full_path)
+		free(full_path);
+	i = 0;
+	if (env_arr)
+	{
+		while (env_arr[i])
+			free(env_arr[i++]);
+		free(env_arr);
+	}
+}

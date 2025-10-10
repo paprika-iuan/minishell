@@ -94,19 +94,19 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-int		ft_echo(char **argv);
 t_env	*create_env_node(char *content);
-void	add_to_env_list(t_env **cp_env, t_env *new_node);
+void	add_to_env_list(t_env *env, t_env *new_node);
 void	free_env_list(t_env *head);
 t_env	*envcpy(char **envp);
+void	add_shlvl(t_env *env);
 char	*get_env_value(char *key, t_env *env);
 int		set_env_value(char *key, char *value, t_env *env);
-int		ft_env(t_env *cp_env);
-int		ft_export(char **args, t_env **cp_env);
-int		ft_unset(char **args, t_env **envp);
-int		ft_cd(t_env *env, char **argv);
-int		ft_pwd(char **argv);
-void	ft_exit(t_env *env, char **argv);
+int		ft_echo(char **args);
+int		ft_env(t_env *env);
+int		ft_export(char **args, t_env *env);
+int		ft_unset(char **args, t_env *env);
+int		ft_cd(char **args, t_env *env);
+int		ft_pwd(char **args);
 
 /****** EXECUTOR ******/
 

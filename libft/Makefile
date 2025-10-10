@@ -22,6 +22,7 @@ SRCS =	free_matrix.c \
 	ft_isalpha.c \
 	ft_isascii.c \
 	ft_isdigit.c \
+	ft_isnumeric.c \
 	ft_isprint.c \
 	ft_isquote.c \
 	ft_iswhitespace.c \

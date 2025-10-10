@@ -78,4 +78,5 @@ void	close_pipes(t_pipe_struct *t_pipe)
 		close(t_pipe->pipes[i]);
 		i++;
 	}
+	free(t_pipe->pipes);
 }

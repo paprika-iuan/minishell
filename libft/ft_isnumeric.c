@@ -1,31 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_isnumeric.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/26 14:36:30 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/26 14:36:32 by amarquez         ###   ########.fr       */
+/*   Created: 2025/10/08 16:23:32 by amarquez          #+#    #+#             */
+/*   Updated: 2025/10/08 16:23:38 by amarquez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "libft.h"
 
-int	ft_pwd(char **argv)
+int	ft_isnumeric(const char *str)
 {
-	char	pwd[PATH_MAX];
+	int	i;
 
-	if (argv && argv[1])
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	while (str[i])
 	{
-		ft_printf("pwd: too many arguments\n");
-		return (ERROR);
+		if (!ft_isdigit((unsigned char)str[i]))
+			return (0);
+		i++;
 	}
-	if (!getcwd(pwd, sizeof(pwd)))
-	{
-		perror("pwd");
-		return (ERROR);
-	}
-	printf("%s\n", pwd);
-	return (0);
+	return (1);
 }

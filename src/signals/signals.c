@@ -12,25 +12,25 @@
 
 #include "../../inc/minishell.h"
 
-int signal_value = 0;
+int	g_signal_value = 0;
 
-void sig_int_c(int sign)
+void	sig_int_c(int sign)
 {
-    printf("\n");
-    rl_replace_line("", 0);
-    rl_on_new_line();
-    rl_redisplay();
-    signal_value = sign;
+	printf("\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	g_signal_value = sign;
 }
 
-void signals_intmode(void)
+void	signals_intmode(void)
 {
-    signal(SIGINT, sig_int_c);
-    signal(SIGQUIT, SIG_IGN); 
+	signal(SIGINT, sig_int_c);
+	signal(SIGQUIT, SIG_IGN);
 }
 
-void signals_nonintmode(void)
+void	signals_nonintmode(void)
 {
-    signal(SIGINT, sig_int_c);
-    signal(SIGQUIT, sig_int_c); 
+	signal(SIGINT, sig_int_c);
+	signal(SIGQUIT, sig_int_c);
 }
