@@ -10,17 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
-void	ft_exit(t_env *env, char **argv)
+int	ft_exit(char **args, t_env *env, t_NodeAST *node)
 {
-	ft_printf("exit\n");
-	if (argv && argv[0])
+	int	exit_status;
+
+	printf("exit\n");
+	if (args[1] && ft_isnumeric(args[1]) && args[2])
+		return (printf("exit: too many arguments\n"), ERROR);
+	if (args[1])
 	{
-		ft_printf("exit: too many arguments\n");
-		return ;
+		if (ft_isnumeric(args[1]))
+			exit_status = (ft_atoi(args[1]));
+		else
+			exit_status = 2;
 	}
+	else
+	{
+		if (!get_env_value("LAST_EXIT", env))
+			exit_status = 0;
+		else
+			exit_status = ft_atoi(get_env_value("LAST_EXIT", env));
+	}
+	if (node)
+		free_ast(node);
 	if (env)
 		free_env_list(env);
-	exit(0);
+	exit(exit_status);
+	return (ERROR);
 }

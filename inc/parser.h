@@ -102,11 +102,9 @@ int		allocate_child_pids(t_pipe_struct *t_pipe);
 int		wait_for_children(t_pipe_struct *t_pipe);
 char 	*set_cmd_path(t_NodeAST *node, t_env *env);
 int		execute_one_command(t_NodeAST *node, t_env *env);
+int		is_builtin(t_NodeAST *node);
+int		execute_builtin(t_NodeAST *node, t_env *env);
 
-// broza
-void	cmd_iter(t_NodeAST *node, void (*f)(t_NodeAST *, void *), void *ctx);
-void print_cmd_path_cb(t_NodeAST *node, void *ctx);
-
-void	debug_open_fds(const char *label);
+int		ft_exit(char **args, t_env *env, t_NodeAST *node);
 
 #endif

@@ -12,6 +12,7 @@ SRC = src/main.c \
 		src/executor/cmd_utils.c \
 		src/executor/execute_and_or.c \
 		src/executor/execute_ast.c \
+		src/executor/execute_builtin.c \
 		src/executor/execute_pipe_sequence.c \
 		src/executor/pipe_utils.c \
 		src/executor/execute_command.c \

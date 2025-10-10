@@ -24,13 +24,43 @@ int	execute_and_or_binary(t_NodeAST *node, t_env *env)
 		return (execute_one_command(node, env));
 }
 
+t_NodeAST	*find_or_in_right_chain(t_NodeAST *node)
+{
+	if (!node)
+		return (NULL);
+	if (node->type == NODE_OR)
+		return (node);
+	if (node->type == NODE_AND)
+		return (find_or_in_right_chain(node->binary.right));
+	return (NULL);
+}
+
+t_NodeAST	*find_and_in_right_chain(t_NodeAST *node)
+{
+	if (!node)
+		return (NULL);
+	if (node->type == NODE_AND)
+		return (node);
+	if (node->type == NODE_OR)
+		return (find_or_in_right_chain(node->binary.right));
+	return (NULL);
+}
+
 int	execute_and_or(t_NodeAST *node, t_env *env)
 {
-	int	result_left;
+	int			result_left;
+	t_NodeAST	*or;
+	t_NodeAST	*and;
 
 	result_left = execute_and_or_binary(node->binary.left, env);
+	or = find_or_in_right_chain(node->binary.right);
+	and = find_and_in_right_chain(node->binary.right);
+	if (node->type == NODE_AND && result_left != 0 && or)
+		return (execute_ast(or->binary.right, env));
 	if (node->type == NODE_AND && result_left == 0)
 		return (execute_and_or_binary(node->binary.right, env));
+	if (node->type == NODE_OR && result_left == 0 && and)
+		return (execute_and_or_binary(and->binary.right, env));
 	if (node->type == NODE_OR && result_left != 0)
 		return (execute_and_or_binary(node->binary.right, env));
 	return (result_left);

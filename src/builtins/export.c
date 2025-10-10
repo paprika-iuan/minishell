@@ -55,7 +55,7 @@ int	export_arg_checker(char *args)
 	return (0);
 }
 
-int	dup_var_handler(char *arg, t_env *cp_env)
+int	dup_var_handler(char *arg, t_env *env)
 {
 	int		len;
 	t_env	*iter;
@@ -63,7 +63,7 @@ int	dup_var_handler(char *arg, t_env *cp_env)
 	len = 0;
 	while (arg[len] && arg[len] != '=')
 		len++;
-	iter = cp_env;
+	iter = env;
 	while (iter)
 	{
 		if (!ft_strncmp(arg, iter->content, len)
@@ -80,20 +80,20 @@ int	dup_var_handler(char *arg, t_env *cp_env)
 	return (0);
 }
 
-int	ft_export(char **args, t_env **cp_env)
+int	ft_export(char **args, t_env *env)
 {
 	t_env	*new_node;
 	char	*dup;
 	int		i;
 
-	if (!args || !args[0])
-		return (var_printer(*cp_env), 0);
-	i = 0;
+	if (!args[1])
+		return (var_printer(env), 0);
+	i = 1;
 	while (args[i])
 	{
 		if (!export_arg_checker(args[i]))
 		{
-			if (!dup_var_handler(args[i], *cp_env))
+			if (!dup_var_handler(args[i], env))
 			{
 				dup = ft_strdup(args[i]);
 				if (!dup)
@@ -101,7 +101,7 @@ int	ft_export(char **args, t_env **cp_env)
 				new_node = create_env_node(dup);
 				if (!new_node)
 					return (free(dup), (1));
-				add_to_env_list(cp_env, new_node);
+				add_to_env_list(env, new_node);
 				free(dup);
 			}
 		}

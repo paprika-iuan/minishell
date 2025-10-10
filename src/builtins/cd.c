@@ -12,49 +12,49 @@
 
 #include "../../inc/minishell.h"
 
-char	*resolve_cd_path(char **argv, t_env *env)
+char	*resolve_cd_path(char **args, t_env *env)
 {
 	char	*path;
 
-	if (!argv[0] || (argv[0][0] == '~' && !argv[0][1]))
+	if (!args[1] || (args[1][0] == '~' && !args[1][1]))
 	{
 		path = get_env_value("HOME", env);
 		if (!path)
 			perror("cd: HOME not set");
 	}
-	else if (argv[0][0] == '-')
+	else if (args[1][0] == '-')
 	{
 		path = get_env_value("OLDPWD", env);
 		if (!path)
 			perror("cd: OLDPWD not set");
 		else
-			ft_printf("%s\n", path);
+			printf("%s\n", path);
 	}
 	else
-		path = argv[0];
+		path = args[1];
 	return (path);
 }
 
-int	ft_cd(t_env *env, char **argv)
+int	ft_cd(char **args, t_env *env)
 {
 	char	*path;
 	char	oldpath[PATH_MAX];
 	char	currpath[PATH_MAX];
 
-	if (argv[0] && argv[1])
-		return (ft_printf("cd: too many arguments\n"), 1);
-	path = resolve_cd_path(argv, env);
+	if (args[1] && args[2])
+		return (printf("cd: too many arguments\n"), ERROR);
+	path = resolve_cd_path(args, env);
 	if (!path)
-		return (1);
+		return (ERROR);
 	if (!getcwd(oldpath, sizeof(oldpath)))
-		return (perror("cd: getcwd"), 1);
+		return (perror("cd: getcwd"), ERROR);
 	if (chdir(path) != 0)
-		return (perror("cd"), 1);
+		return (perror("cd"), ERROR);
 	if (set_env_value("OLDPWD", oldpath, env) == -1)
-		return (1);
+		return (ERROR);
 	if (!getcwd(currpath, sizeof(currpath)))
-		return (perror("cd: getcwd"), 1);
+		return (perror("cd: getcwd"), ERROR);
 	if (set_env_value("PWD", currpath, env) == -1)
-		return (1);
+		return (ERROR);
 	return (0);
 }

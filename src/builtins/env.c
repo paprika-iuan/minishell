@@ -82,15 +82,31 @@ int	set_env_value(char *key, char *value, t_env *env)
 	return (0);
 }
 
-int	ft_env(t_env *cp_env)
+void	add_shlvl(t_env *env)
 {
-	if (!cp_env || cp_env->content)
-		return (1);
-	while (cp_env)
+	int		lvl;
+	char	*lvl_char;
+
+	lvl = ft_atoi(get_env_value("SHLVL", env));
+	if (lvl > 1000)
+		lvl = 1;
+	else
+		lvl++;
+	lvl_char = ft_itoa(lvl);
+	set_env_value("SHLVL", lvl_char, env);
+	free(lvl_char);
+}
+
+int	ft_env(t_env *env)
+{
+	if (!env)
+		return (ERROR);
+	printf("in ft_env past error\n");
+	while (env)
 	{
-		if (ft_strchr(cp_env->content, '='))
-			printf("%s\n", cp_env->content);
-		cp_env = cp_env->next;
+		if (ft_strchr(env->content, '='))
+			printf("%s\n", env->content);
+		env = env->next;
 	}
 	return (0);
 }

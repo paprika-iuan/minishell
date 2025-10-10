@@ -12,24 +12,24 @@
 
 #include "../../inc/minishell.h"
 
-void	del_token(char *token_content, t_env **envp)
+void	del_env_value(char *env_content, t_env *env)
 {
 	t_env	*current;
 	t_env	*prev;
 	int		len;
 
-	current = *envp;
+	current = env;
 	prev = NULL;
-	len = ft_strlen(token_content);
+	len = ft_strlen(env_content);
 	while (current)
 	{
-		if (!ft_strncmp(token_content, current->content, len) && (
+		if (!ft_strncmp(env_content, current->content, len) && (
 				current->content[len] == '=' || current->content[len] == '\0'))
 		{
 			if (prev)
 				prev->next = current->next;
 			else
-				*envp = current->next;
+				env = current->next;
 			free(current->content);
 			free(current);
 			break ;
@@ -39,16 +39,16 @@ void	del_token(char *token_content, t_env **envp)
 	}
 }
 
-int	ft_unset(char **args, t_env **envp)
+int	ft_unset(char **args, t_env *env)
 {
 	int	i;
 
-	if (!args || !(*envp))
+	if (!args || !(env))
 		return (1);
 	i = 0;
 	while (args[i])
 	{
-		del_token(args[i], envp);
+		del_env_value(args[i], env);
 		i++;
 	}
 	return (0);

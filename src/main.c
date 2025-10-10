@@ -67,8 +67,11 @@ int	main(int ac, char **av, char **env_og)
 	t_env		*env;
 	int			error;
 
+	(void)ac;
+	(void)av;
 	printf("%s", HEADER);
 	env = envcpy(env_og);
+	add_shlvl(env);
 	while (1)
 	{
         signals_intmode();
@@ -98,7 +101,7 @@ int	main(int ac, char **av, char **env_og)
 			free(input);
 			continue ;
 		}
-		//print_ast(ast_tree, 0);
+		// print_ast(ast_tree, 0);
 		if (ast_tree->type == NODE_CMD)
 			error = execute_one_command(ast_tree, env);
 		else
