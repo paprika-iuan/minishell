@@ -67,7 +67,6 @@ int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_env *env)
 	t_pipe->child_pids[t_pipe->pipe_idx] = t_pipe->pid;
 	if (t_pipe->pid == 0)
 	{
-		// do_redirections(node);
 		setup_cmd_fds(t_pipe);
 		close_pipes(t_pipe);
 		current_cmd = get_current_cmd(node, t_pipe->pipe_idx);

@@ -80,31 +80,40 @@ int	dup_var_handler(char *arg, t_env *env)
 	return (0);
 }
 
-int	ft_export(char **args, t_env *env)
+int	handle_export_arg(char *arg, t_env *env)
 {
 	t_env	*new_node;
 	char	*dup;
-	int		i;
+
+	if (export_arg_checker(arg))
+		return (0);
+	if (!dup_var_handler(arg, env))
+	{
+		dup = ft_strdup(arg);
+		if (!dup)
+			return (1);
+		new_node = create_env_node(dup);
+		if (!new_node)
+		{
+			free(dup);
+			return (1);
+		}
+		add_to_env_list(env, new_node);
+		free(dup);
+	}
+	return (0);
+}
+
+int	ft_export(char **args, t_env *env)
+{
+	int	i;
 
 	if (!args[1])
 		return (var_printer(env), 0);
 	i = 1;
 	while (args[i])
 	{
-		if (!export_arg_checker(args[i]))
-		{
-			if (!dup_var_handler(args[i], env))
-			{
-				dup = ft_strdup(args[i]);
-				if (!dup)
-					return (1);
-				new_node = create_env_node(dup);
-				if (!new_node)
-					return (free(dup), (1));
-				add_to_env_list(env, new_node);
-				free(dup);
-			}
-		}
+		handle_export_arg(args[i], env);
 		i++;
 	}
 	return (0);

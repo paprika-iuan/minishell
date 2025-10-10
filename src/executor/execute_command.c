@@ -53,28 +53,12 @@ char	**env_converter(t_env *env)
 	return (env_arr);
 }
 
-void	cleanup_child(char *full_path, char **env_arr)
-{
-	int	i;
-
-	if (full_path)
-		free(full_path);
-	i = 0;
-	if (env_arr)
-	{
-		while (env_arr[i])
-			free(env_arr[i++]);
-		free(env_arr);
-	}
-	// if (node)
-	// 	free_ast(node);
-}
-
 int	execute_cmd(t_NodeAST *node, t_env *env)
 {
 	char	*full_path;
 	char	**env_arr;
 
+	// do redirections
 	env_arr = NULL;
 	full_path = set_cmd_path(node, env);
 	if (!full_path)
@@ -104,17 +88,11 @@ int	execute_one_command(t_NodeAST *node, t_env *env)
 	if (pid < 0)
 		return (perror("fork"), FORK_FAILED);
 	if (pid == 0)
-	{
-		//do_redirections(node);
 		exit(execute_cmd(node, env));
-	}
 	if (waitpid(pid, &status, 0) == -1)
 		return (perror("waitpid"), WAITPID_FAILED);
 	if (WIFEXITED(status))
-	{
 		exit_code = WEXITSTATUS(status);
-		printf("Parent received exit code: %d\n", exit_code); // Debug
-	}
 	else
 		exit_code = ERROR;
 	return (exit_code);

@@ -16,7 +16,7 @@ int	is_builtin(t_NodeAST *node)
 {
 	char	*name;
 
-	name =  node->cmd.args[0];
+	name = node->cmd.args[0];
 	if (ft_strcmp(name, "cd") == 0)
 		return (SUCCESS);
 	if (ft_strcmp(name, "export") == 0)
