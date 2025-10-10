@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/03 13:01:01 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/06 16:05:07 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,18 @@ void print_ast(t_NodeAST *node, int depth)
     switch (node->type)
     {
         case NODE_CMD:
+        {
+            int argc = 0;
             printf("CMD: ");
-            for (int i = 0; node->cmd.args && node->cmd.args[i]; i++)
-                printf("%s ", node->cmd.args[i]);
-            printf("\n");
+            for (int i = 0; node->cmd.args && node->cmd.args[i]; i++) {
+                //printf("%s ", node->cmd.args[i]);
+                argc++;
+            }
+            printf("(argc: %d)\n", node->cmd.ac);
             if (node->cmd.redirect)
                 print_ast(node->cmd.redirect, depth + 1);
             break;
+        }
         case NODE_PIPE:
             printf("PIPE\n");
             print_ast(node->binary.left, depth + 1);
@@ -88,7 +93,6 @@ int	main(void)
 		free(input);
 	}
     rl_clear_history();
-    //printf("%s", PITBULL);
 	return (0);
 }
 /*
