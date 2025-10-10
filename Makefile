@@ -8,7 +8,7 @@ SRC = src/main.c \
 		src/builtins/pwd.c \
 		src/builtins/unset.c \
 		src/builtins/utils_env.c \
-		src/executor/child_pipe_utils.c \
+		src/executor/child_utils.c \
 		src/executor/cmd_utils.c \
 		src/executor/execute_and_or.c \
 		src/executor/execute_ast.c \
@@ -40,7 +40,7 @@ OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 CC = cc
-CCFLAGS = -Wall -Wextra -g
+CCFLAGS = -Wall -Wextra -Werror -g
 LDFLAGS = -lreadline -fsanitize=address
 
 all: $(NAME)

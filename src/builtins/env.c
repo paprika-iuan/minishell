@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include <stdio.h>
 
 char	*get_env_value(char *key, t_env *env)
 {
@@ -88,8 +89,12 @@ void	add_shlvl(t_env *env)
 	char	*lvl_char;
 
 	lvl = ft_atoi(get_env_value("SHLVL", env));
-	if (lvl > 1000)
+	if (lvl >= 1000)
+	{
+		printf("wanghao: warning: ");
+		printf("shell level (%i) too high, resetting to 1", lvl);
 		lvl = 1;
+	}
 	else
 		lvl++;
 	lvl_char = ft_itoa(lvl);
