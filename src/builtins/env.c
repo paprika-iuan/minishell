@@ -106,7 +106,6 @@ int	ft_env(t_env *env)
 {
 	if (!env)
 		return (ERROR);
-	printf("in ft_env past error\n");
 	while (env)
 	{
 		if (ft_strchr(env->content, '='))
