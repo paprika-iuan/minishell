@@ -11,7 +11,8 @@ OBJ_DIR = obj
 NAME = libft.a
 
 # Source files
-SRCS =	ft_atoi.c \
+SRCS =	free_matrix.c \
+	ft_atoi.c \
 	ft_atol.c \
 	ft_bzero.c \
 	ft_calloc.c \

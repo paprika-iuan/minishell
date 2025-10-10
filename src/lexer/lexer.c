@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 
 static char	*create_and_fill_token(char **line, int len)
 {
@@ -80,6 +81,11 @@ char	**lexer(char *line, int	*num_tokens)
 	if (!line)
 		return (NULL);
 	*num_tokens = count_tokens(line);
+	if (*num_tokens < 0)
+	{
+		printf(SYNTAX_ERROR);
+		return (NULL);
+	}
 	tokens = malloc((*num_tokens + 1) * sizeof(char *));
 	if (!tokens)
 		return (NULL);

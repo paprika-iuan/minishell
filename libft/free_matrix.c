@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   free_matrix.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/22 17:11:21 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/22 17:11:22 by amarquez         ###   ########.fr       */
+/*   Created: 2025/10/07 15:05:34 by amarquez          #+#    #+#             */
+/*   Updated: 2025/10/07 15:05:36 by amarquez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "libft.h"
 
-void	basic_err(char *x)
+void	free_matrix(char **paths)
 {
-	if (!x)
-		exit (EXIT_FAILURE);
-}
+	int	i;
 
-void	syntax_error(char *message)
-{
-	perror(message);
-	exit(EXIT_FAILURE);
+	if (!paths)
+		return ;
+	i = 0;
+	while (paths[i])
+	{
+		free(paths[i]);
+		i++;
+	}
+	free(paths);
 }

@@ -53,18 +53,20 @@ t_NodeAST	*set_redirect_node(t_token *tokens, int *error)
 
 	if (*error != 0)
 		return (NULL);
+	red_pos = find_redir(tokens);
+	if (red_pos < 0)
+		return (NULL);
 	node = malloc(sizeof(t_NodeAST));
 	if (!node)
 		return (NULL);
 	node->type = NODE_REDIRECT;
-	red_pos = find_redir(tokens);
-	if (red_pos < 0)
-		return (NULL);
 	tokens = consume_tokens(tokens, red_pos - 1);
 	node->redirect.type = tokens->type;
 	if (next_is_file(tokens, error))
 		return (NULL);
 	redir = ft_strndup(tokens->next->content, ft_strlen(tokens->next->content));
+	if (!redir)
+		return (NULL);
 	node->redirect.file = redir;
 	if (is_subshell(tokens->next, error))
 		return (NULL);

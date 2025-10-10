@@ -70,13 +70,7 @@ int	handle_quote_length(char **line, int len)
 		len++;
 		(*line)++;
 	}
-	else if (backtrack_position)
-	{
-		while (*line != backtrack_position)
-		{
-			(*line)--;
-			len--;
-		}
-	}
+	else
+		len = UNCLOSED_QUOTES;
 	return (len);
 }

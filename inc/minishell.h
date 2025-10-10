@@ -25,6 +25,15 @@
 # define READLINE_MSG "\033[1;31m[🏓wanghao]\033[35m$> \033[0m"
 # define SUCCESS 1
 # define FAILURE 0
+# define COMMAND_NOT_EXECUTABLE 126
+# define COMMAND_NOT_FOUND 127
+# define EXIT_FROM_SIGNAL 128
+# define FORK_SUCCESS 0
+# define FORK_FAILED -1
+# define WAITPID_FAILED -2
+# define MALLOC_FAILED -3
+# define ERROR 1
+# define UNCLOSED_QUOTES -42
 
 # include "../libft/libft.h"
 
@@ -34,6 +43,7 @@
 # include <signal.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <sys/wait.h>
 
 extern int signal_value;
 
@@ -76,11 +86,6 @@ void	free_token_list(t_token *head);
 t_token	*create_token(char *content);
 void	append_token(t_token **head, t_token **current, t_token *node);
 
-/****** ERROR ******/
-
-void	syntax_error(char *message);
-void	basic_err(char *x);
-
 /****** BUILTINS ******/
 
 typedef struct s_env
@@ -103,6 +108,16 @@ int		ft_cd(t_env *env, char **argv);
 int		ft_pwd(char **argv);
 void	ft_exit(t_env *env, char **argv);
 
+/****** EXECUTOR ******/
+
+typedef struct	s_pipe_struct
+{
+	int		num_pipes;
+	int		*pipes;
+	int		pipe_idx;
+	pid_t	pid;
+	pid_t	*child_pids;
+} t_pipe_struct;
 /****** SIGNALS.C ******/
 void	sig_int_c(int sign);
 void	signals_intmode(void);
