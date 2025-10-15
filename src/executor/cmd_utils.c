@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
-#include <stdio.h>
 
 int	is_abs_path(const char *cmd_name)
 {
@@ -57,7 +56,7 @@ char	**set_paths(t_env *env)
 	paths = ft_split(path_env, ':');
 	if (!paths)
 	{
-		printf("Error creating paths\n");
+		ft_putstr_fd("Error creating paths\n", STDERR_FILENO);
 		return (NULL);
 	}
 	return (paths);

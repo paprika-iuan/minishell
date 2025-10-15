@@ -41,6 +41,7 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <signal.h>
+# include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/wait.h>

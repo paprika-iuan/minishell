@@ -58,12 +58,13 @@ int	execute_cmd(t_NodeAST *node, t_env *env)
 	char	*full_path;
 	char	**env_arr;
 
-	// do redirections
 	env_arr = NULL;
 	full_path = set_cmd_path(node, env);
 	if (!full_path)
 	{
-		printf("%s: command not found\n", node->cmd.args[0]);
+		ft_putstr_fd("wanghao: ", STDERR_FILENO);
+		ft_putstr_fd(node->cmd.args[0], STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		cleanup_child(full_path, env_arr);
 		return (COMMAND_NOT_FOUND);
 	}
@@ -83,12 +84,16 @@ int	execute_one_command(t_NodeAST *node, t_env *env)
 	int		exit_code;
 
 	if (is_builtin(node))
-		return (execute_builtin(node, env));
+		return (exec_builtin_with_redirections(node, env));
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork"), FORK_FAILED);
 	if (pid == 0)
+	{
+		if (!do_redirections(node->cmd.redirect))
+			exit(ERROR);
 		exit(execute_cmd(node, env));
+	}
 	if (waitpid(pid, &status, 0) == -1)
 		return (perror("waitpid"), WAITPID_FAILED);
 	if (WIFEXITED(status))
