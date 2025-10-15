@@ -6,14 +6,22 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 12:56:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/10 10:20:12 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:25:32 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/parser.h"
+#include "../../inc/expansion.h"
 
-static int	is_split_ifs(char ch, char *c)
+char	**free_result(char **result, int j)
+{
+	while (--j >= 0)
+		free(result[j]);
+	free(result);
+	return (NULL);
+}
+
+int	is_split_ifs(char ch, char *c)
 {
 	while (*c)
 	{
@@ -45,22 +53,6 @@ static int	count_words(const char *s, char *c)
 	return (count);
 }
 
-static char	**allocate_word(char **result, const char *s, int start, int len)
-{
-	int	j;
-
-	j = 0;
-	while (result[j])
-		j++;
-	result[j] = ft_substr(s, start, len);
-	if (!result[j])
-	{
-		free_result(result, j);
-		return (NULL);
-	}
-	return (result);
-}
-
 static char	**fill_result(char **result, const char *s, char *c)
 {
 	int	i;
@@ -68,6 +60,7 @@ static char	**fill_result(char **result, const char *s, char *c)
 	int	j;
 
 	i = 0;
+	j = 0;
 	while (s[i])
 	{
 		while (s[i] && is_split_ifs(s[i], c))

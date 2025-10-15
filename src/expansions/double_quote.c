@@ -6,18 +6,40 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 11:13:51 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/10 10:19:41 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/15 17:39:56 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/parser.h"
+#include "../../inc/expansion.h"
 
-void	update_case_n2(char **args, char *expanded, int i)
+char **join_matrix(char **a, char **b)
 {
-	free(args[i]);
-	args[i] = ft_strdup(expanded);
-	free(expanded);
+	int len_a = ft_arraylen(a);
+	int len_b = ft_arraylen(b);
+	char **res;
+	int i = 0, j = 0;
+
+	res = malloc(sizeof(char *) * (len_a + len_b + 1));
+	if (!res)
+		return NULL;
+	while (i < len_a)
+	{
+		res[i] = ft_strdup(a[i]);
+		i++;
+	}
+	while (j < len_b)
+	{
+		res[i++] = ft_strdup(b[j++]);
+	}
+	res[i] = NULL;
+	return res;
+}
+
+void	update_case_n2(char **args, char *expanded)
+{
+	free(*args);
+	*args = ft_strdup(expanded);
 }
 
 char	*set_expansion_return(char *dollar, char *before, char *after)
@@ -44,30 +66,63 @@ char	*set_expansion_return(char *dollar, char *before, char *after)
 	}
 	if (dollar && !after && !before)
 		return (dollar);
+	return (NULL);
 }
 
-char	*do_expansion(char *args, t_env *env)
+char	**expand_after_dq(char **args, char **res, t_env *env, int i)
+{
+	char	**after_splited;
+	char	*before;
+	char	*after;
+	int		count;
+	int		j;
+
+	j = 0;
+	count = 0;
+	while (res[0][j] && count != 2)
+	{
+		if (res[0][j] == '"')
+			count++;
+		j++;
+	}
+	before = ft_substr(res[0], 0, j);
+	after = ft_substr(res[0], j, ft_strlen(res[0]) - j);
+	after_splited = expand_if_dollar(after, env);
+	free(after);
+	free(args[i]);
+	args[i] = ft_strjoin(before, after_splited[0]);
+	free(before);
+	args = join_matrix(args, &after_splited[1]);
+	free_matrix(after_splited);
+	return (args);
+}
+
+char	**do_doublequote(char **args, int i, t_env *env)
 {
 	char	*dollar;
 	char	*before;
 	char	*after;
-	char	*res;
+	char	**res;
+	int		len;
 
-	dollar = dolar_expanded(args, env);
-	before = set_before_dollar(args);
-	after = set_after_dollar(args);
-	res = set_expansion_return(dollar, before, after);
-	return (res);
-}
-
-void	do_doublequote(char **args, int i, t_env *env)
-{
-	char	*expanded;
-
-	expanded = do_expansion(args[i], env);
-	update_case_n2(args, expanded, i);
-	if (ft_strchr(args[i], '$'))
-		args = expand(args[i], env);
+	dollar = dollar_expanded(args[i], env);
+	before = set_before_dollar(args[i]);
+	after = set_after_dollar(args[i]);
+	len = 0;
+	if (before)
+		len += ft_strlen(before);
+	if (dollar)
+		len += ft_strlen(dollar);
+	res = malloc(sizeof(char *) * 2);
+	if (!res)
+		return (NULL);
+	res[0] = set_expansion_return(dollar, before, after);
+	res[1] = NULL;
+	if (res[0] && ft_strchr(res[0] + len, '$'))
+		args = expand_after_dq(args, res, env, i);
 	else
-		return ;
+		args = update_matrix(args, res, i);
+	free_matrix(res);
+	return (args);
 }
+

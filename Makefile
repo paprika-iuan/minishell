@@ -27,7 +27,16 @@ SRC = src/main.c \
 		src/parser/parse_subshell.c \
 		src/parser/parse_utils.c \
 		src/parser/parser.c \
-		src/signals/signals.c
+		src/signals/signals.c \
+		src/expansions/double_quote.c \
+		src/expansions/exp_find.c \
+		src/expansions/expansion_var_utils.c \
+		src/expansions/expansions.c \
+		src/expansions/ft_splitstr.c \
+		src/expansions/no_quote.c \
+		src/expansions/matrix_utils.c \
+		src/expansions/single_quote.c \
+		src/expansions/ws_ifs.c
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -39,8 +48,8 @@ OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 CC = cc
-CCFLAGS = -Wall -Wextra -g
-LDFLAGS = -lreadline -fsanitize=address
+CCFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+LDFLAGS = -lreadline
 
 all: $(NAME)
 

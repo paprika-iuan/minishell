@@ -6,32 +6,58 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:52:33 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/10 10:20:25 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/13 16:41:06 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/parser.h"
+#include "../../inc/expansion.h"
 
-void	update_case_n1(char **args, char *first, char *second, int i)
+void	update_case_n1(char **args, char *first, char *second)
 {
-	free(args[i]);
-	args[i] = ft_strjoin(first, second);
+	free(*args);
+	*args = ft_strjoin(first, second);
 }
 
-void	do_singlequote(char **args, int i, t_env *env)
+void	update_tmp(char **args, int i, char *tmp, char *first_simple_quotes)
 {
-	char	*fist_simple_quotes;
-	char	*expanded;
-	char	*tmp;
-	int		j;
+	if (tmp && tmp[0])
+		update_case_n1(&args[i], first_simple_quotes, tmp);
+	else
+		update_case_n1(&args[i], first_simple_quotes, "");
+}
 
-	j = 0;
-	j = find_dollar(args[i], '\'');
+char	**do_singlequote(char **args, int j, t_env *env)
+{
+	char	*first_simple_quotes;
+	char	*expanded;
+	char	**tmp;
+	char	**tmp_arr;
+	int		i;
+
+	i = j;
+	j = find_dollar(args[i], '\'', 0);
 	first_simple_quotes = ft_substr(args[i], 0, j);
-	expanded = ft_substr(args[i], j + 1, ft_strlen(args[i]));
-	tmp = expand(&expanded, env);
-	update_case_n1(args, first_simple_quotes, tmp, i);
+	if (args[i][j])
+	{
+		expanded = ft_substr(args[i], j, ft_strlen(args[i]));
+		tmp_arr = malloc(sizeof(char *) * 2);
+		if (!tmp_arr)
+		{
+			free(first_simple_quotes);
+			return (args);
+		}
+		tmp_arr[0] = expanded;
+		tmp_arr[1] = NULL;
+		tmp = expand(tmp_arr, env);
+		update_tmp(args, i, tmp[0], first_simple_quotes);
+		if (tmp && tmp != tmp_arr)
+			free_matrix(tmp);
+	}
+	else
+	{
+		update_case_n1(&args[i], first_simple_quotes, "");
+	}
 	free(first_simple_quotes);
-	free(tmp);
+	return (args);
 }

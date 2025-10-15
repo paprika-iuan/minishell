@@ -6,12 +6,12 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 09:49:35 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/10 10:20:21 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/15 16:16:34 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/parser.h"
+#include "../../inc/expansion.h"
 
 char	**update_matrix(char **args, char **splited, int i)
 {
@@ -28,21 +28,22 @@ char	**update_matrix(char **args, char **splited, int i)
 	if (!res)
 		return (NULL);
 	k = 0;
-	while (j < i)
-		res[j++] = args[k++];
-	a = 0;
-	while (a < s)
-		res[j++] = splited[a++];
-	k = i + 1;
-	while (args[k])
-		res[j++] = args[k++];
-	res[j] = NULL;
+	while (k < i)
+	{
+		res[k] = ft_strdup(args[k]);
+		k++;
+	}
+	while (j < s)
+		res[k++] = ft_strdup(splited[j++]);
+	s = i + 1;
+	while (s < a)
+		res[k++] = ft_strdup(args[s++]);
+	res[k] = NULL;
 	free_matrix(args);
-	free_matrix(splited);
 	return (res);
 }
 
-void	concat_before(char **args, char *splited, char *before, int i)
+char **concat_before(char **splited, char *before)
 {
 	char	*tmp;
 
@@ -52,36 +53,76 @@ void	concat_before(char **args, char *splited, char *before, int i)
 		free(splited[0]);
 		splited[0] = ft_strdup(tmp);
 		free(tmp);
-		args = update_matrix(args, splited, i);
 	}
-	return ;
+	return (splited);
 }
 
-void	concat_after(char **args, char *splited, char *after, int i)
+char	**update_matrix_after(char **splited, char **after)
+{
+	int		splited_len;
+	int		after_len;
+	char	**res;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	after_len = ft_arraylen(after);
+	splited_len = ft_arraylen(splited);
+	res = NULL;
+	if ((after_len + splited_len) > 1)
+	{
+		res = malloc(sizeof(char *) * ((splited_len - 1 + after_len) + 1));
+		if (!res)
+			return (NULL);
+		while (i < splited_len)
+		{
+			res[i] = ft_strdup(splited[i]);
+			i++;
+		}
+		while (j + 1 < after_len)
+		{
+			res[i] = ft_strdup(after[j + 1]);
+			i++;
+			j++;
+		}
+		res[i] = NULL;
+	}
+	return (res);
+}
+
+char **concat_after(char **splited, char **after)
 {
 	int		j;
 	char	*tmp;
+	char	**res;
 
-	j = 0;
-	j = ft_arraylen(splited);
-	if (after)
+	if (!after || !after[0])
+		return (splited);
+	res = NULL;
+	j = ft_arraylen(splited) - 1;
+	tmp = ft_strjoin(splited[j], after[0]);
+	free(splited[j]);
+	splited[j] = ft_strdup(tmp);
+	free(tmp);
+	if (after[1] && after[1][0])
 	{
-		tmp = ft_strjoin(splited[j], after);
-		free(splited[j]);
-		splited[j] = ft_strdup(tmp);
-		free(tmp);
-		args = update_matrix(args, splited, i);
-		return ;
+		res = update_matrix_after(splited, after);
+		free_matrix(splited);
+		return (res);
 	}
-	return ;
+	return (splited);
 }
 
-void	update_no_ws_expansion(char **args, int i, char *before, char *after)
+char **update_no_ws_expansion(char **args, int i, char *before, char *after)
 {
 	if (before && after)
-		update_case_n1(before, after, i);
+		update_case_n1(&args[i], before, after);
 	else if (before && !after)
-		update_case_n2(args, before, i);
+		update_case_n2(&args[i], before);
 	else if (!before && after)
-		update_case_n2(args, after, i);
+		update_case_n2(&args[i], after);
+	else if (!before && !after)
+		args[i] = NULL;
+	return (args);
 }

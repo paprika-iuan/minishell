@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 15:48:30 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/29 13:50:56 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:38:08 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_token	*tag_word(char *op)
 	return (new_token);
 }
 
-t_token	*tag_and_validate(char *token_str, t_token *head, char **tok, int num)
+t_token	*tag_and_validate(char *token_str)
 {
 	if (is_operand(token_str[0]))
 	{
@@ -78,7 +78,7 @@ t_token	*identifier(char **tokens, int *num_tokens)
 	i = 0;
 	while (i < *num_tokens)
 	{
-		node = tag_and_validate(tokens[i], head, tokens, *num_tokens);
+		node = tag_and_validate(tokens[i]);
 		if (!node)
 		{
 			free_token_list(head);

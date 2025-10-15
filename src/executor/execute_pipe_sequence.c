@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe_sequence.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 15:27:29 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/07 15:27:31 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:37:32 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,7 @@ void	setup_cmd_fds(t_pipe_struct *t_pipe)
 
 int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_env *env)
 {
-	char		**env_char;
 	t_NodeAST	*current_cmd;
-	int			status;
 
 	t_pipe->pid = fork();
 	if (t_pipe->pid < 0)

@@ -6,12 +6,12 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:23:43 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/10 10:20:29 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/10 12:31:06 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/parser.h"
+#include "../../inc/expansion.h"
 
 int	is_ifs(char c, t_env *env)
 {
@@ -31,7 +31,7 @@ int	is_ifs(char c, t_env *env)
 	return (0);
 }
 
-int	count_ifs_tokens(char *args, char ifs)
+int	count_ifs_tokens(char *args, char *ifs)
 {
 	int	i;
 	int	count;
@@ -40,12 +40,12 @@ int	count_ifs_tokens(char *args, char ifs)
 	count = 0;
 	while (args[i])
 	{
-		if (args[i] == ifs)
+		if (is_split_ifs(args[i], ifs))
 			count++;
 		else
 		{
-			while (args[i] && args[i] != ifs)
-				i++;
+			while (args[i] && !is_split_ifs(args[i], ifs))
+				i++;	
 			count++;
 		}
 	}
@@ -62,7 +62,7 @@ void	set_empty_str(char **res, int *i, int *c)
 	(*i)++;
 }
 
-void	set_ifs_str(char *args, char ifs, char **res, int *c)
+void	set_ifs_str(char *args, char *ifs, char **res, int *c)
 {
 	int	start;
 	int	i;
@@ -71,12 +71,12 @@ void	set_ifs_str(char *args, char ifs, char **res, int *c)
 	i = 0;
 	while (args[i])
 	{
-		if (args[i] == ifs)
-			set_empty_str(res, &i, &c);
+		if (is_split_ifs(args[i], ifs))
+			set_empty_str(res, &i, c);
 		else
 		{
 			start = i;
-			while (args[i] && args[i] != ifs)
+			while (args[i] && !is_split_ifs(args[i], ifs))
 				i++;
 			res[*c] = ft_substr(args, start, i - start);
 			if (!res[*c])
@@ -86,7 +86,7 @@ void	set_ifs_str(char *args, char ifs, char **res, int *c)
 	}
 }
 
-char	**do_ws_ifs(char *args, char ifs)
+char	**do_ws_ifs(char *args, char *ifs)
 {
 	int		c;
 	char	**res;

@@ -6,12 +6,12 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:07:06 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/10 10:19:52 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/15 14:42:22 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/parser.h"
+#include "../../inc/expansion.h"
 
 char	*set_after_dollar(char *args)
 {
@@ -23,7 +23,7 @@ char	*set_after_dollar(char *args)
 	i = 0;
 	len = 0;
 	start = find_end_var(args);
-	if (!start)
+	if (!start || !args[start])
 		return (NULL);
 	i = start;
 	while (args[i])
@@ -34,6 +34,7 @@ char	*set_after_dollar(char *args)
 	res = malloc(sizeof(char) * (len + 1));
 	if (!res)
 		return (NULL);
+	i = 0;
 	while (args[start])
 		res[i++] = args[start++];
 	res[i] = '\0';
@@ -56,7 +57,10 @@ char	*set_before_dollar(char *args)
 	if (!res)
 		return (NULL);
 	while (i < len)
+	{
 		res[i] = args[i];
+		i++;
+	}
 	res[i] = '\0';
 	return (res);
 }
@@ -71,9 +75,11 @@ char	*dollar_expanded(char *args, t_env *env)
 	dollar_pos = ft_strchr(args, '$');
 	if (!dollar_pos)
 		return (NULL);
+	if (dollar_pos != args && (dollar_pos[-1] == '"' && dollar_pos[1] == '"'))
+		return (ft_strndup("$", 3));
 	var_len = count_var_len(dollar_pos, 1);
 	if (!var_len)
-		return (NULL);
+		return (ft_strndup("$", 3));
 	to_expand = ft_substr(dollar_pos, 1, var_len);
 	if (!to_expand)
 		return (NULL);
@@ -92,12 +98,4 @@ int	ft_arraylen(char **args)
 	while (args[i])
 		i++;
 	return (i);
-}
-
-static char	**free_result(char **result, int j)
-{
-	while (--j >= 0)
-		free(result[j]);
-	free(result);
-	return (NULL);
 }
