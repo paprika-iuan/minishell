@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:07:06 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/15 14:42:22 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/16 12:43:58 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,11 @@ char	*dollar_expanded(char *args, t_env *env)
 	dollar_pos = ft_strchr(args, '$');
 	if (!dollar_pos)
 		return (NULL);
-	if (dollar_pos != args && (dollar_pos[-1] == '"' && dollar_pos[1] == '"'))
-		return (ft_strndup("$", 3));
+	//if (dollar_pos != args && (dollar_pos[-1] == '"' && dollar_pos[1] == '"'))
+	//	return (ft_strndup("$", 3));
 	var_len = count_var_len(dollar_pos, 1);
 	if (!var_len)
-		return (ft_strndup("$", 3));
+		return (ft_strndup("$", 1));
 	to_expand = ft_substr(dollar_pos, 1, var_len);
 	if (!to_expand)
 		return (NULL);
@@ -94,6 +94,8 @@ int	ft_arraylen(char **args)
 {
 	int	i;
 
+	if (!args)
+		return (0);
 	i = 0;
 	while (args[i])
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 18:33:32 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/15 15:29:51 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/16 20:18:01 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	cleanup_vars(char *before, char *after, char **splited, char **after_splite
 		free(after);
 	if (after_splited)
 		free_matrix(after_splited);
-	if (splited)
+	if (splited && splited[0] && splited[0][0])
 		free_matrix(splited);
 }
 
@@ -129,29 +129,43 @@ char	**do_noquote(char **args, int i, t_env *env)
 	char	**splited;
 
 	dollar = dollar_expanded(args[i], env);
+	//dprintf(2, "dollar---%s\n", dollar);
 	after_splited = NULL;
 	splited = NULL;
 	before = set_context_before(args, i);
+	//dprintf(2, "dbefore---%s\n", before);
 	after = set_context_after(args, i);
+	//dprintf(2, "after---%s\n", after);
 	if (dollar)
 	{
 		splited = do_word_splitting(dollar, env);
+		//printf("Si\n");
 		if (splited && (before || after))
 		{
 			splited = concat_before(splited, before);
+			//dprintf(2, "splited---%s\n", splited[0]);
 			if (after && after[0])
 			{
 				after_splited = expand_if_dollar(after, env);
+				//printf("Su\n");
 				splited = concat_after(splited, after_splited);
 			}
 		}
 		args = update_matrix(args, splited, i);
 	}
+	else if (after)
+	{
+		
+		after_splited = expand_if_dollar(after, env);
+		args = update_no_ws_expansion(args, i, before, after_splited);
+	}
 	else
 	{
-		if (after)
-				after_splited = expand_if_dollar(after, env);
-		args = update_no_ws_expansion(args, i, before, after);
+		dollar = malloc(1);
+		dollar = "''";
+		free(args[i]);
+		args[i] = ft_strdup(dollar);
+		//return (args);
 	}
 	cleanup_vars(before, after, splited, after_splited);
 	return (args);

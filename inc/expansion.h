@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:13:44 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/15 12:29:27 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/16 18:43:10 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		ft_arraylen(char **args);
 char	**update_matrix(char **args, char **splited, int i);
 char	**concat_before(char **splited, char *before);
 char	**concat_after(char **splited, char **after);
-char    **update_no_ws_expansion(char **args, int i, char *before, char *after);
+char    **update_no_ws_expansion(char **args, int i, char *before, char **after);
 
 /****** FT_SPLITSTR.C **************/
 char	**ft_splitstr(char const *s, char *c);

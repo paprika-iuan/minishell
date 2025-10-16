@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 09:49:35 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/15 16:16:34 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/16 19:29:08 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,14 +114,17 @@ char **concat_after(char **splited, char **after)
 	return (splited);
 }
 
-char **update_no_ws_expansion(char **args, int i, char *before, char *after)
+char **update_no_ws_expansion(char **args, int i, char *before, char **after)
 {
-	if (before && after)
-		update_case_n1(&args[i], before, after);
-	else if (before && !after)
+	//if (before && after)
+	//	update_case_n1(&args[i], before, after);
+	if (before)
 		update_case_n2(&args[i], before);
-	else if (!before && after)
-		update_case_n2(&args[i], after);
+	else if (after)
+	{
+		args = update_matrix(args, after, i);
+		after = NULL;
+	}
 	else if (!before && !after)
 		args[i] = NULL;
 	return (args);
