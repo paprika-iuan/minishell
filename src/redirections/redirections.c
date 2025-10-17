@@ -12,6 +12,18 @@
 
 #include "../../inc/parser.h"
 
+void	print_file_error(char *filename)
+{
+	ft_putstr_fd("wanghao: ", STDERR_FILENO);
+	ft_putstr_fd(filename, STDERR_FILENO);
+	if (errno == ENOENT)
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	else if (errno == EACCES)
+		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+	else
+		ft_putstr_fd(": error opening file\n", STDERR_FILENO);
+}
+
 int	open_file(t_NodeAST *node)
 {
 	int			fd;
@@ -25,16 +37,7 @@ int	open_file(t_NodeAST *node)
 	else
 		fd = node->redirect.fd;
 	if (fd < 0)
-	{
-		if (errno == ENOENT)
-		{
-			// stderr
-			printf("wanghao: %s: ", node->redirect.file);
-			printf("No such file or directory\n");
-		}
-		else if (errno == EACCES)
-			printf("wanghao: %s: Permission denied\n", node->redirect.file);
-	}
+		print_file_error(node->redirect.file);
 	return (fd);
 }
 

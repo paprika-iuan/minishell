@@ -21,6 +21,14 @@ void	sig_int_c(int sign)
 	rl_on_new_line();
 	rl_redisplay();
 	g_signal_value = sign;
+	// last_error = 128 + g_signal_num
+}
+
+void	sig_nonint_c(int sign)
+{
+	printf("\n");
+	rl_on_new_line();
+	g_signal_value = sign;
 }
 
 void	signals_intmode(void)
@@ -31,6 +39,6 @@ void	signals_intmode(void)
 
 void	signals_nonintmode(void)
 {
-	signal(SIGINT, sig_int_c);
-	signal(SIGQUIT, sig_int_c);
+	signal(SIGINT, sig_nonint_c);
+	signal(SIGQUIT, sig_nonint_c);
 }

@@ -58,6 +58,8 @@ int	execute_cmd(t_NodeAST *node, t_env *env)
 	char	*full_path;
 	char	**env_arr;
 
+	if (!node->cmd.args)
+		return (ERROR);
 	env_arr = NULL;
 	full_path = set_cmd_path(node, env);
 	if (!full_path)
