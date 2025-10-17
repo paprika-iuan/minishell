@@ -142,14 +142,6 @@ void	process_line(int tmp_file, char *line, int quot, t_env *env)
 	free(line);
 }
 
-void set_heresign(int sig)
-{
-    (void)sig;
-    g_signal_value = SIGINT;
-    rl_done = 1; // stop readline loop safely
-    write(1, "\n", 1);
-}
-
 void	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
 {
 	char	*line;
