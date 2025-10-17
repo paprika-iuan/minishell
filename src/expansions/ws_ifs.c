@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:23:43 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/10 12:31:06 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/16 20:22:10 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	set_empty_str(char **res, int *i, int *c)
 	res[*c] = malloc(1);
 	if (!res[*c])
 		return ;
-	res[*c][0] = '\0';
+	res[*c] = "''";
 	(*c)++;
 	(*i)++;
 }
