@@ -108,4 +108,17 @@ int		execute_builtin(t_NodeAST *node, t_env *env);
 
 int		ft_exit(char **args, t_env *env, t_NodeAST *node);
 
+int		open_files(t_NodeAST *node);
+int		do_redirections(t_NodeAST *node);
+int		has_infile(t_NodeAST *node);
+int		has_outfile(t_NodeAST *node);
+int		exec_builtin_with_redirections(t_NodeAST *node, t_env *env);
+void	setup_pipe_cmd_fds(t_pipe_struct *t_pipe, t_NodeAST *node);
+int		pipe_node_redirections(t_NodeAST *node);
+void	print_file_error(char *filename);
+int		handle_heredocs(t_NodeAST *node, t_env *env);
+void	read_heredoc_input(int tmp_file, char *delimitter, t_env *env);
+char	*make_here_name(int id);
+void	close_all_heredocs(t_NodeAST *node);
+
 #endif

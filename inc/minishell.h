@@ -23,6 +23,7 @@
 \033[0m"
 
 # define READLINE_MSG "\033[1;31m[🏓wanghao]\033[35m$> \033[0m"
+# define READLINE_HEREDOC "\033[1;34mheredoc> \033[0m"
 # define SUCCESS 1
 # define FAILURE 0
 # define COMMAND_NOT_EXECUTABLE 126
@@ -41,11 +42,12 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <signal.h>
+# include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/wait.h>
 
-extern int signal_value;
+extern int g_signal_value;
 
 /****** LEXER ******/
 
@@ -121,5 +123,6 @@ typedef struct	s_pipe_struct
 /****** SIGNALS.C ******/
 void	sig_int_c(int sign);
 void	signals_intmode(void);
+void	signals_nonintmode(void);
 
 #endif

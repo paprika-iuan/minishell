@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
-#include <stdio.h>
 
 void	init_pipe_struct(t_pipe_struct *t_pipe)
 {
@@ -24,37 +23,25 @@ void	init_pipe_struct(t_pipe_struct *t_pipe)
 
 t_NodeAST	*get_current_cmd(t_NodeAST *node, int pipe_idx)
 {
-	int			i;
-	t_NodeAST	*curr_node;
+	t_NodeAST	*curr;
 
+	curr = node;
 	if (pipe_idx == 0)
-		return (node->binary.left);
-	i = 0;
-	curr_node = node;
-	while (i < pipe_idx)
+		return (curr->binary.left);
+	while (pipe_idx > 1 && curr->binary.right
+		&& curr->binary.right->type == NODE_PIPE)
 	{
-		curr_node = curr_node->binary.right;
-		i++;
+		curr = curr->binary.right;
+		pipe_idx--;
 	}
-	return (curr_node);
-}
-
-void	setup_cmd_fds(t_pipe_struct *t_pipe)
-{
-	// MISSING REDIRECTS
-	if (t_pipe->pipe_idx == 0 && t_pipe->num_pipes > 0)
+	if (curr->binary.right)
 	{
-		dup2(t_pipe->pipes[1], STDOUT_FILENO);
+		if (curr->binary.right->type == NODE_PIPE)
+			return (curr->binary.right->binary.left);
+		else
+			return (curr->binary.right);
 	}
-	else if (t_pipe->pipe_idx == t_pipe->num_pipes)
-	{
-		dup2(t_pipe->pipes[2 * (t_pipe->pipe_idx - 1)], STDIN_FILENO);
-	}
-	else
-	{
-		dup2(t_pipe->pipes[2 * (t_pipe->pipe_idx - 1)], STDIN_FILENO);
-		dup2(t_pipe->pipes[2 * t_pipe->pipe_idx + 1], STDOUT_FILENO);
-	}
+	return (NULL);
 }
 
 int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_env *env)
@@ -67,9 +54,11 @@ int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_env *env)
 	t_pipe->child_pids[t_pipe->pipe_idx] = t_pipe->pid;
 	if (t_pipe->pid == 0)
 	{
-		setup_cmd_fds(t_pipe);
-		close_pipes(t_pipe);
 		current_cmd = get_current_cmd(node, t_pipe->pipe_idx);
+		setup_pipe_cmd_fds(t_pipe, current_cmd);
+		if (!pipe_node_redirections(current_cmd))
+			exit(ERROR);
+		close_pipes(t_pipe);
 		exit(execute_ast(current_cmd, env));
 	}
 	return (FORK_SUCCESS);

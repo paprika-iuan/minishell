@@ -25,7 +25,8 @@ int	main(int ac, char **av, char **env_og)
 	(void)av;
 	printf("%s", HEADER);
 	env = envcpy(env_og);
-	add_shlvl(env);
+	if (env)
+		add_shlvl(env);
 	while (1)
 	{
 		signals_intmode();
@@ -54,11 +55,21 @@ int	main(int ac, char **av, char **env_og)
 			free(input);
 			continue ;
 		}
-		// print_ast(ast_tree, 0);
+		//print_ast(ast_tree, 0);
+		error = handle_heredocs(ast_tree, env);
+		signals_nonintmode();
+		if (error == ERROR)
+		{
+			close_all_heredocs(ast_tree);
+			free_ast(ast_tree);
+			free(input);
+			continue ;
+		}
 		if (ast_tree->type == NODE_CMD)
 			error = execute_one_command(ast_tree, env);
 		else
 			error = execute_ast(ast_tree, env);
+		close_all_heredocs(ast_tree);
 		free_ast(ast_tree);
 		free(input);
 	}

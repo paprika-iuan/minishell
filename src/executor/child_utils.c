@@ -14,10 +14,13 @@
 
 int	allocate_child_pids(t_pipe_struct *t_pipe)
 {
+	char	*err_msg;
+
 	t_pipe->child_pids = malloc((t_pipe->num_pipes + 1) * sizeof(pid_t));
 	if (!t_pipe->child_pids)
 	{
-		printf("Memory allocation failed for child_pids\n");
+		err_msg = "Memory allocation failed for child_pids\n";
+		ft_putstr_fd(err_msg, STDERR_FILENO);
 		return (FAILURE);
 	}
 	return (SUCCESS);

@@ -68,7 +68,7 @@ t_token	*set_reparse(t_token *tokens, int close, int *error)
 
 int	is_subshell(t_token *dup, int *error)
 {
-	if (dup->next && dup->next->type == SUBSHELL && error == 0)
+	if (dup->next && dup->next->type == SUBSHELL && *error == 0)
 	{
 		printf(SYNTAX_ERROR);
 		*error = 2;
