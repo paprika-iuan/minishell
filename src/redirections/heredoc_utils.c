@@ -160,6 +160,7 @@ int	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
 	rltmp = rl_getc_function;
 	quotes = has_quotes(delimitter);
 	exit_from_signal = 0;
+	g_signal_value = 0;
 	if (quotes)
 		clean_delim = remove_quotes(delimitter);
 	else
@@ -170,7 +171,12 @@ int	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
 		rl_getc_function = getc;
 		line = readline(READLINE_HEREDOC);
 		if (g_signal_value == SIGINT)
+		{
+			if (line)
+				free(line);
 			exit_from_signal = EXIT_FROM_SIGNAL;
+			break;
+		}
 		if (!line)
 			break ;
 		if (ft_strcmp(line, clean_delim) == 0)
