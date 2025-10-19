@@ -16,11 +16,9 @@ int	g_signal_value = 0;
 
 void	sig_int_c(int sign)
 {
-	printf("\n[DEBUG sig_int_c] rl_done=%d, rl_point=%d, rl_end=%d, rl_already_prompted=%d\n",
-		rl_done, rl_point, rl_end, rl_already_prompted);
-	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
+	printf("\n");
 	rl_redisplay();
 	g_signal_value = sign;
 	//printf("sign: %i", g_signal_value);
@@ -29,8 +27,8 @@ void	sig_int_c(int sign)
 
 void	sig_nonint_c(int sign)
 {
-	printf("\n");
 	rl_on_new_line();
+	printf("\n");
 	g_signal_value = sign;
 }
 

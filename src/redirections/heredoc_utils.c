@@ -144,12 +144,6 @@ void	process_line(int tmp_file, char *line, int quot, t_env *env)
 	free(line);
 }
 
-// printf("heresign\n");
-	// rl_replace_line("", 0);
-	// // rl_on_new_line();
-	// // rl_redisplay();
-	// printf("soy");
-
 void set_heresign(int sign)
 {
 	g_signal_value = sign;
@@ -176,19 +170,9 @@ int	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
 		rl_getc_function = getc;
 		line = readline(READLINE_HEREDOC);
 		if (g_signal_value == SIGINT)
-		{
-			printf("[DEBUG heredoc] After SIGINT: rl_done=%d, rl_point=%d, rl_end=%d\n",
-				rl_done, rl_point, rl_end);
-			if (line)
-				free(line);
-			line = NULL;
 			exit_from_signal = EXIT_FROM_SIGNAL;
-		}
 		if (!line)
-		{
-			printf("[DEBUG heredoc] Breaking from heredoc: exit_from_signal=%d\n", exit_from_signal);
 			break ;
-		}
 		if (ft_strcmp(line, clean_delim) == 0)
 		{
 			free(line);
@@ -197,12 +181,6 @@ int	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
 		process_line(tmp_file, line, quotes, env);
 	}
 	rl_getc_function = rltmp;
-	printf("[DEBUG heredoc] After restoring rl_getc_function: rl_done=%d\n", rl_done);
-	if (exit_from_signal == EXIT_FROM_SIGNAL)
-{
-		rl_set_prompt("");  // Clear any stored prompt
-		rl_replace_line("", 0);
-}
 	if (quotes)
 		free(clean_delim);
 	return (exit_from_signal);
