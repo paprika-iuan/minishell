@@ -25,7 +25,8 @@ void	get_heredoc(char *tmp_filename, t_NodeAST *node, int *status, t_env *n)
 		*status = ERROR;
 		return (print_file_error(tmp_filename), free(tmp_filename));
 	}
-	read_heredoc_input(write_fd, delimitter, n);
+	if (read_heredoc_input(write_fd, delimitter, n) == EXIT_FROM_SIGNAL)
+		*status = EXIT_FROM_SIGNAL + g_signal_value;
 	close(write_fd);
 	read_fd = open(tmp_filename, O_RDONLY);
 	if (read_fd < 0)

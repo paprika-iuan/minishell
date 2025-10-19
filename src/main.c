@@ -20,16 +20,21 @@ int	main(int ac, char **av, char **env_og)
 	t_NodeAST	*ast_tree;
 	t_env		*env;
 	int			error;
+	int			here;
 
 	(void)ac;
 	(void)av;
+	here = 0;
 	printf("%s", HEADER);
 	env = envcpy(env_og);
 	if (env)
 		add_shlvl(env);
+	//signals_nonintmode();
 	while (1)
 	{
 		signals_intmode();
+		printf("[DEBUG main] Top of loop: rl_done=%d, rl_point=%d, rl_end=%d\n",
+			rl_done, rl_point, rl_end);
 		input = readline(READLINE_MSG);
 		if (!input)
 			break ;
@@ -56,15 +61,30 @@ int	main(int ac, char **av, char **env_og)
 			continue ;
 		}
 		//print_ast(ast_tree, 0);
+		printf("[DEBUG main] Before handle_heredocs: rl_done=%d, rl_point=%d, rl_end=%d\n",
+			rl_done, rl_point, rl_end);
 		error = handle_heredocs(ast_tree, env);
+		// printf("error: %i\n", error);
 		signals_nonintmode();
-		if (error == ERROR)
+		printf("[DEBUG main] After handle_heredocs: error=%d, g_signal=%d, rl_done=%d, rl_point=%d, rl_end=%d\n",
+			error, g_signal_value, rl_done, rl_point, rl_end);
+		if (error)
 		{
+			printf("[DEBUG main] In ERROR block, resetting readline state\n");
+			rl_done = 0;
+			rl_forced_update_display();
 			close_all_heredocs(ast_tree);
 			free_ast(ast_tree);
 			free(input);
 			continue ;
 		}
+		// if (error == ERROR)
+		// {
+		// 	close_all_heredocs(ast_tree);
+		// 	free_ast(ast_tree);
+		// 	free(input);
+		// 	continue ;
+		// }
 		if (ast_tree->type == NODE_CMD)
 			error = execute_one_command(ast_tree, env);
 		else
@@ -72,6 +92,7 @@ int	main(int ac, char **av, char **env_og)
 		close_all_heredocs(ast_tree);
 		free_ast(ast_tree);
 		free(input);
+		g_signal_value = 0;
 	}
 	rl_clear_history();
 	free_env_list(env);

@@ -124,5 +124,7 @@ typedef struct	s_pipe_struct
 void	sig_int_c(int sign);
 void	signals_intmode(void);
 void	signals_nonintmode(void);
+void set_heresign(int sign);
+void	signals_here(void);
 
 #endif

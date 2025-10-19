@@ -137,29 +137,56 @@ void	process_line(int tmp_file, char *line, int quot, t_env *env)
 		free(line);
 		line = expanded;
 	}
-	write(tmp_file, line, strlen(line));
+	if (!line)
+		return ;
+	write(tmp_file, line, ft_strlen(line));
 	write(tmp_file, "\n", 1);
 	free(line);
 }
 
-void	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
-{
-	char	*line;
-	char	*clean_delim;
-	int		quotes;
+// printf("heresign\n");
+	// rl_replace_line("", 0);
+	// // rl_on_new_line();
+	// // rl_redisplay();
+	// printf("soy");
 
+void set_heresign(int sign)
+{
+	g_signal_value = sign;
+}
+
+int	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
+{
+	char				*line;
+	char				*clean_delim;
+	int					quotes;
+	rl_getc_func_t		*rltmp;
+	int					exit_from_signal;
+
+	rltmp = rl_getc_function;
 	quotes = has_quotes(delimitter);
+	exit_from_signal = 0;
 	if (quotes)
 		clean_delim = remove_quotes(delimitter);
 	else
 		clean_delim = delimitter;
-
 	while (1)
 	{
+		signal(SIGINT, set_heresign);
+		rl_getc_function = getc;
 		line = readline(READLINE_HEREDOC);
-		printf("%i\n", rl_done);
+		if (g_signal_value == SIGINT)
+		{
+			printf("[DEBUG heredoc] After SIGINT: rl_done=%d, rl_point=%d, rl_end=%d\n",
+				rl_done, rl_point, rl_end);
+			if (line)
+				free(line);
+			line = NULL;
+			exit_from_signal = EXIT_FROM_SIGNAL;
+		}
 		if (!line)
 		{
+			printf("[DEBUG heredoc] Breaking from heredoc: exit_from_signal=%d\n", exit_from_signal);
 			break ;
 		}
 		if (ft_strcmp(line, clean_delim) == 0)
@@ -169,8 +196,16 @@ void	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
 		}
 		process_line(tmp_file, line, quotes, env);
 	}
+	rl_getc_function = rltmp;
+	printf("[DEBUG heredoc] After restoring rl_getc_function: rl_done=%d\n", rl_done);
+	if (exit_from_signal == EXIT_FROM_SIGNAL)
+{
+		rl_set_prompt("");  // Clear any stored prompt
+		rl_replace_line("", 0);
+}
 	if (quotes)
 		free(clean_delim);
+	return (exit_from_signal);
 }
 
 char	*make_here_name(int id)
