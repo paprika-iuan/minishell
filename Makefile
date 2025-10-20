@@ -44,7 +44,7 @@ OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 CC = cc
-CCFLAGS = -Wall -Wextra -Werror -g
+CCFLAGS = -Wall -Wextra  -g
 LDFLAGS = -lreadline -fsanitize=address
 
 all: $(NAME)

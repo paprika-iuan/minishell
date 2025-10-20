@@ -16,9 +16,9 @@ int	g_signal_value = 0;
 
 void	sig_int_c(int sign)
 {
+	rl_on_new_line();
 	printf("\n");
 	rl_replace_line("", 0);
-	rl_on_new_line();
 	rl_redisplay();
 	g_signal_value = sign;
 	// last_error = 128 + g_signal_num
@@ -26,7 +26,7 @@ void	sig_int_c(int sign)
 
 void	sig_nonint_c(int sign)
 {
-	printf("\n");
+    printf("\n");
 	rl_on_new_line();
 	g_signal_value = sign;
 }

@@ -137,31 +137,57 @@ void	process_line(int tmp_file, char *line, int quot, t_env *env)
 		free(line);
 		line = expanded;
 	}
-	write(tmp_file, line, strlen(line));
+	if (!line)
+		return ;
+	write(tmp_file, line, ft_strlen(line));
 	write(tmp_file, "\n", 1);
 	free(line);
 }
 
-void	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
+void set_heresign(int sign)
 {
-	char	*line;
-	char	*clean_delim;
-	int		quotes;
+	printf("\n");
+	g_signal_value = sign;
+}
+
+int	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
+{
+	char				*line;
+	char				*clean_delim;
+	int					quotes;
+	int					exit_from_signal;
+	struct sigaction	sa;
 
 	quotes = has_quotes(delimitter);
+	exit_from_signal = 0;
+	g_signal_value = 0;
 	if (quotes)
 		clean_delim = remove_quotes(delimitter);
 	else
 		clean_delim = delimitter;
-
+	sa.sa_handler = set_heresign;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	sigaction(SIGINT, &sa, NULL);
 	while (1)
 	{
-		line = readline(READLINE_HEREDOC);
-		printf("%i\n", rl_done);
-		if (!line)
+		write(STDOUT_FILENO, READLINE_HEREDOC, ft_strlen(READLINE_HEREDOC));
+		line = get_next_line(STDIN_FILENO);
+		if (g_signal_value == SIGINT)
 		{
+			if (line)
+				free(line);
+			exit_from_signal = EXIT_FROM_SIGNAL;
 			break ;
 		}
+		if (!line)
+		{
+			printf("\n");
+			break ;
+		}
+		int len = ft_strlen(line);
+		if (len > 0 && line[len - 1] == '\n')
+			line[len - 1] = '\0';
 		if (ft_strcmp(line, clean_delim) == 0)
 		{
 			free(line);
@@ -171,6 +197,7 @@ void	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
 	}
 	if (quotes)
 		free(clean_delim);
+	return (exit_from_signal);
 }
 
 char	*make_here_name(int id)
