@@ -64,15 +64,16 @@ int	main(int ac, char **av, char **env_og)
 			close_all_heredocs(ast_tree);
 			free_ast(ast_tree);
 			free(input);
+			input = NULL;
 			continue ;
 		}
+		free(input);
 		if (ast_tree->type == NODE_CMD)
 			error = execute_one_command(ast_tree, env);
 		else
 			error = execute_ast(ast_tree, env);
 		close_all_heredocs(ast_tree);
 		free_ast(ast_tree);
-		free(input);
 	}
 	rl_clear_history();
 	free_env_list(env);
