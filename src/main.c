@@ -36,8 +36,12 @@ int	main(int ac, char **av, char **env_og)
 		input = readline(READLINE_MSG);
 		if (!input)
 			break ;
+		if (!*input)
+		{
+			free(input);
+			continue ;
+		}
 		add_history(input);
-		error = 0;
 		tokens = tokenizer(input, &error);
 		printf("====error: %i===\n", error);
 		if (!tokens)
@@ -67,7 +71,6 @@ int	main(int ac, char **av, char **env_og)
 		}
 		//print_ast(ast_tree, 0);
 		error = handle_heredocs(ast_tree, env);
-
 		signals_nonintmode();
 		if (error)
 		{
@@ -84,8 +87,9 @@ int	main(int ac, char **av, char **env_og)
 			error = execute_one_command(ast_tree, env);
 		else
 			error = execute_ast(ast_tree, env);
+		printf("===error: %i===\n", error);
 		set_last_error(error, env);
-		printf("===last error: %i===\n", get_last_error(env));
+		printf("===last errorA: %i===\n", get_last_error(env));
 		close_all_heredocs(ast_tree);
 		free_ast(ast_tree);
 	}

@@ -72,6 +72,7 @@ t_token	*identifier(char **tokens, int *num_tokens, int *error)
 	t_token	*node;
 	int		i;
 
+	*error = 0;
 	if (!tokens)
 		return (NULL);
 	head = NULL;

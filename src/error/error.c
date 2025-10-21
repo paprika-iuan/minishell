@@ -28,6 +28,17 @@ int	get_last_error(t_env *env)
 	return (0);
 }
 
+t_env	*find_error_node(t_env *env)
+{
+	while (env)
+	{
+		if (ft_isdigit(env->content[0]))
+			return (env);
+		env = env->next;
+	}
+	return (NULL);
+}
+
 void	set_last_error(int error, t_env *env)
 {
 	t_env	*iter;
@@ -38,16 +49,7 @@ void	set_last_error(int error, t_env *env)
 	if (!env)
 		return ;
 	iter = env;
-	error_node = NULL;
-	while (iter)
-	{
-		if (ft_isdigit(iter->content[0]))
-		{
-			error_node = iter;
-			break ;
-		}
-		iter = iter->next;
-	}
+	error_node = find_error_node(env);
 	error_str = ft_itoa(error);
 	if (!error_str)
 		return ;
