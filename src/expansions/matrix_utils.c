@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 09:49:35 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/21 17:17:54 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:28:57 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,18 +117,4 @@ char	**concat_after(char **splited, char **after)
 		return (res);
 	}
 	return (splited);
-}
-
-char	**update_no_ws_exp(char **args, int i, char *before, char **after)
-{
-	if (before)
-		update_case_n2(&args[i], before);
-	else if (after)
-	{
-		args = update_matrix(args, after, i);
-		after = NULL;
-	}
-	else if (!before && !after)
-		args[i] = NULL;
-	return (args);
 }

@@ -40,6 +40,7 @@ SRC = src/main.c \
 		src/expansions/expansions.c \
 		src/expansions/ft_splitstr.c \
 		src/expansions/no_quote.c \
+		src/expansions/no_quote_utils.c \
 		src/expansions/matrix_utils.c \
 		src/expansions/single_quote.c \
 		src/expansions/ws_ifs.c \

@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:13:44 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/21 10:14:23 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/21 19:40:50 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ void	update_case_n1(char **args, char *first, char *second);
 char	**do_noquote(char **args, int i, t_env *env);
 char	**expand_if_dollar(char *args, t_env *env);
 
-/****** WS_IFS.C *******************/
-int		is_ifs(char c, t_env *env);
-char	**do_ws_ifs(char *args, char *ifs);
+// /****** WS_IFS.C *******************/
+// int		is_ifs(char c, t_env *env);
+// char	**do_ws_ifs(char *args, char *ifs);
 
 /****** EXPANSION_VAR_UTILS.C ******/
 char	*set_after_dollar(char *args);
@@ -64,10 +64,15 @@ int		is_split_ifs(char ch, char *c);
 
 char	*expand_dollar_line(char *quotes, t_env *env);
 
-/****** QUOTES.C **************/
+/****** QUOTES.C *******************/
 char	**expand_quotes(char **args);
 char	**reset_expanded_quotes(char **args);
 
-char	**join_matrix(char **a, char **b);
+/****** NO_QUOTE_UTILS.C ***********/
+char	**update_no_ws_exp(char **args, int i, char *before, char **after);
+char	**case_no_ws(char *dollar);
+char	**do_word_splitting(char *dollar, t_env *env);
+void	cleanup_vars(char *before, char *after, char **splited, char **a_s);
+char	*set_context_before(char **args, int i);
 
 #endif
