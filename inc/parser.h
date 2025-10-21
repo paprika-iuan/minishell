@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:54:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/03 11:13:34 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/17 11:59:19 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,13 +100,27 @@ int		set_pipes(t_pipe_struct *t_pipe, t_NodeAST *node);
 void	close_pipes(t_pipe_struct *t_pipe);
 int		allocate_child_pids(t_pipe_struct *t_pipe);
 int		wait_for_children(t_pipe_struct *t_pipe);
+void	cleanup_child(char *full_path, char **env_arr);
 char 	*set_cmd_path(t_NodeAST *node, t_env *env);
 int		execute_one_command(t_NodeAST *node, t_env *env);
+int		is_builtin(t_NodeAST *node);
+int		execute_builtin(t_NodeAST *node, t_env *env);
 
-// broza
-void	cmd_iter(t_NodeAST *node, void (*f)(t_NodeAST *, void *), void *ctx);
-void print_cmd_path_cb(t_NodeAST *node, void *ctx);
+int		ft_exit(char **args, t_env *env, t_NodeAST *node);
 
-void	debug_open_fds(const char *label);
+int		open_files(t_NodeAST *node);
+int		do_redirections(t_NodeAST *node);
+int		has_infile(t_NodeAST *node);
+int		has_outfile(t_NodeAST *node);
+int		exec_builtin_with_redirections(t_NodeAST *node, t_env *env);
+void	setup_pipe_cmd_fds(t_pipe_struct *t_pipe, t_NodeAST *node);
+int		pipe_node_redirections(t_NodeAST *node);
+void	print_file_error(char *filename);
+int		handle_heredocs(t_NodeAST *node, t_env *env);
+void	read_heredoc_input(int tmp_file, char *delimitter, t_env *env);
+char	*make_here_name(int id);
+void	close_all_heredocs(t_NodeAST *node);
+
+void	update_node_args(t_NodeAST *node, t_env *env);
 
 #endif

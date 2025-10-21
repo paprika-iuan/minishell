@@ -41,10 +41,7 @@ t_env	*envcpy(char **envp)
 	{
 		node = create_env_node(envp[i]);
 		if (!node)
-		{
-			free_env_list(head);
-			return (NULL);
-		}
+			return (free_env_list(head), NULL);
 		if (!head)
 			head = node;
 		else
@@ -64,14 +61,14 @@ t_env	*last_env_node(t_env *node)
 	return (node);
 }
 
-void	add_to_env_list(t_env **cp_env, t_env *new_node)
+void	add_to_env_list(t_env *env, t_env *new_node)
 {
 	if (!new_node)
 		return ;
-	if (!*cp_env)
-		*cp_env = new_node;
+	if (!env)
+		env = new_node;
 	else
-		last_env_node(*cp_env)->next = new_node;
+		last_env_node(env)->next = new_node;
 }
 
 t_env	*create_env_node(char *content)

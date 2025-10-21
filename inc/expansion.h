@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:13:44 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/16 18:43:10 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/21 10:14:23 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,18 @@ int		find_end_var(char *args);
 int		expansion_type(char *args);
 int		find_dollar(char *args, char n, int i);
 int		count_var_len(char *args, int start);
+int		find_closure(char *args, char n, int i);
 
 /****** DO_DOUBLEQUOTE.C ***********/
 char	**do_doublequote(char **args, int i, t_env *env);
 void	update_case_n2(char **args, char *expanded);
+
+/****** DOUBLE_QUOTE_UTILS.C ***********/
+char	*extract_str(char **args, int i, int begin_join, int num_appear);
+char	*expand_dollar_line(char *quotes, t_env *env);
+char    **set_tmp_arr(char *after, t_env *env);
+char	**fuse_dqvars(char *quotes, char *after, t_env *env);
+
 
 /****** DO_SINGLEQUOTE.C ***********/
 char	**do_singlequote(char **args, int i, t_env *env);
@@ -48,10 +56,18 @@ int		ft_arraylen(char **args);
 char	**update_matrix(char **args, char **splited, int i);
 char	**concat_before(char **splited, char *before);
 char	**concat_after(char **splited, char **after);
-char    **update_no_ws_expansion(char **args, int i, char *before, char **after);
+char	**update_no_ws_exp(char **args, int i, char *before, char **after);
 
 /****** FT_SPLITSTR.C **************/
 char	**ft_splitstr(char const *s, char *c);
 int		is_split_ifs(char ch, char *c);
+
+char	*expand_dollar_line(char *quotes, t_env *env);
+
+/****** QUOTES.C **************/
+char	**expand_quotes(char **args);
+char	**reset_expanded_quotes(char **args);
+
+char	**join_matrix(char **a, char **b);
 
 #endif

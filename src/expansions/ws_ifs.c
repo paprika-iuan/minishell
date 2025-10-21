@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 14:23:43 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/16 20:22:10 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/20 16:47:21 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	count_ifs_tokens(char *args, char *ifs)
 		else
 		{
 			while (args[i] && !is_split_ifs(args[i], ifs))
-				i++;	
+				i++;
 			count++;
 		}
 	}
@@ -57,7 +57,7 @@ void	set_empty_str(char **res, int *i, int *c)
 	res[*c] = malloc(1);
 	if (!res[*c])
 		return ;
-	res[*c] = "''";
+	res[*c][0] = '\0';
 	(*c)++;
 	(*i)++;
 }

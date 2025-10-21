@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:15:06 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/13 20:07:34 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/21 12:19:31 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 int	find_end_var(char *args)
 {
 	int	i;
-
 
 	i = 0;
 	while (args[i] && args[i] != '$')
@@ -30,18 +29,46 @@ int	find_end_var(char *args)
 	return (i);
 }
 
-int	find_n(int *n)
+void	hide_quotes(char *args, int j, int i)
 {
-	int	i;
+	int	k;
 
+	k = i + 1;
+	while (k < j)
+	{
+		if (args[k] == '\'')
+			args[k] = 5;
+		else if (args[k] == '"')
+			args[k] = 6;
+		k++;
+	}
+}
+
+char	*respect_quotes(char *args)
+{
+	int		i;
+	int		j;
+	char	q_type;
+
+	if (!args)
+		return (NULL);
 	i = 0;
-	if (n[i] == 0)
-		return ('$');
-	else if (n[i] == 1)
-		return ('\'');
-	else if (n[i] == 2)
-		return ('\"');
-	return (3);
+	while (args[i])
+	{
+		if (args[i] == '\'' || args[i] == '"')
+		{
+			q_type = args[i];
+			j = find_closure(args, q_type, i);
+			if (j)
+			{
+				hide_quotes(args, j, i);
+				i = j + 1;
+				continue ;
+			}
+		}
+		i++;
+	}
+	return (args);
 }
 
 char	**expand(char **args, t_env *env)
@@ -54,7 +81,7 @@ char	**expand(char **args, t_env *env)
 	{
 		n = expansion_type(args[i]);
 		if (n == 3)
-			 ;
+			args[i] = respect_quotes(args[i]);
 		else if (n == 2)
 			args = do_doublequote(args, i, env);
 		else if (n == 1)
@@ -65,3 +92,65 @@ char	**expand(char **args, t_env *env)
 	}
 	return (args);
 }
+
+// char	*respect_quotes(char *args)
+// {
+// 	int	i;
+// 	int	j;
+// 	int	k;
+
+// 	if (!args)
+// 		return (NULL);
+// 	i = 0;
+// 	while (args[i])
+// 	{
+// 		if (args[i] == '\'')
+// 		{
+// 			j = find_closure(args, '\'', i);
+// 			if (j)
+// 			{
+// 				k = i + 1;
+// 				while (k < j)
+// 				{
+// 					if (args[k] == '"')
+// 						args[k] = 5;
+// 					k++;
+// 				}
+// 				i = j + 1;
+// 				continue ;
+// 			}
+// 		}
+// 		else if (args[i] == '"')
+// 		{
+// 			j = find_closure(args, '"', i);
+// 			if (j)
+// 			{
+// 				k = i + 1;
+// 				while (k < j)
+// 				{
+// 					if (args[k] == '\'')
+// 						args[k] = 6;
+// 					k++;
+// 				}
+// 				i = j + 1;
+// 				continue ;
+// 			}
+// 		}
+// 		i++;
+// 	}
+// 	return (args);
+// }
+
+// int	find_n(int *n)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (n[i] == 0)
+// 		return ('$');
+// 	else if (n[i] == 1)
+// 		return ('\'');
+// 	else if (n[i] == 2)
+// 		return ('\"');
+// 	return (3);
+// }

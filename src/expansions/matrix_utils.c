@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 09:49:35 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/16 19:29:08 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/21 17:17:54 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,10 @@ char	**update_matrix(char **args, char **splited, int i)
 	while (s < a)
 		res[k++] = ft_strdup(args[s++]);
 	res[k] = NULL;
-	free_matrix(args);
-	return (res);
+	return (free_matrix(args), res);
 }
 
-char **concat_before(char **splited, char *before)
+char	**concat_before(char **splited, char *before)
 {
 	char	*tmp;
 
@@ -57,16 +56,27 @@ char **concat_before(char **splited, char *before)
 	return (splited);
 }
 
+void	loop_after_len(char **res, int *i, int after_len, char **after)
+{
+	int		j;
+
+	j = 0;
+	while (j + 1 < after_len)
+	{
+		res[*i] = ft_strdup(after[j + 1]);
+		(*i)++;
+		j++;
+	}
+}
+
 char	**update_matrix_after(char **splited, char **after)
 {
 	int		splited_len;
 	int		after_len;
 	char	**res;
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
 	after_len = ft_arraylen(after);
 	splited_len = ft_arraylen(splited);
 	res = NULL;
@@ -80,18 +90,13 @@ char	**update_matrix_after(char **splited, char **after)
 			res[i] = ft_strdup(splited[i]);
 			i++;
 		}
-		while (j + 1 < after_len)
-		{
-			res[i] = ft_strdup(after[j + 1]);
-			i++;
-			j++;
-		}
+		loop_after_len(res, &i, after_len, after);
 		res[i] = NULL;
 	}
 	return (res);
 }
 
-char **concat_after(char **splited, char **after)
+char	**concat_after(char **splited, char **after)
 {
 	int		j;
 	char	*tmp;
@@ -114,10 +119,8 @@ char **concat_after(char **splited, char **after)
 	return (splited);
 }
 
-char **update_no_ws_expansion(char **args, int i, char *before, char **after)
+char	**update_no_ws_exp(char **args, int i, char *before, char **after)
 {
-	//if (before && after)
-	//	update_case_n1(&args[i], before, after);
 	if (before)
 		update_case_n2(&args[i], before);
 	else if (after)

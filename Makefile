@@ -8,10 +8,11 @@ SRC = src/main.c \
 		src/builtins/pwd.c \
 		src/builtins/unset.c \
 		src/builtins/utils_env.c \
-		src/executor/child_pipe_utils.c \
+		src/executor/child_utils.c \
 		src/executor/cmd_utils.c \
 		src/executor/execute_and_or.c \
 		src/executor/execute_ast.c \
+		src/executor/execute_builtin.c \
 		src/executor/execute_pipe_sequence.c \
 		src/executor/pipe_utils.c \
 		src/executor/execute_command.c \
@@ -27,8 +28,13 @@ SRC = src/main.c \
 		src/parser/parse_subshell.c \
 		src/parser/parse_utils.c \
 		src/parser/parser.c \
+		src/redirections/heredoc.c \
+		src/redirections/heredoc_utils.c \
+		src/redirections/redirections.c \
+		src/redirections/pipe_redirections.c \
 		src/signals/signals.c \
 		src/expansions/double_quote.c \
+		src/expansions/double_quote_utils.c \
 		src/expansions/exp_find.c \
 		src/expansions/expansion_var_utils.c \
 		src/expansions/expansions.c \
@@ -36,7 +42,9 @@ SRC = src/main.c \
 		src/expansions/no_quote.c \
 		src/expansions/matrix_utils.c \
 		src/expansions/single_quote.c \
-		src/expansions/ws_ifs.c
+		src/expansions/ws_ifs.c \
+		src/expansions/quotes.c 
+
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -48,7 +56,7 @@ OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 CC = cc
-CCFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CCFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LDFLAGS = -lreadline
 
 all: $(NAME)

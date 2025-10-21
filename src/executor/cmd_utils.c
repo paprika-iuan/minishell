@@ -37,7 +37,7 @@ char	*pathfinder(char **paths, char *cmd_name)
 		if (!full_path)
 			return (free(tmp), NULL);
 		free(tmp);
-		if (access(full_path, X_OK) == 0)
+		if (access(full_path, F_OK) == 0)
 			return (full_path);
 		free(full_path);
 		paths++;
@@ -56,7 +56,7 @@ char	**set_paths(t_env *env)
 	paths = ft_split(path_env, ':');
 	if (!paths)
 	{
-		printf("Error creating paths\n");
+		ft_putstr_fd("Error creating paths\n", STDERR_FILENO);
 		return (NULL);
 	}
 	return (paths);
@@ -71,7 +71,7 @@ char	*set_cmd_path(t_NodeAST *node, t_env *env)
 	cmd_name = node->cmd.args[0];
 	if (is_abs_path(cmd_name))
 	{
-		if (access(cmd_name, X_OK) == 0)
+		if (access(cmd_name, F_OK) == 0)
 			return (ft_strdup(cmd_name));
 		return (NULL);
 	}

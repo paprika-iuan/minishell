@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:52:33 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/13 16:41:06 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/21 14:31:01 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,7 @@ char	**do_singlequote(char **args, int j, t_env *env)
 		expanded = ft_substr(args[i], j, ft_strlen(args[i]));
 		tmp_arr = malloc(sizeof(char *) * 2);
 		if (!tmp_arr)
-		{
-			free(first_simple_quotes);
-			return (args);
-		}
+			return (free(first_simple_quotes), args);
 		tmp_arr[0] = expanded;
 		tmp_arr[1] = NULL;
 		tmp = expand(tmp_arr, env);
@@ -55,9 +52,6 @@ char	**do_singlequote(char **args, int j, t_env *env)
 			free_matrix(tmp);
 	}
 	else
-	{
 		update_case_n1(&args[i], first_simple_quotes, "");
-	}
-	free(first_simple_quotes);
-	return (args);
+	return (free(first_simple_quotes), args);
 }
