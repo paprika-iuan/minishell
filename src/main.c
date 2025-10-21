@@ -43,7 +43,6 @@ int	main(int ac, char **av, char **env_og)
 		}
 		add_history(input);
 		tokens = tokenizer(input, &error);
-		printf("====error: %i===\n", error);
 		if (!tokens)
 		{
 			free(input);

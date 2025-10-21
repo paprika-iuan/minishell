@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include <unistd.h>
 
 char	*resolve_cd_path(char **args, t_env *env)
 {
@@ -71,7 +70,5 @@ int	ft_cd(char **args, t_env *env)
 		return (perror("cd"), ERROR);
 	if (set_env_value("OLDPWD", oldpath, env) == -1)
 		return (ERROR);
-	if (update_pwd(env, path) == -1)
-		return (ERROR);
-	return (0);
+	return (update_pwd(env, path));
 }
