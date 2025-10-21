@@ -55,9 +55,9 @@ int	execute_builtin(t_NodeAST *node, t_env *env)
 	if (ft_strcmp(name, "echo") == 0)
 		return (ft_echo(node->cmd.args));
 	if (ft_strcmp(name, "env") == 0)
-		return (ft_env(env));
+		return (ft_env(node->cmd.args, env));
 	if (ft_strcmp(name, "pwd") == 0)
-		return (ft_pwd(node->cmd.args));
+		return (ft_pwd(node->cmd.args, env));
 	return (ERROR);
 }
 

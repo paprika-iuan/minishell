@@ -26,7 +26,7 @@ void	sig_int_c(int sign)
 
 void	sig_nonint_c(int sign)
 {
-    printf("\n");
+	printf("\n");
 	rl_on_new_line();
 	g_signal_value = sign;
 }

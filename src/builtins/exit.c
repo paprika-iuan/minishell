@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
+#include <unistd.h>
 
 int	ft_exit(char **args, t_env *env, t_NodeAST *node)
 {
@@ -18,7 +19,7 @@ int	ft_exit(char **args, t_env *env, t_NodeAST *node)
 
 	printf("exit\n");
 	if (args[1] && ft_isnumeric(args[1]) && args[2])
-		return (printf("exit: too many arguments\n"), ERROR);
+		return (ft_putstr_fd("exit: too many arguments\n", 2), ERROR);
 	if (args[1])
 	{
 		if (ft_isnumeric(args[1]))

@@ -50,12 +50,13 @@ t_token	*tag_word(char *op)
 	return (new_token);
 }
 
-t_token	*tag_and_validate(char *token_str)
+t_token	*tag_and_validate(char *token_str, int *error)
 {
 	if (is_operand(token_str[0]))
 	{
 		if (token_str[0] == '&' && ft_strlen(token_str) == 1)
 		{
+			*error = 2;
 			printf(SYNTAX_ERROR);
 			return (NULL);
 		}
@@ -64,7 +65,7 @@ t_token	*tag_and_validate(char *token_str)
 	return (tag_word(token_str));
 }
 
-t_token	*identifier(char **tokens, int *num_tokens)
+t_token	*identifier(char **tokens, int *num_tokens, int *error)
 {
 	t_token	*head;
 	t_token	*current;
@@ -78,7 +79,7 @@ t_token	*identifier(char **tokens, int *num_tokens)
 	i = 0;
 	while (i < *num_tokens)
 	{
-		node = tag_and_validate(tokens[i]);
+		node = tag_and_validate(tokens[i], error);
 		if (!node)
 		{
 			free_token_list(head);
@@ -90,7 +91,7 @@ t_token	*identifier(char **tokens, int *num_tokens)
 	return (head);
 }
 
-t_token	*tokenizer(char *line)
+t_token	*tokenizer(char *line, int *error)
 {
 	char	**raw_tokens;
 	t_token	*id_tokens;
@@ -99,7 +100,7 @@ t_token	*tokenizer(char *line)
 	raw_tokens = lexer(line, &num_tokens);
 	if (!raw_tokens)
 		return (NULL);
-	id_tokens = identifier(raw_tokens, &num_tokens);
+	id_tokens = identifier(raw_tokens, &num_tokens, error);
 	free_tokens(raw_tokens, num_tokens);
 	if (!id_tokens)
 		return (NULL);

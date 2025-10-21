@@ -12,7 +12,24 @@
 
 #include "../../inc/minishell.h"
 
-int	ft_pwd(char **argv)
+static int	handle_pwd_error(t_env *env)
+{
+	char	*env_pwd;
+
+	if (errno == ENOENT)
+	{
+		env_pwd = get_env_value("PWD", env);
+		if (env_pwd)
+		{
+			printf("%s\n", env_pwd);
+			return (0);
+		}
+	}
+	perror("pwd");
+	return (ERROR);
+}
+
+int	ft_pwd(char **argv, t_env *env)
 {
 	char	pwd[PATH_MAX];
 
@@ -21,11 +38,10 @@ int	ft_pwd(char **argv)
 		ft_printf("pwd: too many arguments\n");
 		return (ERROR);
 	}
-	if (!getcwd(pwd, sizeof(pwd)))
+	if (getcwd(pwd, sizeof(pwd)))
 	{
-		perror("pwd");
-		return (ERROR);
+		printf("%s\n", pwd);
+		return (0);
 	}
-	printf("%s\n", pwd);
-	return (0);
+	return (handle_pwd_error(env));
 }
