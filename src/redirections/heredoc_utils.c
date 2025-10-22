@@ -50,74 +50,6 @@ char	*remove_quotes(char *str)
 	return (ft_strndup(start, size));
 }
 
-/*
-char	*dollar_expanded_heredoc(char *args, t_env *env)
-{
-	char	*dollar_pos;
-	char	*to_expand;
-	int		var_len;
-	char	*res;
-
-	dollar_pos = ft_strchr(args, '$');
-	if (!dollar_pos)
-		return (NULL);
-	var_len = count_var_len(dollar_pos, 1);
-	if (!var_len)
-		return (ft_strndup("$", 1));
-	to_expand = ft_substr(dollar_pos + 1, 0, var_len);
-	if (!to_expand)
-		return (NULL);
-	res = get_env_value(to_expand, env);
-	free (to_expand);
-	if (res)
-		return (ft_strdup(res));
-	return (NULL);
-}
-
-char	*join_before_dollar(char *line, int *i, t_env *env)
-{
-	char	*before;
-	char	*dollar;
-	char	*tmp;
-
-	before = ft_substr(line, 0, *i);
-	dollar = dollar_expanded(line, env);
-	(*i)++;
-	while (line[*i] && (ft_isalnum(line[*i]) || line[*i] == '_'))
-		(*i)++;
-	tmp = ft_strjoin(before, dollar);
-	free(before);
-	free(dollar);
-	return (tmp);
-}
-
-char	*expand_dollar_line(char *line, t_env *env)
-{
-	int		i;
-	char	*tmp;
-	char	*after;
-	char	*after_expanded;
-	char	*res;
-
-	i = 0;
-	while (line[i] && line[i] != '$')
-		i++;
-	tmp = join_before_dollar(line, &i, env);
-	after = ft_substr(line, i, ft_strlen(line));
-	after_expanded = NULL;
-	if (after && ft_strchr(after, '$'))
-	{
-		after_expanded = expand_dollar_line(after, env);
-		res = ft_strjoin(tmp, after_expanded);
-	}
-	else
-		res = ft_strjoin(tmp, after);
-	free(tmp);
-	free(after);
-	free(after_expanded);
-	return (res);
-}
-*/
 void	process_line(int tmp_file, char *line, int quot, t_env *env)
 {
 	char	*expanded;
@@ -125,7 +57,8 @@ void	process_line(int tmp_file, char *line, int quot, t_env *env)
 	if (!quot)
 	{
 		expanded = expand_dollar_line(line, env);
-		line = expanded;
+		line = ft_strdup(expanded);
+		free(expanded);
 	}
 	if (!line)
 		return ;
