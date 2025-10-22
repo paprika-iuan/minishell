@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 16:41:30 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/08 16:41:32 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/10/20 13:41:02 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	exec_builtin_with_redirections(t_NodeAST *node, t_env *env)
 	int	saved_stdout;
 	int	ret;
 
+	update_node_args(node, env);
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	if (!do_redirections(node->cmd.redirect))

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 13:11:27 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/15 13:11:28 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/10/20 10:26:59 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
+#include "../../inc/expansion.h"
 
 int	has_quotes(char *str)
 {
@@ -49,18 +50,8 @@ char	*remove_quotes(char *str)
 	return (ft_strndup(start, size));
 }
 
-int	count_var_len(char *args, int start)
-{
-	int	var_len;
-
-	var_len = 0;
-	while (args[start + var_len] && (ft_isalnum(args[start + var_len])
-			|| args[start + var_len] == '_'))
-		var_len++;
-	return (var_len);
-}
-
-char	*dollar_expanded(char *args, t_env *env)
+/*
+char	*dollar_expanded_heredoc(char *args, t_env *env)
 {
 	char	*dollar_pos;
 	char	*to_expand;
@@ -126,7 +117,7 @@ char	*expand_dollar_line(char *line, t_env *env)
 	free(after_expanded);
 	return (res);
 }
-
+*/
 void	process_line(int tmp_file, char *line, int quot, t_env *env)
 {
 	char	*expanded;

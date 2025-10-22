@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:45:16 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/11 12:45:19 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/10/17 12:40:55 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include "../../inc/expansion.h"
 
 int	is_n_flag(const char *arg)
 {
@@ -45,7 +46,7 @@ int	ft_echo(char **argv)
 		n_flag = 1;
 		i++;
 	}
-	while (argv[i])
+	while (i < ft_arraylen(argv))
 	{
 		printf("%s", argv[i]);
 		if (argv[i + 1])

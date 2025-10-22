@@ -1,6 +1,6 @@
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include "../../inc/minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "../inc/minishell.h"
 
 /*
 void print_char_array(char **arr) {
@@ -101,7 +101,6 @@ int main()
     return 0;
 }
 */
-/*
 const char *token_type_to_string(enum token_type type)
 {
     switch(type)
@@ -138,8 +137,7 @@ void print_tokens(t_token *head, const char *command)
         printf("Token %d: [%s] \"%s\" (pos: %d)\n",
                token_count,
                token_type_to_string(current->type),
-               current->content,
-               current->position);
+               current->content);
         current = current->next;
         token_count++;
     }
@@ -150,7 +148,7 @@ int main(void)
 {
     // Test commands
     char *test_commands[] = {
-        "ls -l | grep .txt",
+        "\'\"\'$a",
         "echo \"hello world\" > file.txt",
         "cat < input.txt",
         "ls && echo success",
@@ -181,4 +179,4 @@ int main(void)
 
     return 0;
 }
-*/
+

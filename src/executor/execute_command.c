@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 09:43:13 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/03 09:43:15 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/10/21 18:20:37 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
+#include "../../inc/expansion.h"
 
 int	env_list_size(t_env *env)
 {
@@ -53,6 +54,16 @@ char	**env_converter(t_env *env)
 	return (env_arr);
 }
 
+void	update_node_args(t_NodeAST *node, t_env *env)
+{
+	char	**tmp;
+
+	tmp = expand(node->cmd.args, env);
+	tmp = expand_quotes(tmp);
+	tmp = reset_expanded_quotes(tmp);
+	node->cmd.args = tmp;
+}
+
 int	execute_cmd(t_NodeAST *node, t_env *env)
 {
 	char	*full_path;
@@ -61,6 +72,7 @@ int	execute_cmd(t_NodeAST *node, t_env *env)
 	if (!node->cmd.args)
 		return (ERROR);
 	env_arr = NULL;
+	update_node_args(node, env);
 	full_path = set_cmd_path(node, env);
 	if (!full_path)
 	{

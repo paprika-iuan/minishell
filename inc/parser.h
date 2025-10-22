@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:54:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/03 11:13:34 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/17 11:59:19 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,7 @@ int		handle_heredocs(t_NodeAST *node, t_env *env);
 int		read_heredoc_input(int tmp_file, char *delimitter, t_env *env);
 char	*make_here_name(int id);
 void	close_all_heredocs(t_NodeAST *node);
+
+void	update_node_args(t_NodeAST *node, t_env *env);
 
 #endif
