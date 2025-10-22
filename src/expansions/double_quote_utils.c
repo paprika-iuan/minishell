@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 16:24:30 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/21 19:28:56 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 14:03:01 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ char	*expand_dollar_line(char *quotes, t_env *env)
 		i++;
 	before = ft_substr(quotes, 0, i);
 	dollar = dollar_expanded(quotes, env);
-	i++;
+	if (quotes[i])
+		i++;
 	while (quotes[i] && (ft_isalnum(quotes[i]) || quotes[i] == '_'))
 		i++;
 	tmp = ft_strjoin(before, dollar);

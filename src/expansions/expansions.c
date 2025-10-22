@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:15:06 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/21 19:34:32 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 14:09:54 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	find_end_var(char *args)
 	if (!args[i])
 		return (i);
 	i++;
-	while (args[i] && (ft_isalnum(args[i]) || args[i] == '_'))
+	while (args[i] && (ft_isalnum(args[i]) || args[i] == '_'
+			|| args[i] == '?'))
 		i++;
 	return (i);
 }

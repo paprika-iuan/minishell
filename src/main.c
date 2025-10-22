@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/17 11:38:22 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:20:32 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ int	main(int ac, char **av, char **env_og)
 		}
 		ast_tree = parse_ast(tokens, &error);
 		//printf("%i\n", error);
-		set_last_error(error, env);
 		if (!ast_tree)
 		{
 			free_token_list(tokens);
 			free(input);
+			set_last_error(error, env);
 			printf("===last error: %i===\n", get_last_error(env));
 			continue ;
 		}
@@ -65,6 +65,7 @@ int	main(int ac, char **av, char **env_og)
 		{
 			free_ast(ast_tree);
 			free(input);
+			set_last_error(error, env);
 			printf("===last error: %i===\n", get_last_error(env));
 			continue ;
 		}
