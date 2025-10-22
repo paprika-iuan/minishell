@@ -70,7 +70,7 @@ static char	**fill_result(char **result, const char *s, char *c)
 			i++;
 		if (i > start)
 		{
-			result[j] = strndup(s + start, i - start);
+			result[j] = ft_strndup(s + start, i - start);
 			if (!result[j])
 				return (free_result(result, j));
 			j++;
