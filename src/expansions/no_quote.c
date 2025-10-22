@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 18:33:32 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/21 19:28:04 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 10:56:44 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ char	**do_noquote(char **args, int i, t_env *env)
 	after = set_context_after(args, i);
 	if (dollar)
 	{
-		splited = do_word_splitting(dollar, env);
+		splited = do_word_splitting(dollar);
 		splited = rebuild_str_nq(splited, before, after, env);
 		args = update_matrix(args, splited, i);
 	}

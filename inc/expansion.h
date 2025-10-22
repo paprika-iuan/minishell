@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:13:44 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/21 19:40:50 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 10:55:50 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	**reset_expanded_quotes(char **args);
 /****** NO_QUOTE_UTILS.C ***********/
 char	**update_no_ws_exp(char **args, int i, char *before, char **after);
 char	**case_no_ws(char *dollar);
-char	**do_word_splitting(char *dollar, t_env *env);
+char	**do_word_splitting(char *dollar);
 void	cleanup_vars(char *before, char *after, char **splited, char **a_s);
 char	*set_context_before(char **args, int i);
 

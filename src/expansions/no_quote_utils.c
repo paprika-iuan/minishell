@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 19:22:52 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/22 10:43:25 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 10:59:24 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,15 @@ char	**case_no_ws(char *dollar)
 // else if (ifs && strcmp(ifs, "") == 0)
 // 	split = do_ws_ifs(dollar, ifs);
 
-char	**do_word_splitting(char *dollar, t_env *env)
+//after line 64
+// while (dollar[i])
+// {
+// 	if (is_ifs(dollar[i], env))
+// 		dollar[i] = *ifs;
+// 	i++;
+// }
+
+char	**do_word_splitting(char *dollar)
 {
 	int		i;
 	char	*ifs;
@@ -62,12 +70,6 @@ char	**do_word_splitting(char *dollar, t_env *env)
 	i = 0;
 	split = NULL;
 	ifs = " \t\n";
-	while (dollar[i])
-	{
-		if (is_ifs(dollar[i], env))
-			dollar[i] = *ifs;
-		i++;
-	}
 	if (ifs && strcmp(ifs, " \t\n") == 0)
 		split = ft_splitstr(dollar, ifs);
 	if (!split)
