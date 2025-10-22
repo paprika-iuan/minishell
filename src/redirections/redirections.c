@@ -75,6 +75,32 @@ int	has_outfile(t_NodeAST *node)
 	return (FAILURE);
 }
 
+int	expansion_redirect(t_NodeAST *node)
+{
+	char	**before_expand;
+	char	**expanded;
+
+	before_expand = malloc(2 * sizeof(char *));
+	if (!before_expand)
+		return (FAILURE);
+	before_expand[0] = node->redirect.file;
+	before_expand[1] = NULL;
+	expanded = expand(before_expand);
+	free_matrix(before_expand);
+	if (expanded[1])
+	{
+		ft_putstr_fd("wanghao: ", STDERR_FILENO);
+		ft_putstr_fd(node->redirect.file, STDERR_FILENO);
+		ft_putstr_fd(": ambiguous redirect", STDERR_FILENO);
+		free_matrix(expanded);
+		return (FAILURE);
+	}
+	free(node->redirect.file);
+	node->redirect.file = expanded[0];
+	free_matrix(expanded);
+	return (SUCCESS);
+}
+
 int	do_redirections(t_NodeAST *node)
 {
 	int			fd;
@@ -82,6 +108,8 @@ int	do_redirections(t_NodeAST *node)
 
 	if (!node)
 		return (SUCCESS);
+	if (!expansion_redirect(node))
+		return (FAILURE);
 	curr = node;
 	while (curr)
 	{
