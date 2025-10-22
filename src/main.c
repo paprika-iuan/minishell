@@ -27,25 +27,37 @@ int	main(int ac, char **av, char **env_og)
 	env = envcpy(env_og);
 	if (env)
 		add_shlvl(env);
+	error = 0;
+	set_last_error(error, env);
+	//printf("%i\n", get_last_error(env));
 	while (1)
 	{
 		signals_intmode();
 		input = readline(READLINE_MSG);
 		if (!input)
 			break ;
-		add_history(input);
-		tokens = tokenizer(input);
-		if (!tokens)
+		if (!*input)
 		{
 			free(input);
 			continue ;
 		}
-		error = 0;
+		add_history(input);
+		tokens = tokenizer(input, &error);
+		if (!tokens)
+		{
+			free(input);
+			set_last_error(error, env);
+			printf("===last error: %i===\n", get_last_error(env));
+			continue ;
+		}
 		ast_tree = parse_ast(tokens, &error);
+		//printf("%i\n", error);
+		set_last_error(error, env);
 		if (!ast_tree)
 		{
 			free_token_list(tokens);
 			free(input);
+			printf("===last error: %i===\n", get_last_error(env));
 			continue ;
 		}
 		free_token_list(tokens);
@@ -53,11 +65,11 @@ int	main(int ac, char **av, char **env_og)
 		{
 			free_ast(ast_tree);
 			free(input);
+			printf("===last error: %i===\n", get_last_error(env));
 			continue ;
 		}
 		//print_ast(ast_tree, 0);
 		error = handle_heredocs(ast_tree, env);
-		//printf("error: %i\n", error);
 		signals_nonintmode();
 		if (error)
 		{
@@ -65,6 +77,8 @@ int	main(int ac, char **av, char **env_og)
 			free_ast(ast_tree);
 			free(input);
 			input = NULL;
+			set_last_error(error, env);
+			printf("===last error: %i===\n", get_last_error(env));
 			continue ;
 		}
 		free(input);
@@ -72,11 +86,13 @@ int	main(int ac, char **av, char **env_og)
 			error = execute_one_command(ast_tree, env);
 		else
 			error = execute_ast(ast_tree, env);
+		printf("===error: %i===\n", error);
+		set_last_error(error, env);
+		printf("===last errorA: %i===\n", get_last_error(env));
 		close_all_heredocs(ast_tree);
 		free_ast(ast_tree);
 	}
 	rl_clear_history();
 	free_env_list(env);
-	//printf("%s", PITBULL);
 	return (0);
 }

@@ -83,7 +83,7 @@ typedef struct s_token
 	struct s_token *next;
 }	t_token;
 
-t_token	*tokenizer(char *line);
+t_token	*tokenizer(char *line, int *error);
 void	free_token_list(t_token *head);
 t_token	*create_token(char *content);
 void	append_token(t_token **head, t_token **current, t_token *node);
@@ -104,11 +104,11 @@ void	add_shlvl(t_env *env);
 char	*get_env_value(char *key, t_env *env);
 int		set_env_value(char *key, char *value, t_env *env);
 int		ft_echo(char **args);
-int		ft_env(t_env *env);
+int		ft_env(char **args, t_env *env);
 int		ft_export(char **args, t_env *env);
 int		ft_unset(char **args, t_env *env);
 int		ft_cd(char **args, t_env *env);
-int		ft_pwd(char **args);
+int		ft_pwd(char **args, t_env *env);
 
 /****** EXECUTOR ******/
 
@@ -120,11 +120,18 @@ typedef struct	s_pipe_struct
 	pid_t	pid;
 	pid_t	*child_pids;
 } t_pipe_struct;
+
 /****** SIGNALS.C ******/
+
 void	sig_int_c(int sign);
 void	signals_intmode(void);
 void	signals_nonintmode(void);
-void set_heresign(int sign);
+void 	set_heresign(int sign);
 void	signals_here(void);
+
+/****** ERROR.C ******/
+
+void	set_last_error(int error, t_env *env);
+int		get_last_error(t_env *env);
 
 #endif

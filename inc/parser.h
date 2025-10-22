@@ -90,6 +90,8 @@ t_token		*ft_lst_node_cpy(t_token *cpy_from);
 t_token		*consume_tokens(t_token *token, int moves);
 int			count_tokens_cmd(t_token *tokens);
 
+/****** EXECUTOR ******/
+
 int		execute_ast(t_NodeAST *node, t_env *env);
 int		execute_and_or(t_NodeAST *node, t_env *env);
 int 	execute_pipe_sequence(t_NodeAST *node, t_env *env);
@@ -106,7 +108,11 @@ int		execute_one_command(t_NodeAST *node, t_env *env);
 int		is_builtin(t_NodeAST *node);
 int		execute_builtin(t_NodeAST *node, t_env *env);
 
+/****** BUILTINS ******/
+
 int		ft_exit(char **args, t_env *env, t_NodeAST *node);
+
+/****** REDIRECTIONS ******/
 
 int		open_files(t_NodeAST *node);
 int		do_redirections(t_NodeAST *node);
@@ -115,6 +121,8 @@ int		has_outfile(t_NodeAST *node);
 int		exec_builtin_with_redirections(t_NodeAST *node, t_env *env);
 void	setup_pipe_cmd_fds(t_pipe_struct *t_pipe, t_NodeAST *node);
 int		pipe_node_redirections(t_NodeAST *node);
+
+/****** HEREDOC ******/
 
 void	print_file_error(char *filename);
 int		handle_heredocs(t_NodeAST *node, t_env *env);

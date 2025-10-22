@@ -27,7 +27,7 @@ void	var_printer(t_env *current)
 			write(1, eq + 1, ft_strlen(eq + 1));
 			write(1, "\"\n", 2);
 		}
-		else
+		else if (!ft_isdigit(current->content[0]))
 			printf("declare -x %s\n", current->content);
 		current = current->next;
 	}
@@ -86,7 +86,7 @@ int	handle_export_arg(char *arg, t_env *env)
 	char	*dup;
 
 	if (export_arg_checker(arg))
-		return (0);
+		return (1);
 	if (!dup_var_handler(arg, env))
 	{
 		dup = ft_strdup(arg);
@@ -107,14 +107,19 @@ int	handle_export_arg(char *arg, t_env *env)
 int	ft_export(char **args, t_env *env)
 {
 	int	i;
+	int	status;
+	int	any_error;
 
 	if (!args[1])
 		return (var_printer(env), 0);
 	i = 1;
+	any_error = 0;
 	while (args[i])
 	{
-		handle_export_arg(args[i], env);
+		status = handle_export_arg(args[i], env);
+		if (status != 0)
+			any_error = 1;
 		i++;
 	}
-	return (0);
+	return (any_error);
 }
