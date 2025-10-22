@@ -125,7 +125,6 @@ void	process_line(int tmp_file, char *line, int quot, t_env *env)
 	if (!quot)
 	{
 		expanded = expand_dollar_line(line, env);
-		free(line);
 		line = expanded;
 	}
 	if (!line)
@@ -135,31 +134,19 @@ void	process_line(int tmp_file, char *line, int quot, t_env *env)
 	free(line);
 }
 
-void set_heresign(int sign)
-{
-	printf("\n");
-	g_signal_value = sign;
-}
-
 int	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
 {
 	char				*line;
 	char				*clean_delim;
 	int					quotes;
 	int					exit_from_signal;
-	struct sigaction	sa;
 
 	quotes = has_quotes(delimitter);
-	exit_from_signal = 0;
-	g_signal_value = 0;
+	setup_heresignals(&exit_from_signal);
 	if (quotes)
 		clean_delim = remove_quotes(delimitter);
 	else
 		clean_delim = delimitter;
-	sa.sa_handler = set_heresign;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
 	while (1)
 	{
 		write(STDOUT_FILENO, READLINE_HEREDOC, ft_strlen(READLINE_HEREDOC));

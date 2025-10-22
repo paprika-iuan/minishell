@@ -56,7 +56,7 @@ int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_env *env)
 	{
 		current_cmd = get_current_cmd(node, t_pipe->pipe_idx);
 		setup_pipe_cmd_fds(t_pipe, current_cmd);
-		if (!pipe_node_redirections(current_cmd))
+		if (!pipe_node_redirections(current_cmd, env))
 			exit(ERROR);
 		close_pipes(t_pipe);
 		exit(execute_ast(current_cmd, env));

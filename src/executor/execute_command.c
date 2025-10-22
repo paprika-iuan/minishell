@@ -104,7 +104,7 @@ int	execute_one_command(t_NodeAST *node, t_env *env)
 		return (perror("fork"), FORK_FAILED);
 	if (pid == 0)
 	{
-		if (!do_redirections(node->cmd.redirect))
+		if (!do_redirections(node->cmd.redirect, env))
 			exit(ERROR);
 		exit(execute_cmd(node, env));
 	}

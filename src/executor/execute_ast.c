@@ -17,7 +17,7 @@ void	subshell_child_process(t_NodeAST *node, t_env *env)
 	int			result;
 	t_NodeAST	*reparse;
 
-	if (!do_redirections(node->subshell.redirect))
+	if (!do_redirections(node->subshell.redirect, env))
 		exit(ERROR);
 	reparse = node->subshell.reparse;
 	if (reparse->type == NODE_CMD)

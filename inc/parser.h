@@ -115,12 +115,12 @@ int		ft_exit(char **args, t_env *env, t_NodeAST *node);
 /****** REDIRECTIONS ******/
 
 int		open_files(t_NodeAST *node);
-int		do_redirections(t_NodeAST *node);
+int		do_redirections(t_NodeAST *node, t_env *env);
 int		has_infile(t_NodeAST *node);
 int		has_outfile(t_NodeAST *node);
 int		exec_builtin_with_redirections(t_NodeAST *node, t_env *env);
 void	setup_pipe_cmd_fds(t_pipe_struct *t_pipe, t_NodeAST *node);
-int		pipe_node_redirections(t_NodeAST *node);
+int		pipe_node_redirections(t_NodeAST *node, t_env *env);
 
 /****** HEREDOC ******/
 

@@ -12,20 +12,20 @@
 
 #include "../../inc/parser.h"
 
-int	pipe_node_redirections(t_NodeAST *node)
+int	pipe_node_redirections(t_NodeAST *node, t_env *env)
 {
 	if (!node)
 		return (SUCCESS);
 	if (node->type == NODE_SUBSHELL)
 	{
 		if (node->subshell.redirect
-			&& !do_redirections(node->subshell.redirect))
+			&& !do_redirections(node->subshell.redirect, env))
 			return (FAILURE);
 	}
 	else if (node->type == NODE_CMD)
 	{
 		if (node->cmd.redirect
-			&& !do_redirections(node->cmd.redirect))
+			&& !do_redirections(node->cmd.redirect, env))
 			return (FAILURE);
 	}
 	return (SUCCESS);

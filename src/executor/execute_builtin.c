@@ -70,7 +70,7 @@ int	exec_builtin_with_redirections(t_NodeAST *node, t_env *env)
 	update_node_args(node, env);
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
-	if (!do_redirections(node->cmd.redirect))
+	if (!do_redirections(node->cmd.redirect, env))
 		return (close(saved_stdin), close(saved_stdout), ERROR);
 	ret = execute_builtin(node, env);
 	dup2(saved_stdin, STDIN_FILENO);

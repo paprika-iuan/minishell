@@ -34,6 +34,7 @@ SRC = src/main.c \
 		src/redirections/redirections.c \
 		src/redirections/pipe_redirections.c \
 		src/signals/signals.c \
+		src/signals/signals_heredoc.c \
 		src/expansions/double_quote.c \
 		src/expansions/double_quote_utils.c \
 		src/expansions/exp_find.c \
@@ -44,7 +45,7 @@ SRC = src/main.c \
 		src/expansions/no_quote_utils.c \
 		src/expansions/matrix_utils.c \
 		src/expansions/single_quote.c \
-		src/expansions/quotes.c 
+		src/expansions/quotes.c
 
 
 LIBFT_DIR = libft

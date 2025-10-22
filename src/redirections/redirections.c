@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
+#include "../../inc/expansion.h"
 
 void	print_file_error(char *filename)
 {
@@ -75,7 +76,7 @@ int	has_outfile(t_NodeAST *node)
 	return (FAILURE);
 }
 
-int	expansion_redirect(t_NodeAST *node)
+int	expansion_redirect(t_NodeAST *node, t_env *env)
 {
 	char	**before_expand;
 	char	**expanded;
@@ -83,32 +84,33 @@ int	expansion_redirect(t_NodeAST *node)
 	before_expand = malloc(2 * sizeof(char *));
 	if (!before_expand)
 		return (FAILURE);
-	before_expand[0] = node->redirect.file;
+	before_expand[0] = ft_strdup(node->redirect.file);
 	before_expand[1] = NULL;
-	expanded = expand(before_expand);
-	free_matrix(before_expand);
+	expanded = expand(before_expand, env);
 	if (expanded[1])
 	{
 		ft_putstr_fd("wanghao: ", STDERR_FILENO);
 		ft_putstr_fd(node->redirect.file, STDERR_FILENO);
-		ft_putstr_fd(": ambiguous redirect", STDERR_FILENO);
+		ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
 		free_matrix(expanded);
 		return (FAILURE);
 	}
 	free(node->redirect.file);
-	node->redirect.file = expanded[0];
+	node->redirect.file = ft_strdup(expanded[0]);
 	free_matrix(expanded);
+	if (!node->redirect.file)
+		return (FAILURE);
 	return (SUCCESS);
 }
 
-int	do_redirections(t_NodeAST *node)
+int	do_redirections(t_NodeAST *node, t_env *env)
 {
 	int			fd;
 	t_NodeAST	*curr;
 
 	if (!node)
 		return (SUCCESS);
-	if (!expansion_redirect(node))
+	if (!expansion_redirect(node, env))
 		return (FAILURE);
 	curr = node;
 	while (curr)
