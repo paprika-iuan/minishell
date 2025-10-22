@@ -81,6 +81,8 @@ int	expansion_redirect(t_NodeAST *node, t_env *env)
 	char	**before_expand;
 	char	**expanded;
 
+	if (node->redirect.type == REDIR_HEREDOC)
+		return (SUCCESS);
 	before_expand = malloc(2 * sizeof(char *));
 	if (!before_expand)
 		return (FAILURE);
