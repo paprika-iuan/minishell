@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 18:15:06 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/22 14:09:54 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:37:44 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,18 @@ void	hide_quotes(char *args, int j, int i)
 			args[k] = 6;
 		k++;
 	}
+}
+
+int	ft_arraylen(char **args)
+{
+	int	i;
+
+	if (!args)
+		return (0);
+	i = 0;
+	while (args[i])
+		i++;
+	return (i);
 }
 
 char	*respect_quotes(char *args)

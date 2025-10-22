@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:07:06 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/22 13:18:02 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:37:28 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,24 @@ void	respect_quotes_mini(char *res)
 	}
 }
 
+char	*do_env_var(t_env *env, char *to_expand)
+{
+	char	*env_var;
+	char	*env_var_tmp;
+
+	if (ft_strcmp(to_expand, "?") == 0)
+		env_var = ft_itoa(get_last_error(env));
+	else
+	{
+		env_var_tmp = get_env_value(to_expand, env);
+		if (env_var_tmp)
+			env_var = ft_strdup(env_var_tmp);
+		else
+			env_var = NULL;
+	}
+	return (env_var);
+}
+
 char	*dollar_expanded(char *args, t_env *env)
 {
 	char	*dollar_pos;
@@ -97,10 +115,7 @@ char	*dollar_expanded(char *args, t_env *env)
 	to_expand = ft_substr(dollar_pos, 1, var_len);
 	if (!to_expand)
 		return (NULL);
-	if (ft_strcmp(to_expand, "?") == 0)
-		env_var = ft_itoa(get_last_error(env));
-	else
-		env_var = ft_strdup(get_env_value(to_expand, env));
+	env_var = do_env_var(env, to_expand);
 	if (!env_var)
 		return (free(to_expand), NULL);
 	res = ft_strdup(env_var);
@@ -110,16 +125,4 @@ char	*dollar_expanded(char *args, t_env *env)
 		return (free(env_var), free (to_expand), respect_quotes_mini(res),
 			res);
 	return (free(env_var), free(to_expand), free(res), NULL);
-}
-
-int	ft_arraylen(char **args)
-{
-	int	i;
-
-	if (!args)
-		return (0);
-	i = 0;
-	while (args[i])
-		i++;
-	return (i);
 }

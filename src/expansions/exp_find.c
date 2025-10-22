@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 11:19:12 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/22 14:11:32 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:36:45 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	count_var_len(char *args, int start)
 	int		var_len;
 
 	var_len = 0;
-	while (args[start + var_len] && (ft_isalnum(args[start + var_len]) 
+	while (args[start + var_len] && (ft_isalnum(args[start + var_len])
 			|| args[start + var_len] == '_' || args[start + var_len] == '?'))
 		var_len++;
 	return (var_len);
