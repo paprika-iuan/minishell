@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 17:50:26 by amarquez          #+#    #+#             */
-/*   Updated: 2025/09/26 17:50:28 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/10/22 12:16:22 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
+#include "../../inc/expansion.h"
 
 void	print_file_error(char *filename)
 {

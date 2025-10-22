@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:52:33 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/21 14:31:01 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 12:11:23 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	**do_singlequote(char **args, int j, t_env *env)
 	i = j;
 	j = find_dollar(args[i], '\'', 0);
 	first_simple_quotes = ft_substr(args[i], 0, j);
-	if (args[i][j])
+	if (args[i][j] && j != 0)
 	{
 		expanded = ft_substr(args[i], j, ft_strlen(args[i]));
 		tmp_arr = malloc(sizeof(char *) * 2);
