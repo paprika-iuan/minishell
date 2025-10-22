@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 19:22:52 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/21 19:28:41 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 10:43:25 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,6 @@ char	**do_word_splitting(char *dollar, t_env *env)
 
 void	cleanup_vars(char *before, char *after, char **splited, char **a_s)
 {
-	if (before)
-		free(before);
 	if (before)
 		free(before);
 	if (after)
