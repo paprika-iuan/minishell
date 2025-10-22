@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:07:06 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/21 18:11:18 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 13:18:02 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,16 +97,19 @@ char	*dollar_expanded(char *args, t_env *env)
 	to_expand = ft_substr(dollar_pos, 1, var_len);
 	if (!to_expand)
 		return (NULL);
-	env_var = get_env_value(to_expand, env);
+	if (ft_strcmp(to_expand, "?") == 0)
+		env_var = ft_itoa(get_last_error(env));
+	else
+		env_var = ft_strdup(get_env_value(to_expand, env));
 	if (!env_var)
 		return (free(to_expand), NULL);
 	res = ft_strdup(env_var);
 	if (!res)
 		res = "";
 	if (res)
-		return (free (to_expand), respect_quotes_mini(res),
+		return (free(env_var), free (to_expand), respect_quotes_mini(res),
 			res);
-	return (free(to_expand), free(res), NULL);
+	return (free(env_var), free(to_expand), free(res), NULL);
 }
 
 int	ft_arraylen(char **args)
