@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:13:44 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/22 10:55:50 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/22 18:38:11 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 /****** EXPANSIONS.C ***************/
 char	**expand(char **args, t_env *env);
 int		find_end_var(char *args);
+int	ft_arraylen(char **args);
 
 /****** EXP_FIND.C *****************/
 int		expansion_type(char *args);
@@ -61,7 +62,6 @@ char	**update_no_ws_exp(char **args, int i, char *before, char **after);
 /****** FT_SPLITSTR.C **************/
 char	**ft_splitstr(char const *s, char *c);
 int		is_split_ifs(char ch, char *c);
-
 char	*expand_dollar_line(char *quotes, t_env *env);
 
 /****** QUOTES.C *******************/
