@@ -81,8 +81,6 @@ void	cleanup_vars(char *before, char *after, char **splited, char **a_s)
 {
 	if (before)
 		free(before);
-	if (before)
-		free(before);
 	if (after)
 		free(after);
 	if (a_s)
