@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
-#include "../inc/expansion.h"
+#include "../../inc/expansion.h"
 
 int	env_list_size(t_env *env)
 {
