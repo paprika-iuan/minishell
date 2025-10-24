@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/24 12:02:14 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 12:38:20 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,53 +26,13 @@ void	do_main_execute(t_NodeAST *ast_tree, t_env *env, int error, char *input)
 	free_ast(ast_tree);
 }
 
-int no_input(char *input)
+void	handle_c_signal(t_env *env)
 {
-	if (!*input)
+	if (g_signal_value == SIGINT)
 	{
-		free(input);
-		return (0);
+		set_last_error(EXIT_FROM_SIGNAL + g_signal_value, env);
+		g_signal_value = 0;
 	}
-	return (1);
-}
-
-int	no_tokens(t_token *tokens, char *input, int *error, t_env *env)
-{
-	if (!tokens)
-	{
-		free(input);
-		set_last_error(*error, env);
-		return (0);
-	}
-	return (1);
-}
-
-int no_heredoc(int *error, t_NodeAST *ast_tree, t_env *env, char *input)
-{
-	*error = handle_heredocs(ast_tree, env);
-	signals_nonintmode();
-	if (*error)
-	{
-		close_all_heredocs(ast_tree);
-		free_ast(ast_tree);
-		free(input);
-		input = NULL;
-		set_last_error(*error, env);
-		return (0);
-	}
-	return (1);
-}
-
-int	no_ast(int *error, t_NodeAST *ast_tree, char *input, t_env *env)
-{
-	if (*error)
-	{
-		free_ast(ast_tree);
-		free(input);
-		set_last_error(*error, env);
-		return (0);
-	}
-	return (1);
 }
 
 void	do_main_loop(int *error, t_env *env)
@@ -90,6 +50,7 @@ void	do_main_loop(int *error, t_env *env)
 		if (!no_input(input))
 			continue ;
 		add_history(input);
+		handle_c_signal(env);
 		tokens = tokenizer(input, error);
 		if (!no_tokens(tokens, input, error, env))
 			continue ;

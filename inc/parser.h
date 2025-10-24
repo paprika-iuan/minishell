@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:54:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/23 18:19:31 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 12:43:18 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ char		*set_cmd_path(t_NodeAST *node, t_env *env);
 int			execute_one_command(t_NodeAST *node, t_env *env);
 int			is_builtin(t_NodeAST *node);
 int			execute_builtin(t_NodeAST *node, t_env *env);
+void		update_node_args(t_NodeAST *node, t_env *env);
 
 /****** BUILTINS ******/
 
@@ -130,6 +131,11 @@ int			read_heredoc_input(int tmp_file, char *delimitter, t_env *env);
 char		*make_here_name(int id);
 void		close_all_heredocs(t_NodeAST *node);
 
-void		update_node_args(t_NodeAST *node, t_env *env);
+/****** ERROR_MAIN.C ******/
+int			no_input(char *input);
+int			no_tokens(t_token *tokens, char *input, int *error, t_env *env);
+int			no_heredoc(int *error, t_NodeAST *ast_tree, t_env *env, char *input);
+int			no_ast(int *error, t_NodeAST *ast_tree, char *input, t_env *env);
+
 
 #endif

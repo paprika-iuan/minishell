@@ -9,6 +9,7 @@ SRC = src/main.c \
 		src/builtins/unset.c \
 		src/builtins/utils_env.c \
 		src/error/error.c \
+		src/error/error_main.c \
 		src/executor/child_utils.c \
 		src/executor/cmd_utils.c \
 		src/executor/execute_and_or.c \
