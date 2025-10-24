@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 12:48:07 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/09/23 15:36:36 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 15:33:39 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	var_printer(t_env *current)
 		eq = ft_strchr(current->content, '=');
 		if (eq)
 		{
-			write(1, "declare -x ", 12);
+			write(1, "declare -x ", 11);
 			write(1, current->content, eq - current->content);
 			write(1, "=\"", 2);
 			write(1, eq + 1, ft_strlen(eq + 1));

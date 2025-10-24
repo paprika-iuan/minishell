@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 09:43:13 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/21 18:20:37 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 15:30:23 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,6 @@ int	execute_one_command(t_NodeAST *node, t_env *env)
 int	execute_command(t_NodeAST *node, t_env *env)
 {
 	if (is_builtin(node))
-		return (execute_builtin(node, env));
+		return (exec_builtin_with_redirections(node, env));
 	return (execute_cmd(node, env));
 }
