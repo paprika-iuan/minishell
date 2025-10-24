@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 15:27:29 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/10 12:37:32 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:49:31 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_env *env)
 		if (!pipe_node_redirections(current_cmd, env))
 			exit(ERROR);
 		close_pipes(t_pipe);
-		exit(execute_ast(current_cmd, env));
+		exit(execute_ast(current_cmd, &env));
 	}
 	return (FORK_SUCCESS);
 }

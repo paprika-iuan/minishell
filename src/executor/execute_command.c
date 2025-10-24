@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/03 09:43:13 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/24 15:30:23 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:51:34 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,16 @@ int	execute_cmd(t_NodeAST *node, t_env *env)
 	return (COMMAND_NOT_EXECUTABLE);
 }
 
-int	execute_one_command(t_NodeAST *node, t_env *env)
+int	execute_one_command(t_NodeAST *node, t_env **env_ref)
 {
 	pid_t	pid;
 	int		status;
 	int		exit_code;
+	t_env	*env;
 
+	env = *env_ref;
 	if (is_builtin(node))
-		return (exec_builtin_with_redirections(node, env));
+		return (exec_builtin_with_redirections(node, env_ref));
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork"), FORK_FAILED);
@@ -104,9 +106,9 @@ int	execute_one_command(t_NodeAST *node, t_env *env)
 	return (exit_code);
 }
 
-int	execute_command(t_NodeAST *node, t_env *env)
+int	execute_command(t_NodeAST *node, t_env **env_ref)
 {
 	if (is_builtin(node))
-		return (exec_builtin_with_redirections(node, env));
-	return (execute_cmd(node, env));
+		return (exec_builtin_with_redirections(node, env_ref));
+	return (execute_cmd(node, *env_ref));
 }

@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 16:34:14 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/24 12:42:21 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:13:55 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,10 @@ extern int	g_signal_value;
 
 /****** LEXER ******/
 
-<<<<<<< HEAD
-int		is_operand(char c);
-int		get_operand_length(char *line);
-int		get_quote_length(char *line);
-int		get_word_length(char *line);
-=======
 int 	is_operand(char c);
 int 	get_operand_length(char *line);
 int 	get_quote_length(char *line);
 int 	get_word_length(char *line);
->>>>>>> 3ca03b6 (missing clean up in heredoc utils)
 int		handle_quote_length(char **line, int len);
 int		count_tokens(char *line);
 char	*allocate_token(int size);
@@ -113,7 +106,7 @@ int		set_env_value(char *key, char *value, t_env *env);
 int		ft_echo(char **args);
 int		ft_env(char **args, t_env *env);
 int		ft_export(char **args, t_env *env);
-int		ft_unset(char **args, t_env *env);
+int		ft_unset(char **args, t_env **env_ref);
 int		ft_cd(char **args, t_env *env);
 int		ft_pwd(char **args, t_env *env);
 int		env_list_size(t_env *env);

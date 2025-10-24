@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:54:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/24 12:49:59 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:35:51 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,11 @@ int			count_tokens_cmd(t_token *tokens);
 
 /****** EXECUTOR ******/
 
-int			execute_ast(t_NodeAST *node, t_env *env);
-int			execute_and_or(t_NodeAST *node, t_env *env);
+int			execute_ast(t_NodeAST *node, t_env **env_ref);
+int			execute_and_or(t_NodeAST *node, t_env **env_ref);
 int			execute_pipe_sequence(t_NodeAST *node, t_env *env);
 int			execute_subshell(t_NodeAST *node, t_env *env);
-int			execute_command(t_NodeAST *node, t_env *env);
+int			execute_command(t_NodeAST *node, t_env **env_ref);
 int			execute_cmd(t_NodeAST *node, t_env *env);
 int			set_pipes(t_pipe_struct *t_pipe, t_NodeAST *node);
 void		close_pipes(t_pipe_struct *t_pipe);
@@ -111,9 +111,9 @@ int			allocate_child_pids(t_pipe_struct *t_pipe);
 int			wait_for_children(t_pipe_struct *t_pipe);
 void		cleanup_child(char *full_path, char **env_arr);
 char		*set_cmd_path(t_NodeAST *node, t_env *env);
-int			execute_one_command(t_NodeAST *node, t_env *env);
+int			execute_one_command(t_NodeAST *node, t_env **env_ref);
 int			is_builtin(t_NodeAST *node);
-int			execute_builtin(t_NodeAST *node, t_env *env);
+int			execute_builtin(t_NodeAST *node, t_env **env_ref);
 void		update_node_args(t_NodeAST *node, t_env *env);
 
 /****** BUILTINS ******/
@@ -122,24 +122,14 @@ int			ft_exit(char **args, t_env *env, t_NodeAST *node);
 
 /****** REDIRECTIONS ******/
 
-<<<<<<< HEAD
-int			open_files(t_NodeAST *node);
-int			do_redirections(t_NodeAST *node, t_env *env);
-int			has_infile(t_NodeAST *node);
-int			has_outfile(t_NodeAST *node);
-int			exec_builtin_with_redirections(t_NodeAST *node, t_env *env);
-void		setup_pipe_cmd_fds(t_pipe_struct *t_pipe, t_NodeAST *node);
-int			pipe_node_redirections(t_NodeAST *node, t_env *env);
-=======
 int		open_files(t_NodeAST *node);
 int		do_redirections(t_NodeAST *node, t_env *env);
 int		has_infile(t_NodeAST *node);
 int		has_outfile(t_NodeAST *node);
 int		open_file(t_NodeAST *node);
-int		exec_builtin_with_redirections(t_NodeAST *node, t_env *env);
+int		exec_builtin_with_redirections(t_NodeAST *node, t_env **env_ref);
 void	setup_pipe_cmd_fds(t_pipe_struct *t_pipe, t_NodeAST *node);
 int		pipe_node_redirections(t_NodeAST *node, t_env *env);
->>>>>>> 3ca03b6 (missing clean up in heredoc utils)
 
 /****** HEREDOC ******/
 

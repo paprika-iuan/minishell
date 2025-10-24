@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   execute_and_or.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:26:31 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/05 13:26:33 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:47:12 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
 
-int	execute_and_or_binary(t_NodeAST *node, t_env *env)
+int	execute_and_or_binary(t_NodeAST *node, t_env **env_ref)
 {
 	if (node->type == NODE_AND || node->type == NODE_OR)
-		return (execute_and_or(node, env));
+		return (execute_and_or(node, env_ref));
 	else if (node->type == NODE_PIPE)
-		return (execute_pipe_sequence(node, env));
+		return (execute_pipe_sequence(node, *env_ref));
 	else if (node->type == NODE_SUBSHELL)
-		return (execute_subshell(node, env));
+		return (execute_subshell(node, *env_ref));
 	else
-		return (execute_one_command(node, env));
+		return (execute_one_command(node, env_ref));
 }
 
 t_NodeAST	*find_or_in_right_chain(t_NodeAST *node)
@@ -46,22 +46,22 @@ t_NodeAST	*find_and_in_right_chain(t_NodeAST *node)
 	return (NULL);
 }
 
-int	execute_and_or(t_NodeAST *node, t_env *env)
+int	execute_and_or(t_NodeAST *node, t_env **env_ref)
 {
 	int			result_left;
 	t_NodeAST	*or;
 	t_NodeAST	*and;
 
-	result_left = execute_and_or_binary(node->binary.left, env);
+	result_left = execute_and_or_binary(node->binary.left, env_ref);
 	or = find_or_in_right_chain(node->binary.right);
 	and = find_and_in_right_chain(node->binary.right);
 	if (node->type == NODE_AND && result_left != 0 && or)
-		return (execute_ast(or->binary.right, env));
+		return (execute_ast(or->binary.right, env_ref));
 	if (node->type == NODE_AND && result_left == 0)
-		return (execute_and_or_binary(node->binary.right, env));
+		return (execute_and_or_binary(node->binary.right, env_ref));
 	if (node->type == NODE_OR && result_left == 0 && and)
-		return (execute_and_or_binary(and->binary.right, env));
+		return (execute_and_or_binary(and->binary.right, env_ref));
 	if (node->type == NODE_OR && result_left != 0)
-		return (execute_and_or_binary(node->binary.right, env));
+		return (execute_and_or_binary(node->binary.right, env_ref));
 	return (result_left);
 }

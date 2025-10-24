@@ -6,21 +6,22 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/24 12:52:14 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 16:36:33 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include "../inc/parser.h"
 
-void	do_main_execute(t_NodeAST *ast_tree, t_env *env, int error, char *input)
+void	do_main_execute(t_NodeAST *ast_tree, t_env **env_ref, \
+	int error, char *input)
 {
 	free(input);
 	if (ast_tree->type == NODE_CMD)
-		error = execute_one_command(ast_tree, env);
+		error = execute_one_command(ast_tree, env_ref);
 	else
-		error = execute_ast(ast_tree, env);
-	set_last_error(error, env);
+		error = execute_ast(ast_tree, env_ref);
+	set_last_error(error, *env_ref);
 	close_all_heredocs(ast_tree);
 	free_ast(ast_tree);
 }
@@ -34,7 +35,7 @@ void	handle_c_signal(t_env *env)
 	}
 }
 
-void	do_main_loop(int *error, t_env *env)
+void	do_main_loop(int *error, t_env **env_ref)
 {
 	t_token		*tokens;
 	char		*input;
@@ -49,22 +50,23 @@ void	do_main_loop(int *error, t_env *env)
 		if (!no_input(input))
 			continue ;
 		add_history(input);
-		handle_c_signal(env);
+		handle_c_signal(*env_ref);
 		tokens = tokenizer(input, error);
-		if (!no_tokens(tokens, input, error, env))
+		if (!no_tokens(tokens, input, error, *env_ref))
 			continue ;
 		ast_tree = parse_ast(tokens, error);
 		free_token_list(tokens);
-		if (!ast_tree && !no_ast(error, ast_tree, input, env))
+		if (!ast_tree && !no_ast(error, ast_tree, input, *env_ref))
 			continue ;
-		if (!no_heredoc(error, ast_tree, env, input))
+		if (!no_heredoc(error, ast_tree, *env_ref, input))
 			continue ;
-		do_main_execute(ast_tree, env, *error, input);
+		do_main_execute(ast_tree, env_ref, *error, input);
 	}
 }
 
 int	main(int ac, char **av, char **env_og)
 {
+	t_env		**env_ref;
 	t_env		*env;
 	int			error;
 
@@ -72,75 +74,12 @@ int	main(int ac, char **av, char **env_og)
 	(void)av;
 	printf("%s", HEADER);
 	env = envcpy(env_og);
+	env_ref = &env;
 	if (env)
 		add_shlvl(env);
 	error = 0;
 	set_last_error(error, env);
-<<<<<<< HEAD
-	do_main_loop(&error, env);
-=======
-	while (1)
-	{
-		signals_intmode();
-		input = readline(READLINE_MSG);
-		if (!input)
-			break ;
-		if (!*input)
-		{
-			free(input);
-			continue ;
-		}
-		add_history(input);
-		if (g_signal_value == SIGINT)
-		{
-			set_last_error(EXIT_FROM_SIGNAL + g_signal_value, env);
-			g_signal_value = 0;
-		}
-		tokens = tokenizer(input, &error);
-		if (!tokens)
-		{
-			free(input);
-			set_last_error(error, env);
-			continue ;
-		}
-		ast_tree = parse_ast(tokens, &error);
-
-		if (!ast_tree)
-		{
-			free_token_list(tokens);
-			free(input);
-			set_last_error(error, env);
-			continue ;
-		}
-		free_token_list(tokens);
-		if (error == 2)
-		{
-			free_ast(ast_tree);
-			free(input);
-			set_last_error(error, env);
-			continue ;
-		}
-		error = handle_heredocs(ast_tree, env);
-		signals_nonintmode();
-		if (error)
-		{
-			close_all_heredocs(ast_tree);
-			free_ast(ast_tree);
-			free(input);
-			input = NULL;
-			set_last_error(error, env);
-			continue ;
-		}
-		free(input);
-		if (ast_tree->type == NODE_CMD)
-			error = execute_one_command(ast_tree, env);
-		else
-			error = execute_ast(ast_tree, env);
-		set_last_error(error, env);
-		close_all_heredocs(ast_tree);
-		free_ast(ast_tree);
-	}
->>>>>>> 3ca03b6 (missing clean up in heredoc utils)
+	do_main_loop(&error, env_ref);
 	rl_clear_history();
 	free_env_list(env);
 	return (0);
