@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <stdarg.h>
 # include <stdint.h>
+# include <limits.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
@@ -79,5 +80,6 @@ int			ft_printptr(void *ptr, char *base);
 int			ft_printnbr_base(int nbr, char *base);
 int			ft_printnbr_base_u(uintptr_t nbr, char *base);
 int			ft_printf(const char *str, ...);
+int			is_valid_long(const char *str);
 
 #endif

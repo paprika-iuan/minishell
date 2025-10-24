@@ -13,19 +13,6 @@
 #include "../../inc/parser.h"
 #include "../../inc/expansion.h"
 
-int	env_list_size(t_env *env)
-{
-	int	size;
-
-	size = 0;
-	while (env)
-	{
-		size++;
-		env = env->next;
-	}
-	return (size);
-}
-
 char	**env_converter(t_env *env)
 {
 	int		size;

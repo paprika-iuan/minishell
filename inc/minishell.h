@@ -51,15 +51,22 @@ extern int	g_signal_value;
 
 /****** LEXER ******/
 
+<<<<<<< HEAD
 int		is_operand(char c);
 int		get_operand_length(char *line);
 int		get_quote_length(char *line);
 int		get_word_length(char *line);
+=======
+int 	is_operand(char c);
+int 	get_operand_length(char *line);
+int 	get_quote_length(char *line);
+int 	get_word_length(char *line);
+>>>>>>> 3ca03b6 (missing clean up in heredoc utils)
 int		handle_quote_length(char **line, int len);
 int		count_tokens(char *line);
 char	*allocate_token(int size);
 void	free_tokens(char **tokens, int i);
-char	**lexer(char *line, int	*num_tokens);
+char	**lexer(char *line, int	*num_tokens, int *error);
 
 /****** IDENTIFIER ******/
 
@@ -109,6 +116,7 @@ int		ft_export(char **args, t_env *env);
 int		ft_unset(char **args, t_env *env);
 int		ft_cd(char **args, t_env *env);
 int		ft_pwd(char **args, t_env *env);
+int		env_list_size(t_env *env);
 
 /****** EXECUTOR ******/
 

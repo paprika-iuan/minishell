@@ -58,7 +58,8 @@ SRCS =	free_matrix.c \
 	ft_substr.c \
 	ft_tolower.c \
 	ft_toupper.c \
-	get_next_line.c
+	get_next_line.c \
+	is_valid_long.c
 
 BONUS_SRCS =	ft_lstnew_bonus.c \
 	ft_lstadd_front_bonus.c \

@@ -98,7 +98,7 @@ t_token	*tokenizer(char *line, int *error)
 	t_token	*id_tokens;
 	int		num_tokens;
 
-	raw_tokens = lexer(line, &num_tokens);
+	raw_tokens = lexer(line, &num_tokens, error);
 	if (!raw_tokens)
 		return (NULL);
 	id_tokens = identifier(raw_tokens, &num_tokens, error);

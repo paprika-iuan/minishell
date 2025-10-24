@@ -3,6 +3,7 @@ SRC = src/main.c \
 		src/builtins/cd.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \
+		src/builtins/env_setup.c \
 		src/builtins/exit.c \
 		src/builtins/export.c \
 		src/builtins/pwd.c \
@@ -30,6 +31,7 @@ SRC = src/main.c \
 		src/parser/parse_subshell.c \
 		src/parser/parse_utils.c \
 		src/parser/parser.c \
+		src/redirections/file_utils.c \
 		src/redirections/heredoc.c \
 		src/redirections/heredoc_utils.c \
 		src/redirections/redirections.c \

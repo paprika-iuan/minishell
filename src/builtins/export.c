@@ -110,6 +110,9 @@ int	ft_export(char **args, t_env *env)
 	int	status;
 	int	any_error;
 
+	if (!env || !env->content
+		|| (ft_isnumeric(env->content) && !env->next))
+		return (ERROR);
 	if (!args[1])
 		return (var_printer(env), 0);
 	i = 1;

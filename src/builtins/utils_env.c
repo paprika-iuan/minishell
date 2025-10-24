@@ -12,6 +12,19 @@
 
 #include "../../inc/minishell.h"
 
+int	env_list_size(t_env *env)
+{
+	int	size;
+
+	size = 0;
+	while (env)
+	{
+		size++;
+		env = env->next;
+	}
+	return (size);
+}
+
 void	free_env_list(t_env *head)
 {
 	t_env	*temp;
@@ -23,33 +36,6 @@ void	free_env_list(t_env *head)
 		free(temp->content);
 		free(temp);
 	}
-}
-
-t_env	*envcpy(char **envp)
-{
-	t_env	*head;
-	t_env	*current;
-	t_env	*node;
-	int		i;
-
-	i = 0;
-	head = NULL;
-	current = NULL;
-	if (!*envp)
-		return (NULL);
-	while (envp[i])
-	{
-		node = create_env_node(envp[i]);
-		if (!node)
-			return (free_env_list(head), NULL);
-		if (!head)
-			head = node;
-		else
-			current->next = node;
-		current = node;
-		i++;
-	}
-	return (head);
 }
 
 t_env	*last_env_node(t_env *node)

@@ -74,7 +74,7 @@ int	fill_tokens(char **tokens, char *line)
 	return (SUCCESS);
 }
 
-char	**lexer(char *line, int	*num_tokens)
+char	**lexer(char *line, int	*num_tokens, int *error)
 {
 	char	**tokens;
 
@@ -83,6 +83,7 @@ char	**lexer(char *line, int	*num_tokens)
 	*num_tokens = count_tokens(line);
 	if (*num_tokens < 0)
 	{
+		*error = 2;
 		printf(SYNTAX_ERROR);
 		return (NULL);
 	}

@@ -43,8 +43,9 @@ int	ft_unset(char **args, t_env *env)
 {
 	int	i;
 
-	if (!args || !(env))
-		return (1);
+	if (!args || !env || !env->content
+		|| (ft_isnumeric(env->content) && !env->next))
+		return (ERROR);
 	i = 0;
 	while (args[i])
 	{

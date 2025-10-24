@@ -82,37 +82,16 @@ int	set_env_value(char *key, char *value, t_env *env)
 	return (0);
 }
 
-void	add_shlvl(t_env *env)
-{
-	int		lvl;
-	char	*lvl_char;
-
-	lvl = ft_atoi(get_env_value("SHLVL", env));
-	if (!lvl)
-		lvl = 0;
-	if (lvl >= 1000)
-	{
-		ft_putstr_fd("wanghao: warning: shell level (", STDERR_FILENO);
-		ft_putnbr_fd(lvl, STDERR_FILENO);
-		ft_putstr_fd(") too high, resetting to 1", STDERR_FILENO);
-		lvl = 1;
-	}
-	else
-		lvl++;
-	lvl_char = ft_itoa(lvl);
-	set_env_value("SHLVL", lvl_char, env);
-	free(lvl_char);
-}
-
 int	ft_env(char **args, t_env *env)
 {
-	if (!env)
+	if (!env || !env->content || (ft_isnumeric(env->content) && !env->next))
 		return (ERROR);
 	if (args[1])
 	{
 		ft_putstr_fd("env: ", STDERR_FILENO);
 		ft_putstr_fd(args[1], STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		return (COMMAND_NOT_FOUND);
 	}
 	while (env)
 	{
