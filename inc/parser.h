@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:54:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/24 12:43:18 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 12:49:59 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,33 +57,40 @@ typedef struct s_NodeAST
 	};
 }	t_NodeAST;
 
-//parser.c
+/****** PARSER.C ******/
+
 t_NodeAST	*parse_ast(t_token *tokens, int *error);
 void		free_ast(t_NodeAST *head);
 
-//parse_ao.c
+/****** PARSE_AO.C ******/
+
 t_NodeAST	*set_ao_node(t_token *token, int *error);
 int			operand_error(int i, t_token *dup, int *error);
 
-//parse_cmd.c
+/****** PARSE_CMD.C ******/
+
 t_NodeAST	*set_cmd_node(t_token *tokens, int *error);
 
-//parse_pipe.c
+/****** PARSE_PIPE.C ******/
+
 t_NodeAST	*set_pipe_node(t_token *token, int *error);
 int			is_right_empty(t_token *dup, int *error);
 void		free_left_set_right(t_token *left, t_token **right, int operand);
 
-//parse_redirections.c
+/****** PARSE_REDIRECTIONS.C ******/
+
 int			is_redirection(int type);
 t_NodeAST	*set_redirect_node(t_token *tokens, int *error);
 
-//parse_subshell.c
+/****** PARSE_SUBSHELL.C ******/
+
 int			parenthesis_close(t_token *tokens);
 t_token		*set_reparse(t_token *tokens, int close, int *error);
 t_NodeAST	*set_subshell_node(t_token *tokens, int *error);
 int			is_subshell(t_token *dup, int *error);
 
-//parse_utils.c
+/****** PARSE_UTILS.C ******/
+
 t_token		*ft_lstlast_parse(t_token *lst);
 void		ft_lstadd_back_parse(t_token **lst, t_token *new);
 t_token		*ft_lst_node_cpy(t_token *cpy_from);
