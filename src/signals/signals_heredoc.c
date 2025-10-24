@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signals_heredoc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarquez <amarquez@student.42barcelon      +#+  +:+       +#+        */
+/*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 11:46:10 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/22 11:46:14 by amarquez         ###   ########.fr       */
+/*   Updated: 2025/10/24 12:54:35 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void set_heresign_int(int sign)
+void	set_heresign_int(int sign)
 {
 	printf("\n");
 	g_signal_value = sign;

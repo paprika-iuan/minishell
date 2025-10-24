@@ -6,13 +6,12 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/24 12:38:20 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 12:52:14 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include "../inc/parser.h"
-
 
 void	do_main_execute(t_NodeAST *ast_tree, t_env *env, int error, char *input)
 {
@@ -40,7 +39,7 @@ void	do_main_loop(int *error, t_env *env)
 	t_token		*tokens;
 	char		*input;
 	t_NodeAST	*ast_tree;
-	
+
 	while (1)
 	{
 		signals_intmode();
@@ -59,7 +58,7 @@ void	do_main_loop(int *error, t_env *env)
 		if (!ast_tree && !no_ast(error, ast_tree, input, env))
 			continue ;
 		if (!no_heredoc(error, ast_tree, env, input))
-			continue;
+			continue ;
 		do_main_execute(ast_tree, env, *error, input);
 	}
 }
