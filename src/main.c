@@ -6,18 +6,105 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/12 10:49:43 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/22 13:20:32 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/24 12:02:14 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include "../inc/parser.h"
 
+
+void	do_main_execute(t_NodeAST *ast_tree, t_env *env, int error, char *input)
+{
+	free(input);
+	if (ast_tree->type == NODE_CMD)
+		error = execute_one_command(ast_tree, env);
+	else
+		error = execute_ast(ast_tree, env);
+	set_last_error(error, env);
+	close_all_heredocs(ast_tree);
+	free_ast(ast_tree);
+}
+
+int no_input(char *input)
+{
+	if (!*input)
+	{
+		free(input);
+		return (0);
+	}
+	return (1);
+}
+
+int	no_tokens(t_token *tokens, char *input, int *error, t_env *env)
+{
+	if (!tokens)
+	{
+		free(input);
+		set_last_error(*error, env);
+		return (0);
+	}
+	return (1);
+}
+
+int no_heredoc(int *error, t_NodeAST *ast_tree, t_env *env, char *input)
+{
+	*error = handle_heredocs(ast_tree, env);
+	signals_nonintmode();
+	if (*error)
+	{
+		close_all_heredocs(ast_tree);
+		free_ast(ast_tree);
+		free(input);
+		input = NULL;
+		set_last_error(*error, env);
+		return (0);
+	}
+	return (1);
+}
+
+int	no_ast(int *error, t_NodeAST *ast_tree, char *input, t_env *env)
+{
+	if (*error)
+	{
+		free_ast(ast_tree);
+		free(input);
+		set_last_error(*error, env);
+		return (0);
+	}
+	return (1);
+}
+
+void	do_main_loop(int *error, t_env *env)
+{
+	t_token		*tokens;
+	char		*input;
+	t_NodeAST	*ast_tree;
+	
+	while (1)
+	{
+		signals_intmode();
+		input = readline(READLINE_MSG);
+		if (!input)
+			break ;
+		if (!no_input(input))
+			continue ;
+		add_history(input);
+		tokens = tokenizer(input, error);
+		if (!no_tokens(tokens, input, error, env))
+			continue ;
+		ast_tree = parse_ast(tokens, error);
+		free_token_list(tokens);
+		if (!ast_tree && !no_ast(error, ast_tree, input, env))
+			continue ;
+		if (!no_heredoc(error, ast_tree, env, input))
+			continue;
+		do_main_execute(ast_tree, env, *error, input);
+	}
+}
+
 int	main(int ac, char **av, char **env_og)
 {
-	char		*input;
-	t_token		*tokens;
-	t_NodeAST	*ast_tree;
 	t_env		*env;
 	int			error;
 
@@ -29,70 +116,7 @@ int	main(int ac, char **av, char **env_og)
 		add_shlvl(env);
 	error = 0;
 	set_last_error(error, env);
-	//printf("%i\n", get_last_error(env));
-	while (1)
-	{
-		signals_intmode();
-		input = readline(READLINE_MSG);
-		if (!input)
-			break ;
-		if (!*input)
-		{
-			free(input);
-			continue ;
-		}
-		add_history(input);
-		tokens = tokenizer(input, &error);
-		if (!tokens)
-		{
-			free(input);
-			set_last_error(error, env);
-			printf("===last error: %i===\n", get_last_error(env));
-			continue ;
-		}
-		ast_tree = parse_ast(tokens, &error);
-		//printf("%i\n", error);
-		if (!ast_tree)
-		{
-			free_token_list(tokens);
-			free(input);
-			set_last_error(error, env);
-			printf("===last error: %i===\n", get_last_error(env));
-			continue ;
-		}
-		free_token_list(tokens);
-		if (error == 2)
-		{
-			free_ast(ast_tree);
-			free(input);
-			set_last_error(error, env);
-			printf("===last error: %i===\n", get_last_error(env));
-			continue ;
-		}
-		//print_ast(ast_tree, 0);
-		error = handle_heredocs(ast_tree, env);
-		signals_nonintmode();
-		if (error)
-		{
-			close_all_heredocs(ast_tree);
-			free_ast(ast_tree);
-			free(input);
-			input = NULL;
-			set_last_error(error, env);
-			printf("===last error: %i===\n", get_last_error(env));
-			continue ;
-		}
-		free(input);
-		if (ast_tree->type == NODE_CMD)
-			error = execute_one_command(ast_tree, env);
-		else
-			error = execute_ast(ast_tree, env);
-		printf("===error: %i===\n", error);
-		set_last_error(error, env);
-		printf("===last errorA: %i===\n", get_last_error(env));
-		close_all_heredocs(ast_tree);
-		free_ast(ast_tree);
-	}
+	do_main_loop(&error, env);
 	rl_clear_history();
 	free_env_list(env);
 	return (0);

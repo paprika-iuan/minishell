@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:13:44 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/22 18:38:11 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/23 18:15:43 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /****** EXPANSIONS.C ***************/
 char	**expand(char **args, t_env *env);
 int		find_end_var(char *args);
-int	ft_arraylen(char **args);
+int		ft_arraylen(char **args);
 
 /****** EXP_FIND.C *****************/
 int		expansion_type(char *args);
@@ -31,9 +31,8 @@ void	update_case_n2(char **args, char *expanded);
 /****** DOUBLE_QUOTE_UTILS.C ***********/
 char	*extract_str(char **args, int i, int begin_join, int num_appear);
 char	*expand_dollar_line(char *quotes, t_env *env);
-char    **set_tmp_arr(char *after, t_env *env);
+char	**set_tmp_arr(char *after, t_env *env);
 char	**fuse_dqvars(char *quotes, char *after, t_env *env);
-
 
 /****** DO_SINGLEQUOTE.C ***********/
 char	**do_singlequote(char **args, int i, t_env *env);
@@ -42,10 +41,6 @@ void	update_case_n1(char **args, char *first, char *second);
 /****** DO_NOQUOTE.C **************/
 char	**do_noquote(char **args, int i, t_env *env);
 char	**expand_if_dollar(char *args, t_env *env);
-
-// /****** WS_IFS.C *******************/
-// int		is_ifs(char c, t_env *env);
-// char	**do_ws_ifs(char *args, char *ifs);
 
 /****** EXPANSION_VAR_UTILS.C ******/
 char	*set_after_dollar(char *args);

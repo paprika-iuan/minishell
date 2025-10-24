@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 16:34:14 by amarquez          #+#    #+#             */
-/*   Updated: 2025/10/03 18:24:45 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/23 18:19:07 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,23 @@
 # include <readline/readline.h>
 # include <sys/wait.h>
 
-extern int g_signal_value;
+extern int	g_signal_value;
 
 /****** LEXER ******/
 
-int is_operand(char c);
-int get_operand_length(char *line);
-int get_quote_length(char *line);
-int get_word_length(char *line);
-int	handle_quote_length(char **line, int len);
-int	count_tokens(char *line);
+int		is_operand(char c);
+int		get_operand_length(char *line);
+int		get_quote_length(char *line);
+int		get_word_length(char *line);
+int		handle_quote_length(char **line, int len);
+int		count_tokens(char *line);
 char	*allocate_token(int size);
 void	free_tokens(char **tokens, int i);
 char	**lexer(char *line, int	*num_tokens);
 
 /****** IDENTIFIER ******/
 
-enum token_type
+enum	e_token_type
 {
 	AND,
 	OR,
@@ -78,9 +78,9 @@ enum token_type
 
 typedef struct s_token
 {
-	enum token_type	type;
-	char		*content;
-	struct s_token *next;
+	enum e_token_type	type;
+	char				*content;
+	struct s_token		*next;
 }	t_token;
 
 t_token	*tokenizer(char *line, int *error);
@@ -112,14 +112,14 @@ int		ft_pwd(char **args, t_env *env);
 
 /****** EXECUTOR ******/
 
-typedef struct	s_pipe_struct
+typedef struct s_pipe_struct
 {
 	int		num_pipes;
 	int		*pipes;
 	int		pipe_idx;
 	pid_t	pid;
 	pid_t	*child_pids;
-} t_pipe_struct;
+}	t_pipe_struct;
 
 /****** SIGNALS.C ******/
 
@@ -127,7 +127,7 @@ void	sig_int_c(int sign);
 void	signals_intmode(void);
 void	signals_nonintmode(void);
 void	setup_heresignals(int *exit_from_signal);
-void 	set_heresign(int sign);
+void	set_heresign(int sign);
 
 /****** ERROR.C ******/
 
