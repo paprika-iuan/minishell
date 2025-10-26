@@ -31,8 +31,6 @@ t_NodeAST	*parse_ast(t_token *tokens, int *error)
 	return (head);
 }
 
-//Maybe fora crear una funcio per si queden tokens sense utilitzar.
-
 void	free_redirect(t_NodeAST *node)
 {
 	t_NodeAST	*tmp;

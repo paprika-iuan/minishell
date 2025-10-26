@@ -33,7 +33,9 @@ SRC = src/main.c \
 		src/parser/parser.c \
 		src/redirections/file_utils.c \
 		src/redirections/heredoc.c \
+		src/redirections/heredoc_input.c \
 		src/redirections/heredoc_utils.c \
+		src/redirections/herequotes.c \
 		src/redirections/redirections.c \
 		src/redirections/pipe_redirections.c \
 		src/signals/signals.c \

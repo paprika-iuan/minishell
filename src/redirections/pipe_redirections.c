@@ -57,15 +57,13 @@ void	setup_pipe_cmd_fds(t_pipe_struct *t_pipe, t_NodeAST *node)
 	int	outfile;
 
 	get_redir_flags(node, &infile, &outfile);
-	if (t_pipe->pipe_idx == 0 && t_pipe->num_pipes > 0 && !outfile)
+	if (t_pipe->pipe_idx == 0 && t_pipe->num_pipes > 0)
 		dup2(t_pipe->pipes[1], STDOUT_FILENO);
-	else if (t_pipe->pipe_idx == t_pipe->num_pipes && !infile)
+	else if (t_pipe->pipe_idx == t_pipe->num_pipes)
 		dup2(t_pipe->pipes[2 * (t_pipe->pipe_idx - 1)], STDIN_FILENO);
 	else
 	{
-		if (!infile)
-			dup2(t_pipe->pipes[2 * (t_pipe->pipe_idx - 1)], STDIN_FILENO);
-		if (!outfile)
-			dup2(t_pipe->pipes[2 * t_pipe->pipe_idx + 1], STDOUT_FILENO);
+		dup2(t_pipe->pipes[2 * (t_pipe->pipe_idx - 1)], STDIN_FILENO);
+		dup2(t_pipe->pipes[2 * t_pipe->pipe_idx + 1], STDOUT_FILENO);
 	}
 }

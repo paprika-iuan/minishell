@@ -109,6 +109,6 @@ int	execute_one_command(t_NodeAST *node, t_env **env_ref)
 int	execute_command(t_NodeAST *node, t_env **env_ref)
 {
 	if (is_builtin(node))
-		return (exec_builtin_with_redirections(node, env_ref));
-	return (execute_cmd(node, *env_ref));
+		return (exec_builtin_with_redirections(node, env));
+	return (execute_cmd(node, env));
 }

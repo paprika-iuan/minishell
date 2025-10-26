@@ -51,10 +51,10 @@ extern int	g_signal_value;
 
 /****** LEXER ******/
 
-int 	is_operand(char c);
-int 	get_operand_length(char *line);
-int 	get_quote_length(char *line);
-int 	get_word_length(char *line);
+int		is_operand(char c);
+int		get_operand_length(char *line);
+int		get_quote_length(char *line);
+int		get_word_length(char *line);
 int		handle_quote_length(char **line, int len);
 int		count_tokens(char *line);
 char	*allocate_token(int size);

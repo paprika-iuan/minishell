@@ -12,8 +12,9 @@
 
 #include "../inc/minishell.h"
 #include "../inc/parser.h"
+#include <stdio.h>
 
-int no_input(char *input)
+int	no_input(char *input)
 {
 	if (!*input)
 	{
@@ -34,7 +35,7 @@ int	no_tokens(t_token *tokens, char *input, int *error, t_env *env)
 	return (1);
 }
 
-int no_heredoc(int *error, t_NodeAST *ast_tree, t_env *env, char *input)
+int	no_heredoc(int *error, t_NodeAST *ast_tree, t_env *env, char *input)
 {
 	*error = handle_heredocs(ast_tree, env);
 	signals_nonintmode();

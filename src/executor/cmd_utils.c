@@ -69,6 +69,8 @@ char	*set_cmd_path(t_NodeAST *node, t_env *env)
 	char	*result;
 
 	cmd_name = node->cmd.args[0];
+	if (!cmd_name[0])
+		return (NULL);
 	if (is_abs_path(cmd_name))
 	{
 		if (access(cmd_name, F_OK) == 0)

@@ -122,14 +122,16 @@ int			ft_exit(char **args, t_env *env, t_NodeAST *node);
 
 /****** REDIRECTIONS ******/
 
-int		open_files(t_NodeAST *node);
-int		do_redirections(t_NodeAST *node, t_env *env);
-int		has_infile(t_NodeAST *node);
-int		has_outfile(t_NodeAST *node);
-int		open_file(t_NodeAST *node);
-int		exec_builtin_with_redirections(t_NodeAST *node, t_env **env_ref);
-void	setup_pipe_cmd_fds(t_pipe_struct *t_pipe, t_NodeAST *node);
-int		pipe_node_redirections(t_NodeAST *node, t_env *env);
+int			open_files(t_NodeAST *node);
+int			do_redirections(t_NodeAST *node, t_env *env);
+int			has_infile(t_NodeAST *node);
+int			has_outfile(t_NodeAST *node);
+int			open_file(t_NodeAST *node);
+int			exec_builtin_with_redirections(t_NodeAST *node, t_env *env);
+void		setup_pipe_cmd_fds(t_pipe_struct *t_pipe, t_NodeAST *node);
+int			pipe_node_redirections(t_NodeAST *node, t_env *env);
+int			has_quotes(char *str);
+char		*remove_quotes(char *str);
 
 /****** HEREDOC ******/
 
@@ -144,6 +146,5 @@ int			no_input(char *input);
 int			no_tokens(t_token *tokens, char *input, int *error, t_env *env);
 int			no_heredoc(int *error, t_NodeAST *ast_tree, t_env *env, char *input);
 int			no_ast(int *error, t_NodeAST *ast_tree, char *input, t_env *env);
-
 
 #endif

@@ -56,7 +56,7 @@ void	do_main_loop(int *error, t_env **env_ref)
 			continue ;
 		ast_tree = parse_ast(tokens, error);
 		free_token_list(tokens);
-		if (!ast_tree && !no_ast(error, ast_tree, input, *env_ref))
+		if (*error && !no_ast(error, ast_tree, input, env))
 			continue ;
 		if (!no_heredoc(error, ast_tree, *env_ref, input))
 			continue ;
@@ -79,7 +79,11 @@ int	main(int ac, char **av, char **env_og)
 		add_shlvl(env);
 	error = 0;
 	set_last_error(error, env);
+<<<<<<< HEAD
 	do_main_loop(&error, env_ref);
+=======
+	do_main_loop(&error, env);
+>>>>>>> 07bb994 (heredoc quote removal and norminette done)
 	rl_clear_history();
 	free_env_list(env);
 	return (0);
