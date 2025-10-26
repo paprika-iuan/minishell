@@ -12,7 +12,6 @@
 
 #include "../inc/minishell.h"
 #include "../inc/parser.h"
-#include <stdio.h>
 
 int	no_input(char *input)
 {
@@ -24,20 +23,20 @@ int	no_input(char *input)
 	return (1);
 }
 
-int	no_tokens(t_token *tokens, char *input, int *error, t_env *env)
+int	no_tokens(t_token *tokens, char *input, int *error, t_mini *mini)
 {
 	if (!tokens)
 	{
 		free(input);
-		set_last_error(*error, env);
+		set_last_error(*error, mini);
 		return (0);
 	}
 	return (1);
 }
 
-int	no_heredoc(int *error, t_NodeAST *ast_tree, t_env *env, char *input)
+int	no_heredoc(int *error, t_NodeAST *ast_tree, t_mini *mini, char *input)
 {
-	*error = handle_heredocs(ast_tree, env);
+	*error = handle_heredocs(ast_tree, mini);
 	signals_nonintmode();
 	if (*error)
 	{
@@ -45,19 +44,19 @@ int	no_heredoc(int *error, t_NodeAST *ast_tree, t_env *env, char *input)
 		free_ast(ast_tree);
 		free(input);
 		input = NULL;
-		set_last_error(*error, env);
+		set_last_error(*error, mini);
 		return (0);
 	}
 	return (1);
 }
 
-int	no_ast(int *error, t_NodeAST *ast_tree, char *input, t_env *env)
+int	no_ast(int *error, t_NodeAST *ast_tree, char *input, t_mini *mini)
 {
 	if (*error)
 	{
 		free_ast(ast_tree);
 		free(input);
-		set_last_error(*error, env);
+		set_last_error(*error, mini);
 		return (0);
 	}
 	return (1);

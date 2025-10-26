@@ -44,7 +44,7 @@ t_NodeAST	*get_current_cmd(t_NodeAST *node, int pipe_idx)
 	return (NULL);
 }
 
-int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_env *env)
+int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_mini *mini)
 {
 	t_NodeAST	*current_cmd;
 
@@ -56,15 +56,15 @@ int	fork_child(t_NodeAST *node, t_pipe_struct *t_pipe, t_env *env)
 	{
 		current_cmd = get_current_cmd(node, t_pipe->pipe_idx);
 		setup_pipe_cmd_fds(t_pipe, current_cmd);
-		if (!pipe_node_redirections(current_cmd, env))
+		if (!pipe_node_redirections(current_cmd, mini))
 			exit(ERROR);
 		close_pipes(t_pipe);
-		exit(execute_ast(current_cmd, &env));
+		exit(execute_ast(current_cmd, mini));
 	}
 	return (FORK_SUCCESS);
 }
 
-int	execute_pipe_sequence(t_NodeAST *node, t_env *env)
+int	execute_pipe_sequence(t_NodeAST *node, t_mini *mini)
 {
 	t_pipe_struct	t_pipe;
 	pid_t			last_pid;
@@ -77,7 +77,7 @@ int	execute_pipe_sequence(t_NodeAST *node, t_env *env)
 		return (close_pipes(&t_pipe), MALLOC_FAILED);
 	while (t_pipe.pipe_idx < t_pipe.num_pipes + 1)
 	{
-		last_cmd_status = fork_child(node, &t_pipe, env);
+		last_cmd_status = fork_child(node, &t_pipe, mini);
 		if (last_cmd_status == FORK_FAILED)
 		{
 			close_pipes(&t_pipe);

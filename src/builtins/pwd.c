@@ -29,7 +29,7 @@ static int	handle_pwd_error(t_env *env)
 	return (ERROR);
 }
 
-int	ft_pwd(char **argv, t_env *env)
+int	ft_pwd(char **argv, t_mini *mini)
 {
 	char	pwd[PATH_MAX];
 
@@ -43,5 +43,5 @@ int	ft_pwd(char **argv, t_env *env)
 		printf("%s\n", pwd);
 		return (0);
 	}
-	return (handle_pwd_error(env));
+	return (handle_pwd_error(mini->env));
 }

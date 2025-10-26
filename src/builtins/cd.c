@@ -52,7 +52,7 @@ static int	update_pwd(t_env *env, char *path)
 	return (0);
 }
 
-int	ft_cd(char **args, t_env *env)
+int	ft_cd(char **args, t_mini *mini)
 {
 	char	*path;
 	char	oldpath[PATH_MAX];
@@ -60,15 +60,15 @@ int	ft_cd(char **args, t_env *env)
 
 	if (args[1] && args[2])
 		return (ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO), ERROR);
-	path = resolve_cd_path(args, env);
+	path = resolve_cd_path(args, mini->env);
 	if (!path)
 		return (ERROR);
-	old_env_pwd = get_env_value("PWD", env);
+	old_env_pwd = get_env_value("PWD", mini->env);
 	if (!getcwd(oldpath, sizeof(oldpath)) && old_env_pwd)
 		ft_strlcpy(oldpath, old_env_pwd, sizeof(oldpath));
 	if (chdir(path) != 0)
 		return (perror("cd"), ERROR);
-	if (set_env_value("OLDPWD", oldpath, env) == -1)
+	if (set_env_value("OLDPWD", oldpath, mini->env) == -1)
 		return (ERROR);
-	return (update_pwd(env, path));
+	return (update_pwd(mini->env, path));
 }

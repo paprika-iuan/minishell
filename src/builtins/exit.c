@@ -22,7 +22,7 @@ long	handle_exit_argument(char *arg)
 	return (ft_atol(arg));
 }
 
-int	ft_exit(char **args, t_env *env, t_NodeAST *node)
+int	ft_exit(char **args, t_mini *mini, t_NodeAST *node)
 {
 	long	exit_status;
 
@@ -33,15 +33,15 @@ int	ft_exit(char **args, t_env *env, t_NodeAST *node)
 		exit_status = handle_exit_argument(args[1]);
 	else
 	{
-		if (!get_env_value("LAST_EXIT", env))
+		if (!get_env_value("LAST_EXIT", mini->env))
 			exit_status = 0;
 		else
-			exit_status = ft_atol(get_env_value("LAST_EXIT", env));
+			exit_status = ft_atol(get_env_value("LAST_EXIT", mini->env));
 	}
 	if (node)
 		free_ast(node);
-	if (env)
-		free_env_list(env);
+	if (mini->env)
+		free_env_list(mini->env);
 	exit(exit_status);
 	return (ERROR);
 }

@@ -27,7 +27,7 @@ void	update_tmp(char **args, int i, char *tmp, char *first_simple_quotes)
 		update_case_n1(&args[i], first_simple_quotes, "");
 }
 
-char	**do_singlequote(char **args, int j, t_env *env)
+char	**do_singlequote(char **args, int j, t_mini *mini)
 {
 	char	*first_simple_quotes;
 	char	*expanded;
@@ -46,7 +46,7 @@ char	**do_singlequote(char **args, int j, t_env *env)
 			return (free(first_simple_quotes), args);
 		tmp_arr[0] = expanded;
 		tmp_arr[1] = NULL;
-		tmp = expand(tmp_arr, env);
+		tmp = expand(tmp_arr, mini);
 		update_tmp(args, i, tmp[0], first_simple_quotes);
 		if (tmp && tmp != tmp_arr)
 			free_matrix(tmp);

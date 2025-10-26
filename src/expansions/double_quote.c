@@ -19,7 +19,7 @@ void	update_case_n2(char **args, char *expanded)
 	*args = ft_strdup(expanded);
 }
 
-char	**do_doublequote(char **args, int i, t_env *env)
+char	**do_doublequote(char **args, int i, t_mini *mini)
 {
 	char	*quotes;
 	char	*after;
@@ -28,10 +28,10 @@ char	**do_doublequote(char **args, int i, t_env *env)
 
 	quotes = extract_str(args, i, 0, 2);
 	after = extract_str(args, i, (ft_strlen(quotes)), 3);
-	quotes = expand_dollar_line(quotes, env);
+	quotes = expand_dollar_line(quotes, mini);
 	tmp_arr = NULL;
 	if (after || quotes)
-		tmp_arr = fuse_dqvars(quotes, after, env);
+		tmp_arr = fuse_dqvars(quotes, after, mini);
 	res = update_matrix(args, tmp_arr, i);
 	free(quotes);
 	free(after);

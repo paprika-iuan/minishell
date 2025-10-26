@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/parser.h"
 #include "../../inc/expansion.h"
 
 int	find_end_var(char *args)
@@ -84,7 +83,7 @@ char	*respect_quotes(char *args)
 	return (args);
 }
 
-char	**expand(char **args, t_env *env)
+char	**expand(char **args, t_mini *mini)
 {
 	int	n;
 	int	i;
@@ -96,11 +95,11 @@ char	**expand(char **args, t_env *env)
 		if (n == 3)
 			args[i] = respect_quotes(args[i]);
 		else if (n == 2)
-			args = do_doublequote(args, i, env);
+			args = do_doublequote(args, i, mini);
 		else if (n == 1)
-			args = do_singlequote(args, i, env);
+			args = do_singlequote(args, i, mini);
 		else if (n == 0)
-			args = do_noquote(args, i, env);
+			args = do_noquote(args, i, mini);
 		i++;
 	}
 	return (args);

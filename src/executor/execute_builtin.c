@@ -39,47 +39,43 @@ int	is_builtin(t_NodeAST *node)
 	return (FAILURE);
 }
 
-int	execute_builtin(t_NodeAST *node, t_env **env_ref)
+int	execute_builtin(t_NodeAST *node, t_mini *mini)
 {
 	char	*name;
-	t_env	*env;
 
-	env = *env_ref;
 	name = node->cmd.args[0];
 	if (ft_strcmp(name, "cd") == 0)
-		return (ft_cd(node->cmd.args, env));
+		return (ft_cd(node->cmd.args, mini));
 	if (ft_strcmp(name, "export") == 0)
-		return (ft_export(node->cmd.args, env));
+		return (ft_export(node->cmd.args, mini));
 	if (ft_strcmp(name, "unset") == 0)
-		return (ft_unset(node->cmd.args, env_ref));
+		return (ft_unset(node->cmd.args, mini));
 	if (ft_strcmp(name, "exit") == 0)
-		return (ft_exit(node->cmd.args, env, node));
+		return (ft_exit(node->cmd.args, mini, node));
 	if (ft_strcmp(name, "echo") == 0)
 		return (ft_echo(node->cmd.args));
 	if (ft_strcmp(name, "env") == 0)
-		return (ft_env(node->cmd.args, env));
+		return (ft_env(node->cmd.args, mini));
 	if (ft_strcmp(name, "pwd") == 0)
-		return (ft_pwd(node->cmd.args, env));
+		return (ft_pwd(node->cmd.args, mini));
 	return (ERROR);
 }
 
-int	exec_builtin_with_redirections(t_NodeAST *node, t_env **env_ref)
+int	exec_builtin_with_redirections(t_NodeAST *node, t_mini *mini)
 {
-	int		saved_stdin;
-	int		saved_stdout;
-	int		ret;
-	t_env	*env;
+	int	saved_stdin;
+	int	saved_stdout;
+	int	status;
 
-	env = *env_ref;
-	update_node_args(node, env);
+	update_node_args(node, mini);
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
-	if (!do_redirections(node->cmd.redirect, env))
+	if (!do_redirections(node->cmd.redirect, mini))
 		return (close(saved_stdin), close(saved_stdout), ERROR);
-	ret = execute_builtin(node, env_ref);
+	status = execute_builtin(node, mini);
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
 	close(saved_stdout);
-	return (ret);
+	return (status);
 }

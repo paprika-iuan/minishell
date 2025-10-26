@@ -96,6 +96,12 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_mini
+{
+	t_env	*env;
+	int		last_error;
+}	t_mini;
+
 t_env	*create_env_node(char *content);
 void	add_to_env_list(t_env *env, t_env *new_node);
 void	free_env_list(t_env *head);
@@ -104,11 +110,11 @@ void	add_shlvl(t_env *env);
 char	*get_env_value(char *key, t_env *env);
 int		set_env_value(char *key, char *value, t_env *env);
 int		ft_echo(char **args);
-int		ft_env(char **args, t_env *env);
-int		ft_export(char **args, t_env *env);
-int		ft_unset(char **args, t_env **env_ref);
-int		ft_cd(char **args, t_env *env);
-int		ft_pwd(char **args, t_env *env);
+int		ft_env(char **args, t_mini *mini);
+int		ft_export(char **args, t_mini *mini);
+int		ft_unset(char **args, t_mini *mini);
+int		ft_cd(char **args, t_mini *mini);
+int		ft_pwd(char **args, t_mini *mini);
 int		env_list_size(t_env *env);
 
 /****** EXECUTOR ******/
@@ -132,7 +138,7 @@ void	set_heresign(int sign);
 
 /****** ERROR.C ******/
 
-void	set_last_error(int error, t_env *env);
-int		get_last_error(t_env *env);
+void	set_last_error(int error, t_mini *mini);
+int		get_last_error(t_mini *mini);
 
 #endif

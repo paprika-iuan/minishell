@@ -13,7 +13,7 @@
 #include "../../inc/minishell.h"
 #include "../../inc/expansion.h"
 
-char	**fuse_dqvars(char *quotes, char *after, t_env *env)
+char	**fuse_dqvars(char *quotes, char *after, t_mini *mini)
 {
 	char	*expanded;
 	char	**tmp_arr;
@@ -21,7 +21,7 @@ char	**fuse_dqvars(char *quotes, char *after, t_env *env)
 	expanded = ft_strdup(quotes);
 	if (after && after[0])
 	{
-		tmp_arr = set_tmp_arr(after, env);
+		tmp_arr = set_tmp_arr(after, mini);
 		tmp_arr = concat_before(tmp_arr, expanded);
 		free(expanded);
 		return (tmp_arr);
@@ -34,7 +34,7 @@ char	**fuse_dqvars(char *quotes, char *after, t_env *env)
 	return (free(expanded), tmp_arr);
 }
 
-char	**set_tmp_arr(char *after, t_env *env)
+char	**set_tmp_arr(char *after, t_mini *mini)
 {
 	char	**res;
 	char	**expanded_after;
@@ -46,13 +46,13 @@ char	**set_tmp_arr(char *after, t_env *env)
 	res[1] = NULL;
 	if (after && ft_strchr(after, '$'))
 	{
-		expanded_after = expand(res, env);
+		expanded_after = expand(res, mini);
 		return (expanded_after);
 	}
 	return (res);
 }
 
-char	*do_expand_dollar_after(char *quotes, char *tmp, int i, t_env *env)
+char	*do_expand_dollar_after(char *quotes, char *tmp, int i, t_mini *mini)
 {
 	char	*after;
 	char	*after_expanded;
@@ -62,7 +62,7 @@ char	*do_expand_dollar_after(char *quotes, char *tmp, int i, t_env *env)
 	after_expanded = NULL;
 	if (after && ft_strchr(after, '$'))
 	{
-		after_expanded = expand_dollar_line(after, env);
+		after_expanded = expand_dollar_line(after, mini);
 		joined = ft_strjoin(tmp, after_expanded);
 		free(after_expanded);
 	}
@@ -74,7 +74,7 @@ char	*do_expand_dollar_after(char *quotes, char *tmp, int i, t_env *env)
 	return (joined);
 }
 
-char	*expand_dollar_line(char *quotes, t_env *env)
+char	*expand_dollar_line(char *quotes, t_mini *mini)
 {
 	int		i;
 	char	*dollar;
@@ -86,13 +86,13 @@ char	*expand_dollar_line(char *quotes, t_env *env)
 	while (quotes[i] && quotes[i] != '$')
 		i++;
 	before = ft_substr(quotes, 0, i);
-	dollar = dollar_expanded(quotes, env);
+	dollar = dollar_expanded(quotes, mini);
 	if (quotes[i])
 		i++;
 	while (quotes[i] && (ft_isalnum(quotes[i]) || quotes[i] == '_'))
 		i++;
 	tmp = ft_strjoin(before, dollar);
-	res = do_expand_dollar_after(quotes, tmp, i, env);
+	res = do_expand_dollar_after(quotes, tmp, i, mini);
 	return (free(quotes), free(before), free(dollar), free(tmp), res);
 }
 

@@ -99,52 +99,52 @@ int			count_tokens_cmd(t_token *tokens);
 
 /****** EXECUTOR ******/
 
-int			execute_ast(t_NodeAST *node, t_env **env_ref);
-int			execute_and_or(t_NodeAST *node, t_env **env_ref);
-int			execute_pipe_sequence(t_NodeAST *node, t_env *env);
-int			execute_subshell(t_NodeAST *node, t_env *env);
-int			execute_command(t_NodeAST *node, t_env **env_ref);
-int			execute_cmd(t_NodeAST *node, t_env *env);
+int			execute_ast(t_NodeAST *node, t_mini *mini);
+int			execute_and_or(t_NodeAST *node, t_mini *mini);
+int			execute_pipe_sequence(t_NodeAST *node, t_mini *mini);
+int			execute_subshell(t_NodeAST *node, t_mini *mini);
+int			execute_command(t_NodeAST *node, t_mini *mini);
+int			execute_cmd(t_NodeAST *node, t_mini *mini);
 int			set_pipes(t_pipe_struct *t_pipe, t_NodeAST *node);
 void		close_pipes(t_pipe_struct *t_pipe);
 int			allocate_child_pids(t_pipe_struct *t_pipe);
 int			wait_for_children(t_pipe_struct *t_pipe);
 void		cleanup_child(char *full_path, char **env_arr);
 char		*set_cmd_path(t_NodeAST *node, t_env *env);
-int			execute_one_command(t_NodeAST *node, t_env **env_ref);
+int			execute_one_command(t_NodeAST *node, t_mini *mini);
 int			is_builtin(t_NodeAST *node);
-int			execute_builtin(t_NodeAST *node, t_env **env_ref);
-void		update_node_args(t_NodeAST *node, t_env *env);
+int			execute_builtin(t_NodeAST *node, t_mini *mini);
+int			exec_builtin_with_redirections(t_NodeAST *node, t_mini *mini);
+void		update_node_args(t_NodeAST *node, t_mini *mini);
 
 /****** BUILTINS ******/
 
-int			ft_exit(char **args, t_env *env, t_NodeAST *node);
+int			ft_exit(char **args, t_mini *mini, t_NodeAST *node);
 
 /****** REDIRECTIONS ******/
 
 int			open_files(t_NodeAST *node);
-int			do_redirections(t_NodeAST *node, t_env *env);
+int			do_redirections(t_NodeAST *node, t_mini *mini);
 int			has_infile(t_NodeAST *node);
 int			has_outfile(t_NodeAST *node);
 int			open_file(t_NodeAST *node);
-int			exec_builtin_with_redirections(t_NodeAST *node, t_env *env);
 void		setup_pipe_cmd_fds(t_pipe_struct *t_pipe, t_NodeAST *node);
-int			pipe_node_redirections(t_NodeAST *node, t_env *env);
+int			pipe_node_redirections(t_NodeAST *node, t_mini *mini);
 int			has_quotes(char *str);
 char		*remove_quotes(char *str);
 
 /****** HEREDOC ******/
 
 void		print_file_error(char *filename);
-int			handle_heredocs(t_NodeAST *node, t_env *env);
-int			read_heredoc_input(int tmp_file, char *delimitter, t_env *env);
+int			handle_heredocs(t_NodeAST *node, t_mini *mini);
+int			read_heredoc_input(int tmp_file, char *delimitter, t_mini *mini);
 char		*make_here_name(int id);
 void		close_all_heredocs(t_NodeAST *node);
 
 /****** ERROR_MAIN.C ******/
 int			no_input(char *input);
-int			no_tokens(t_token *tokens, char *input, int *error, t_env *env);
-int			no_heredoc(int *error, t_NodeAST *ast_tree, t_env *env, char *input);
-int			no_ast(int *error, t_NodeAST *ast_tree, char *input, t_env *env);
+int			no_tokens(t_token *tokens, char *input, int *error, t_mini *mini);
+int			no_heredoc(int *error, t_NodeAST *ast_tree, t_mini *mini, char *input);
+int			no_ast(int *error, t_NodeAST *ast_tree, char *input, t_mini *mini);
 
 #endif

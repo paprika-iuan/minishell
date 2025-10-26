@@ -82,9 +82,11 @@ int	set_env_value(char *key, char *value, t_env *env)
 	return (0);
 }
 
-int	ft_env(char **args, t_env *env)
+int	ft_env(char **args, t_mini *mini)
 {
-	if (!env || !env->content || (ft_isnumeric(env->content) && !env->next))
+	t_env	*curr;
+
+	if (!mini->env || !mini->env->content)
 		return (ERROR);
 	if (args[1])
 	{
@@ -93,11 +95,12 @@ int	ft_env(char **args, t_env *env)
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		return (COMMAND_NOT_FOUND);
 	}
-	while (env)
+	curr = mini->env;
+	while (curr)
 	{
-		if (ft_strchr(env->content, '='))
-			printf("%s\n", env->content);
-		env = env->next;
+		if (ft_strchr(curr->content, '='))
+			printf("%s\n", curr->content);
+		curr = curr->next;
 	}
 	return (0);
 }

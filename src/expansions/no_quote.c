@@ -28,7 +28,7 @@ char	*set_context_after(char **args, int i)
 	return (NULL);
 }
 
-char	**expand_if_dollar(char *args, t_env *env)
+char	**expand_if_dollar(char *args, t_mini *mini)
 {
 	char	**res_arr;
 	char	**tmp;
@@ -40,13 +40,13 @@ char	**expand_if_dollar(char *args, t_env *env)
 	res_arr[1] = NULL;
 	if (ft_strchr(res_arr[0], '$'))
 	{
-		tmp = expand(res_arr, env);
+		tmp = expand(res_arr, mini);
 		return (tmp);
 	}
 	return (res_arr);
 }
 
-char	**rebuild_str_nq(char **splited, char *before, char *after, t_env *env)
+char	**rebuild_str_nq(char **splited, char *before, char *after, t_mini *mini)
 {
 	char	**after_splited;
 
@@ -56,7 +56,7 @@ char	**rebuild_str_nq(char **splited, char *before, char *after, t_env *env)
 		splited = concat_before(splited, before);
 		if (after && after[0])
 		{
-			after_splited = expand_if_dollar(after, env);
+			after_splited = expand_if_dollar(after, mini);
 			splited = concat_after(splited, after_splited);
 			free_matrix(after_splited);
 		}
@@ -72,7 +72,7 @@ void	case_no_dollar_nq(char *dollar, char **args, int i)
 	free(dollar);
 }
 
-char	**do_noquote(char **args, int i, t_env *env)
+char	**do_noquote(char **args, int i, t_mini *mini)
 {
 	char	*dollar;
 	char	*before;
@@ -80,7 +80,7 @@ char	**do_noquote(char **args, int i, t_env *env)
 	char	**after_splited;
 	char	**splited;
 
-	dollar = dollar_expanded(args[i], env);
+	dollar = dollar_expanded(args[i], mini);
 	after_splited = NULL;
 	splited = NULL;
 	before = set_context_before(args, i);
@@ -88,12 +88,12 @@ char	**do_noquote(char **args, int i, t_env *env)
 	if (dollar)
 	{
 		splited = do_word_splitting(dollar);
-		splited = rebuild_str_nq(splited, before, after, env);
+		splited = rebuild_str_nq(splited, before, after, mini);
 		args = update_matrix(args, splited, i);
 	}
 	else if (after)
 	{
-		after_splited = expand_if_dollar(after, env);
+		after_splited = expand_if_dollar(after, mini);
 		args = update_no_ws_exp(args, i, before, after_splited);
 	}
 	else

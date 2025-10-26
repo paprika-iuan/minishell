@@ -12,40 +12,6 @@
 
 #include "../../inc/minishell.h"
 
-// t_env	*envcpy(char **envp)
-// {
-// 	t_env	*head;
-// 	t_env	*current;
-// 	t_env	*node;
-// 	int		i;
-
-// 	i = 0;
-// 	head = NULL;
-// 	current = NULL;
-// 	if (envp && *envp)
-// 	{
-// 		while (envp[i])
-// 		{
-// 			node = create_env_node(envp[i]);
-// 			if (!node)
-// 				return (free_env_list(head), NULL);
-// 			if (!head)
-// 				head = node;
-// 			else
-// 				current->next = node;
-// 			current = node;
-// 			i++;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		head = create_env_node("0");
-// 		if (!head)
-// 			return (NULL);
-// 	}
-// 	return (head);
-// }
-
 static int	append_env_node(t_env **head, t_env **current, char *content)
 {
 	t_env	*node;
@@ -78,11 +44,6 @@ t_env	*envcpy(char **envp)
 				return (free_env_list(head), NULL);
 			i++;
 		}
-	}
-	else
-	{
-		if (!append_env_node(&head, &current, "0"))
-			return (NULL);
 	}
 	return (head);
 }

@@ -12,7 +12,7 @@
 
 #include "../../inc/parser.h"
 
-void	get_heredoc(char *tmp_filename, t_NodeAST *node, int *status, t_env *n)
+void	get_heredoc(char *tmp_filename, t_NodeAST *node, int *status, t_mini *mini)
 {
 	char	*delimitter;
 	int		write_fd;
@@ -25,7 +25,7 @@ void	get_heredoc(char *tmp_filename, t_NodeAST *node, int *status, t_env *n)
 		*status = ERROR;
 		return (print_file_error(tmp_filename), free(tmp_filename));
 	}
-	if (read_heredoc_input(write_fd, delimitter, n) == EXIT_FROM_SIGNAL)
+	if (read_heredoc_input(write_fd, delimitter, mini) == EXIT_FROM_SIGNAL)
 		*status = EXIT_FROM_SIGNAL + g_signal_value;
 	close(write_fd);
 	read_fd = open(tmp_filename, O_RDONLY);
@@ -41,7 +41,7 @@ void	get_heredoc(char *tmp_filename, t_NodeAST *node, int *status, t_env *n)
 	free(tmp_filename);
 }
 
-static void	process_here(t_NodeAST *redir, int *count, int *status, t_env *n)
+static void	process_here(t_NodeAST *redir, int *count, int *status, t_mini *mini)
 {
 	char	*tmp_filename;
 
@@ -55,42 +55,42 @@ static void	process_here(t_NodeAST *redir, int *count, int *status, t_env *n)
 				*status = ERROR;
 				return ;
 			}
-			get_heredoc(tmp_filename, redir, status, n);
+			get_heredoc(tmp_filename, redir, status, mini);
 		}
 		redir = redir->redirect.redirect;
 	}
 }
 
-void	heredoc_iter(t_NodeAST *n, int *counter, int *status, t_env *env)
+void	heredoc_iter(t_NodeAST *n, int *counter, int *status, t_mini *mini)
 {
 	if (!n)
 		return ;
 	if (n->type == NODE_CMD)
 	{
-		process_here(n->cmd.redirect, counter, status, env);
+		process_here(n->cmd.redirect, counter, status, mini);
 		return ;
 	}
 	if (n->type == NODE_SUBSHELL)
 	{
-		heredoc_iter(n->subshell.reparse, counter, status, env);
-		process_here(n->subshell.redirect, counter, status, env);
+		heredoc_iter(n->subshell.reparse, counter, status, mini);
+		process_here(n->subshell.redirect, counter, status, mini);
 		return ;
 	}
 	if (n->type == NODE_PIPE || n->type == NODE_AND || n->type == NODE_OR)
 	{
-		heredoc_iter(n->binary.left, counter, status, env);
-		heredoc_iter(n->binary.right, counter, status, env);
+		heredoc_iter(n->binary.left, counter, status, mini);
+		heredoc_iter(n->binary.right, counter, status, mini);
 		return ;
 	}
 }
 
-int	handle_heredocs(t_NodeAST *node, t_env *env)
+int	handle_heredocs(t_NodeAST *node, t_mini *mini)
 {
 	int		counter;
 	int		status;
 
 	counter = 0;
 	status = 0;
-	heredoc_iter(node, &counter, &status, env);
+	heredoc_iter(node, &counter, &status, mini);
 	return (status);
 }

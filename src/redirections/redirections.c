@@ -13,7 +13,7 @@
 #include "../../inc/parser.h"
 #include "../../inc/expansion.h"
 
-int	expansion_redirect(t_NodeAST *node, t_env *env)
+int	expansion_redirect(t_NodeAST *node, t_mini *mini)
 {
 	char	**before_expand;
 	char	**expanded;
@@ -25,7 +25,7 @@ int	expansion_redirect(t_NodeAST *node, t_env *env)
 		return (FAILURE);
 	before_expand[0] = ft_strdup(node->redirect.file);
 	before_expand[1] = NULL;
-	expanded = expand(before_expand, env);
+	expanded = expand(before_expand, mini);
 	if (expanded[1])
 	{
 		ft_putstr_fd("wanghao: ", STDERR_FILENO);
@@ -42,14 +42,14 @@ int	expansion_redirect(t_NodeAST *node, t_env *env)
 	return (SUCCESS);
 }
 
-int	do_redirections(t_NodeAST *node, t_env *env)
+int	do_redirections(t_NodeAST *node, t_mini *mini)
 {
 	int			fd;
 	t_NodeAST	*curr;
 
 	if (!node)
 		return (SUCCESS);
-	if (!expansion_redirect(node, env))
+	if (!expansion_redirect(node, mini))
 		return (FAILURE);
 	curr = node;
 	while (curr)

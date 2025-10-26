@@ -41,17 +41,17 @@ char	**env_converter(t_env *env)
 	return (env_arr);
 }
 
-void	update_node_args(t_NodeAST *node, t_env *env)
+void	update_node_args(t_NodeAST *node, t_mini *mini)
 {
 	char	**tmp;
 
-	tmp = expand(node->cmd.args, env);
+	tmp = expand(node->cmd.args, mini);
 	tmp = expand_quotes(tmp);
 	tmp = reset_expanded_quotes(tmp);
 	node->cmd.args = tmp;
 }
 
-int	execute_cmd(t_NodeAST *node, t_env *env)
+int	execute_cmd(t_NodeAST *node, t_mini *mini)
 {
 	char	*full_path;
 	char	**env_arr;
@@ -59,8 +59,8 @@ int	execute_cmd(t_NodeAST *node, t_env *env)
 	if (!node->cmd.args)
 		return (ERROR);
 	env_arr = NULL;
-	update_node_args(node, env);
-	full_path = set_cmd_path(node, env);
+	update_node_args(node, mini);
+	full_path = set_cmd_path(node, mini->env);
 	if (!full_path)
 	{
 		ft_putstr_fd("wanghao: ", STDERR_FILENO);
@@ -69,7 +69,7 @@ int	execute_cmd(t_NodeAST *node, t_env *env)
 		cleanup_child(full_path, env_arr);
 		return (COMMAND_NOT_FOUND);
 	}
-	env_arr = env_converter(env);
+	env_arr = env_converter(mini->env);
 	if (!env_arr)
 		return (free(full_path), MALLOC_FAILED);
 	execve(full_path, node->cmd.args, env_arr);
@@ -78,24 +78,22 @@ int	execute_cmd(t_NodeAST *node, t_env *env)
 	return (COMMAND_NOT_EXECUTABLE);
 }
 
-int	execute_one_command(t_NodeAST *node, t_env **env_ref)
+int	execute_one_command(t_NodeAST *node, t_mini *mini)
 {
 	pid_t	pid;
 	int		status;
 	int		exit_code;
-	t_env	*env;
 
-	env = *env_ref;
 	if (is_builtin(node))
-		return (exec_builtin_with_redirections(node, env_ref));
+		return (exec_builtin_with_redirections(node, mini));
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork"), FORK_FAILED);
 	if (pid == 0)
 	{
-		if (!do_redirections(node->cmd.redirect, env))
+		if (!do_redirections(node->cmd.redirect, mini))
 			exit(ERROR);
-		exit(execute_cmd(node, env));
+		exit(execute_cmd(node, mini));
 	}
 	if (waitpid(pid, &status, 0) == -1)
 		return (perror("waitpid"), WAITPID_FAILED);
@@ -106,9 +104,9 @@ int	execute_one_command(t_NodeAST *node, t_env **env_ref)
 	return (exit_code);
 }
 
-int	execute_command(t_NodeAST *node, t_env **env_ref)
+int	execute_command(t_NodeAST *node, t_mini *mini)
 {
 	if (is_builtin(node))
-		return (exec_builtin_with_redirections(node, env));
-	return (execute_cmd(node, env));
+		return (exec_builtin_with_redirections(node, mini));
+	return (execute_cmd(node, mini));
 }

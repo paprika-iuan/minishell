@@ -104,22 +104,22 @@ int	handle_export_arg(char *arg, t_env *env)
 	return (0);
 }
 
-int	ft_export(char **args, t_env *env)
+int	ft_export(char **args, t_mini *mini)
 {
 	int	i;
 	int	status;
 	int	any_error;
 
-	if (!env || !env->content
-		|| (ft_isnumeric(env->content) && !env->next))
+	if (!mini->env || !mini->env->content
+		|| (ft_isnumeric(mini->env->content) && !mini->env->next))
 		return (ERROR);
 	if (!args[1])
-		return (var_printer(env), 0);
+		return (var_printer(mini->env), 0);
 	i = 1;
 	any_error = 0;
 	while (args[i])
 	{
-		status = handle_export_arg(args[i], env);
+		status = handle_export_arg(args[i], mini->env);
 		if (status != 0)
 			any_error = 1;
 		i++;

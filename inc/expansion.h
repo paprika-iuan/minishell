@@ -11,10 +11,10 @@
 /* ************************************************************************** */
 
 #ifndef EXPANSION_H
-# define EXPANSION_H 
+# define EXPANSION_H
 
 /****** EXPANSIONS.C ***************/
-char	**expand(char **args, t_env *env);
+char	**expand(char **args, t_mini *mini);
 int		find_end_var(char *args);
 int		ft_arraylen(char **args);
 
@@ -25,27 +25,27 @@ int		count_var_len(char *args, int start);
 int		find_closure(char *args, char n, int i);
 
 /****** DO_DOUBLEQUOTE.C ***********/
-char	**do_doublequote(char **args, int i, t_env *env);
+char	**do_doublequote(char **args, int i, t_mini *mini);
 void	update_case_n2(char **args, char *expanded);
 
 /****** DOUBLE_QUOTE_UTILS.C ***********/
 char	*extract_str(char **args, int i, int begin_join, int num_appear);
-char	*expand_dollar_line(char *quotes, t_env *env);
-char	**set_tmp_arr(char *after, t_env *env);
-char	**fuse_dqvars(char *quotes, char *after, t_env *env);
+char	*expand_dollar_line(char *quotes, t_mini *mini);
+char	**set_tmp_arr(char *after, t_mini *mini);
+char	**fuse_dqvars(char *quotes, char *after, t_mini *mini);
 
 /****** DO_SINGLEQUOTE.C ***********/
-char	**do_singlequote(char **args, int i, t_env *env);
+char	**do_singlequote(char **args, int j, t_mini *mini);
 void	update_case_n1(char **args, char *first, char *second);
 
 /****** DO_NOQUOTE.C **************/
-char	**do_noquote(char **args, int i, t_env *env);
-char	**expand_if_dollar(char *args, t_env *env);
+char	**do_noquote(char **args, int i, t_mini *mini);
+char	**expand_if_dollar(char *args, t_mini *mini);
 
 /****** EXPANSION_VAR_UTILS.C ******/
 char	*set_after_dollar(char *args);
 char	*set_before_dollar(char *args);
-char	*dollar_expanded(char *args, t_env *env);
+char	*dollar_expanded(char *args, t_mini *mini);
 int		ft_arraylen(char **args);
 
 /****** MATRIX_UTILS.C *************/
@@ -57,7 +57,6 @@ char	**update_no_ws_exp(char **args, int i, char *before, char **after);
 /****** FT_SPLITSTR.C **************/
 char	**ft_splitstr(char const *s, char *c);
 int		is_split_ifs(char ch, char *c);
-char	*expand_dollar_line(char *quotes, t_env *env);
 
 /****** QUOTES.C *******************/
 char	**expand_quotes(char **args);

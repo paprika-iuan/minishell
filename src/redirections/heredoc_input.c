@@ -13,13 +13,13 @@
 #include "../../inc/parser.h"
 #include "../../inc/expansion.h"
 
-void	process_line(int tmp_file, char *line, int quot, t_env *env)
+void	process_line(int tmp_file, char *line, int quot, t_mini *mini)
 {
 	char	*expanded;
 
 	if (!quot)
 	{
-		expanded = expand_dollar_line(line, env);
+		expanded = expand_dollar_line(line, mini);
 		line = ft_strdup(expanded);
 		free(expanded);
 	}
@@ -51,7 +51,7 @@ static int	check_signal_interrupt(char *line, int *exit_from_signal)
 	return (0);
 }
 
-static int	heredoc_loop(int file, char *clean_delim, int quotes, t_env *env)
+static int	heredoc_loop(int file, char *clean_delim, int quotes, t_mini *mini)
 {
 	char	*line;
 	int		exit_from_signal;
@@ -74,12 +74,12 @@ static int	heredoc_loop(int file, char *clean_delim, int quotes, t_env *env)
 			free(line);
 			break ;
 		}
-		process_line(file, line, quotes, env);
+		process_line(file, line, quotes, mini);
 	}
 	return (exit_from_signal);
 }
 
-int	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
+int	read_heredoc_input(int tmp_file, char *delimitter, t_mini *mini)
 {
 	char	*clean_delim;
 	int		quotes;
@@ -91,7 +91,7 @@ int	read_heredoc_input(int tmp_file, char *delimitter, t_env *env)
 		clean_delim = remove_quotes(delimitter);
 	else
 		clean_delim = delimitter;
-	exit_from_signal = heredoc_loop(tmp_file, clean_delim, quotes, env);
+	exit_from_signal = heredoc_loop(tmp_file, clean_delim, quotes, mini);
 	if (quotes)
 		free(clean_delim);
 	return (exit_from_signal);

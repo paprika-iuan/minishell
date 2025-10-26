@@ -80,16 +80,16 @@ void	respect_quotes_mini(char *res)
 	}
 }
 
-char	*do_env_var(t_env *env, char *to_expand)
+char	*do_env_var(t_mini *mini, char *to_expand)
 {
 	char	*env_var;
 	char	*env_var_tmp;
 
 	if (ft_strcmp(to_expand, "?") == 0)
-		env_var = ft_itoa(get_last_error(env));
+		env_var = ft_itoa(get_last_error(mini));
 	else
 	{
-		env_var_tmp = get_env_value(to_expand, env);
+		env_var_tmp = get_env_value(to_expand, mini->env);
 		if (env_var_tmp)
 			env_var = ft_strdup(env_var_tmp);
 		else
@@ -98,7 +98,7 @@ char	*do_env_var(t_env *env, char *to_expand)
 	return (env_var);
 }
 
-char	*dollar_expanded(char *args, t_env *env)
+char	*dollar_expanded(char *args, t_mini *mini)
 {
 	char	*dollar_pos;
 	char	*to_expand;
@@ -115,7 +115,7 @@ char	*dollar_expanded(char *args, t_env *env)
 	to_expand = ft_substr(dollar_pos, 1, var_len);
 	if (!to_expand)
 		return (NULL);
-	env_var = do_env_var(env, to_expand);
+	env_var = do_env_var(mini, to_expand);
 	if (!env_var)
 		return (free(to_expand), NULL);
 	res = ft_strdup(env_var);
