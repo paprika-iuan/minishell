@@ -80,7 +80,7 @@ t_NodeAST	*set_redirect_node(t_token *tokens, int *error)
 	tokens = consume_tokens(tokens, red_pos - 1);
 	node->redirect.type = tokens->type;
 	if (next_is_file(tokens, error))
-		return (NULL);
+		return (free(node), NULL);
 	node->redirect.file = dup_redir_file(tokens->next, error);
 	if (!node->redirect.file)
 		return (NULL);
