@@ -12,36 +12,36 @@
 
 #include "../../inc/parser.h"
 
-void	get_heredoc(char *tmp_filename, t_NodeAST *node, int *status, t_mini *mini)
+void	get_heredoc(char *tmp_f, t_NodeAST *node, int *status, t_mini *mini)
 {
 	char	*delimitter;
 	int		write_fd;
 	int		read_fd;
 
 	delimitter = node->redirect.file;
-	write_fd = open(tmp_filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	write_fd = open(tmp_f, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (write_fd < 0)
 	{
 		*status = ERROR;
-		return (print_file_error(tmp_filename), free(tmp_filename));
+		return (print_file_error(tmp_f), free(tmp_f));
 	}
 	if (read_heredoc_input(write_fd, delimitter, mini) == EXIT_FROM_SIGNAL)
 		*status = EXIT_FROM_SIGNAL + g_signal_value;
 	close(write_fd);
-	read_fd = open(tmp_filename, O_RDONLY);
+	read_fd = open(tmp_f, O_RDONLY);
 	if (read_fd < 0)
 	{
 		*status = ERROR;
-		return (print_file_error(tmp_filename), free(tmp_filename));
+		return (print_file_error(tmp_f), free(tmp_f));
 	}
-	unlink(tmp_filename);
+	unlink(tmp_f);
 	free(delimitter);
 	node->redirect.file = NULL;
 	node->redirect.fd = read_fd;
-	free(tmp_filename);
+	free(tmp_f);
 }
 
-static void	process_here(t_NodeAST *redir, int *count, int *status, t_mini *mini)
+static void	process_here(t_NodeAST *redir, int *count, int *stat, t_mini *m)
 {
 	char	*tmp_filename;
 
@@ -52,10 +52,10 @@ static void	process_here(t_NodeAST *redir, int *count, int *status, t_mini *mini
 			tmp_filename = make_here_name((*count)++);
 			if (!tmp_filename)
 			{
-				*status = ERROR;
+				*stat = ERROR;
 				return ;
 			}
-			get_heredoc(tmp_filename, redir, status, mini);
+			get_heredoc(tmp_filename, redir, stat, m);
 		}
 		redir = redir->redirect.redirect;
 	}

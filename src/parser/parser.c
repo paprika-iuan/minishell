@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include <stdio.h>
 #include "../../inc/parser.h"
 
 t_NodeAST	*parse_ast(t_token *tokens, int *error)
@@ -47,7 +48,10 @@ void	free_redirect(t_NodeAST *node)
 void	free_ast(t_NodeAST *node)
 {
 	if (!node)
+	{
+		printf("nonode\n");
 		return ;
+	}
 	if (node->type == NODE_AND || node->type == NODE_OR
 		|| node->type == NODE_PIPE)
 	{
@@ -64,8 +68,13 @@ void	free_ast(t_NodeAST *node)
 	}
 	else
 	{
+		printf("nodecmd\n");
 		if (node->cmd.redirect)
+		{
+			printf("redir\n");
 			free_redirect(node->cmd.redirect);
+		}
+
 		free_matrix(node->cmd.args);
 		free(node);
 	}

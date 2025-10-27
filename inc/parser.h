@@ -144,7 +144,7 @@ void		close_all_heredocs(t_NodeAST *node);
 /****** ERROR_MAIN.C ******/
 int			no_input(char *input);
 int			no_tokens(t_token *tokens, char *input, int *error, t_mini *mini);
-int			no_heredoc(int *error, t_NodeAST *ast_tree, t_mini *mini, char *input);
+int			no_heredoc(int *error, t_NodeAST *ast_tree, t_mini *m, char *input);
 int			no_ast(int *error, t_NodeAST *ast_tree, char *input, t_mini *mini);
 
 #endif

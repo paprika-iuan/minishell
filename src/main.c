@@ -13,14 +13,14 @@
 #include "../inc/minishell.h"
 #include "../inc/parser.h"
 
-void	do_main_execute(t_NodeAST *ast_tree, t_mini *mini, int error, char *input)
+void	do_main_execute(t_NodeAST *ast_tree, t_mini *mini, int err, char *input)
 {
 	free(input);
 	if (ast_tree->type == NODE_CMD)
-		error = execute_one_command(ast_tree, mini);
+		err = execute_one_command(ast_tree, mini);
 	else
-		error = execute_ast(ast_tree, mini);
-	set_last_error(error, mini);
+		err = execute_ast(ast_tree, mini);
+	set_last_error(err, mini);
 	close_all_heredocs(ast_tree);
 	free_ast(ast_tree);
 }

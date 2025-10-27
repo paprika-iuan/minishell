@@ -46,7 +46,7 @@ char	**expand_if_dollar(char *args, t_mini *mini)
 	return (res_arr);
 }
 
-char	**rebuild_str_nq(char **splited, char *before, char *after, t_mini *mini)
+char	**rebuild_str_nq(char **splited, char *before, char *after, t_mini *m)
 {
 	char	**after_splited;
 
@@ -56,7 +56,7 @@ char	**rebuild_str_nq(char **splited, char *before, char *after, t_mini *mini)
 		splited = concat_before(splited, before);
 		if (after && after[0])
 		{
-			after_splited = expand_if_dollar(after, mini);
+			after_splited = expand_if_dollar(after, m);
 			splited = concat_after(splited, after_splited);
 			free_matrix(after_splited);
 		}
