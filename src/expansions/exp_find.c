@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 11:19:12 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/22 18:36:45 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/28 14:34:22 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	define_quote_type(char *args, int i, char tmp)
 {
 	int	closure;
 
-	if (find_dollar(args, tmp, i))
+	if (find_closure(args, tmp, i))
 	{
 		if (tmp == '\'')
 			return (1);

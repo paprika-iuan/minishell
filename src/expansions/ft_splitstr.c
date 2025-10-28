@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/06 12:56:16 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/10 12:25:32 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/28 15:12:28 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ char	**ft_splitstr(char const *s, char *c)
 	if (!s)
 		return (NULL);
 	words = count_words(s, c);
-	if (words == 0)
-		return (NULL);
 	result = ft_calloc(words + 1, sizeof(char *));
 	if (!result)
 		return (NULL);
