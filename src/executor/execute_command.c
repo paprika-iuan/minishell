@@ -67,6 +67,8 @@ int	execute_cmd(t_NodeAST *node, t_mini *mini)
 		ft_putstr_fd(node->cmd.args[0], STDERR_FILENO);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		cleanup_child(full_path, env_arr);
+		free_ast(node);
+		free_env_list(mini->env);
 		return (COMMAND_NOT_FOUND);
 	}
 	env_arr = env_converter(mini->env);

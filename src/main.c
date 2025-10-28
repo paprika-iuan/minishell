@@ -13,6 +13,18 @@
 #include "../inc/minishell.h"
 #include "../inc/parser.h"
 
+void	handle_bs_signal(t_mini *mini)
+{
+	t_env	*env;
+
+	env = mini->env;
+	if (g_signal_value == SIGQUIT)
+	{
+		set_last_error(EXIT_FROM_SIGNAL + g_signal_value, mini);
+		g_signal_value = 0;
+	}
+}
+
 void	do_main_execute(t_NodeAST *ast_tree, t_mini *mini, int err, char *input)
 {
 	free(input);
@@ -21,6 +33,7 @@ void	do_main_execute(t_NodeAST *ast_tree, t_mini *mini, int err, char *input)
 	else
 		err = execute_ast(ast_tree, mini);
 	set_last_error(err, mini);
+	handle_bs_signal(mini);
 	close_all_heredocs(ast_tree);
 	free_ast(ast_tree);
 }

@@ -50,7 +50,7 @@ char	**case_no_ws(char *dollar)
 // 	ifs = '';
 
 //after line 56
-// else if (ifs && strcmp(ifs, "") == 0)
+// else if (ifs && ft_strcmp(ifs, "") == 0)
 // 	split = do_ws_ifs(dollar, ifs);
 
 //after line 64
@@ -70,7 +70,7 @@ char	**do_word_splitting(char *dollar)
 	i = 0;
 	split = NULL;
 	ifs = " \t\n";
-	if (ifs && strcmp(ifs, " \t\n") == 0)
+	if (ifs && ft_strcmp(ifs, " \t\n") == 0)
 		split = ft_splitstr(dollar, ifs);
 	if (!split)
 		split = case_no_ws(dollar);
