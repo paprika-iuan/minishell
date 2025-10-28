@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 10:39:06 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/20 16:50:53 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/28 12:30:38 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,40 +15,68 @@
 
 int	count_quotes(char *args)
 {
-	int	i;
-	int	count;
+	int		i;
+	int		count;
+	char	qt;
 
-	if (!args)
-		return (0);
 	i = 0;
 	count = 0;
 	while (args[i])
 	{
 		if (args[i] == '\'' || args[i] == '"')
-			count++;
+		{
+			qt = args[i];
+			i++;
+		}
+		else
+		{
+			advance_both(&count, &i);
+			continue ;
+		}
+		while (args[i] && args[i] != qt)
+			advance_both(&count, &i);
 		i++;
 	}
 	return (count);
 }
 
+void	del_qt_loop(int *i, int *k, char *args, char *tmp)
+{
+	char	qt;
+	int		qt_next_pos;
+
+	while (args[*i])
+	{
+		if (args[*i] == '\'' || args[*i] == '"')
+		{
+			qt = args[*i];
+			qt_next_pos = find_closure(args, qt, *i);
+			if (qt_next_pos && qt_next_pos > *i)
+			{
+				(*i)++;
+				while (*i < qt_next_pos)
+					tmp[(*k)++] = args[(*i)++];
+				(*i)++;
+				continue ;
+			}
+			else
+			{
+				(*i)++;
+				continue ;
+			}
+		}
+		tmp[(*k)++] = args[(*i)++];
+	}
+}
+
 char	*delete_quotes(char *args, char *tmp)
 {
-	int	i;
-	int	k;
+	int		i;
+	int		k;
 
-	if (!args)
-		return (NULL);
 	i = 0;
 	k = 0;
-	while (args[i])
-	{
-		if (args[i] == '\'' || args[i] == '"')
-		{
-			i++;
-			continue ;
-		}
-		tmp[k++] = args[i++];
-	}
+	del_qt_loop(&i, &k, args, tmp);
 	tmp[k] = '\0';
 	return (tmp);
 }
@@ -64,7 +92,12 @@ char	**expand_quotes(char **args)
 	i = 0;
 	while (args[i])
 	{
-		count = ft_strlen(args[i]) - count_quotes(args[i]);
+		count = count_quotes(args[i]);
+		if (!count)
+		{
+			i++;
+			continue ;
+		}
 		tmp = malloc(sizeof(char) * count + 1);
 		if (!tmp)
 			return (NULL);

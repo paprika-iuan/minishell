@@ -50,7 +50,8 @@ SRC = src/main.c \
 		src/expansions/no_quote_utils.c \
 		src/expansions/matrix_utils.c \
 		src/expansions/single_quote.c \
-		src/expansions/quotes.c
+		src/expansions/quotes.c \
+		src/expansions/quotes_util.c
 
 
 LIBFT_DIR = libft
@@ -63,7 +64,7 @@ OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 CC = cc
-CCFLAGS = -Wall -Wextra -Werror -g
+CCFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 LDFLAGS = -lreadline
 
 all: $(NAME)

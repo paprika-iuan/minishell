@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:13:44 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/23 18:15:43 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/28 12:32:33 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ int		is_split_ifs(char ch, char *c);
 /****** QUOTES.C *******************/
 char	**expand_quotes(char **args);
 char	**reset_expanded_quotes(char **args);
+
+/****** QUOTES_UTIL.C *******************/
+void	advance_both(int *a, int *b);
 
 /****** NO_QUOTE_UTILS.C ***********/
 char	**update_no_ws_exp(char **args, int i, char *before, char **after);
