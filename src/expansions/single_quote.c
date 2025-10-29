@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 12:52:33 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/22 12:11:23 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:32:55 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ char	**do_singlequote(char **args, int j, t_mini *mini)
 
 	i = j;
 	j = find_dollar(args[i], '\'', 0);
+	if (!j)
+		j = find_closure(*args, '\'', i);
 	first_simple_quotes = ft_substr(args[i], 0, j);
-	if (args[i][j] && j != 0)
+	if (args[i][j])
 	{
 		expanded = ft_substr(args[i], j, ft_strlen(args[i]));
 		tmp_arr = malloc(sizeof(char *) * 2);
@@ -51,7 +53,5 @@ char	**do_singlequote(char **args, int j, t_mini *mini)
 		if (tmp && tmp != tmp_arr)
 			free_matrix(tmp);
 	}
-	else
-		update_case_n1(&args[i], first_simple_quotes, "");
 	return (free(first_simple_quotes), args);
 }

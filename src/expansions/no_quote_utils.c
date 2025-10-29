@@ -6,7 +6,7 @@
 /*   By: jgirbau- <jgirbau-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 19:22:52 by jgirbau-          #+#    #+#             */
-/*   Updated: 2025/10/28 15:03:17 by jgirbau-         ###   ########.fr       */
+/*   Updated: 2025/10/28 18:10:06 by jgirbau-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,11 @@ char	**case_no_ws(char *dollar)
 {
 	char	**split;
 
-	split = malloc(sizeof(char *) * 2);
+	split = ft_calloc(sizeof(char *), 2);
 	if (!split)
 		return (NULL);
-	if (split[0])
-		split[0] = ft_strdup(dollar);
-	else
-	{
-		split[0] = NULL;
-		split[1] = NULL;
-	}
+	split[0] = ft_strdup(dollar);
+	split[1] = NULL;
 	return (split);
 }
 //after line 40
@@ -66,16 +61,21 @@ char	**do_word_splitting(char *dollar)
 	int		i;
 	char	*ifs;
 	char	**split;
+	char	**tmp;
 
 	i = 0;
 	split = NULL;
+	tmp = NULL;
 	ifs = " \t\n";
 	if (ifs && ft_strcmp(ifs, " \t\n") == 0)
 		split = ft_splitstr(dollar, ifs);
-	if (!split)
-		split = case_no_ws(dollar);
-	else
-		free(dollar);
+	if (!split || !split[0])
+		tmp = case_no_ws(dollar);
+	if (!split[0])
+		free(split);
+	free(dollar);
+	if (tmp && tmp[0])
+		return (tmp);
 	return (split);
 }
 
@@ -87,7 +87,7 @@ void	cleanup_vars(char *before, char *after, char **splited, char **a_s)
 		free(after);
 	if (a_s)
 		free_matrix(a_s);
-	if (splited && splited[0] && splited[0][0])
+	if (splited)
 		free_matrix(splited);
 }
 
