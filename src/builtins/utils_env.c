@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include <stdio.h>
 
 int	env_list_size(t_env *env)
 {
@@ -67,6 +68,7 @@ t_env	*create_env_node(char *content)
 	new_node->content = ft_strdup(content);
 	if (!new_node->content)
 	{
+		printf("aa\n");
 		free(new_node);
 		return (NULL);
 	}

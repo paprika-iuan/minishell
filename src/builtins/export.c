@@ -27,7 +27,7 @@ void	var_printer(t_env *current)
 			write(1, eq + 1, ft_strlen(eq + 1));
 			write(1, "\"\n", 2);
 		}
-		else if (!ft_isdigit(current->content[0]))
+		else if (!ft_isdigit(current->content[0]) && current->content[0])
 			printf("declare -x %s\n", current->content);
 		current = current->next;
 	}
@@ -110,8 +110,7 @@ int	ft_export(char **args, t_mini *mini)
 	int	status;
 	int	any_error;
 
-	if (!mini->env || !mini->env->content
-		|| (ft_isnumeric(mini->env->content) && !mini->env->next))
+	if (!mini->env || (ft_isnumeric(mini->env->content) && !mini->env->next))
 		return (ERROR);
 	if (!args[1])
 		return (var_printer(mini->env), 0);

@@ -45,6 +45,11 @@ t_env	*envcpy(char **envp)
 			i++;
 		}
 	}
+	else
+	{
+		if (!append_env_node(&head, &current, ""))
+			return (free_env_list(head), NULL);
+	}
 	return (head);
 }
 
