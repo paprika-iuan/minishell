@@ -56,30 +56,30 @@ SRC = src/main.c \
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
-HEADER_DIR = inc
-HEADER = $(HEADER_DIR)/minishell.h \
-		$(HEADER_DIR)/parser.h
 
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
+DEP = $(SRC:%.c=$(OBJ_DIR)/%.d)
 
 CC = cc
 CCFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 LDFLAGS = -lreadline
 
-all: $(NAME)
+
+
+all: libft $(NAME)
+
+-include $(DEP)
 
 $(NAME): $(LIBFT) $(OBJ)
 	$(CC) $(CCFLAGS) $(OBJ) $(LIBFT) -o $(NAME) $(LDFLAGS)
 
-$(LIBFT): libft
-
 libft:
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(OBJ_DIR)/%.o: %.c $(HEADER) Makefile | $(OBJ_DIR)
-	@mkdir -p $(dir $@)
-	$(CC) $(CCFLAGS) -I $(HEADER_DIR)/ -Ilibft -c $< -o $@
+$(OBJ_DIR)/%.o: %.c $(HEADER) | $(OBJ_DIR)
+	mkdir -p $(dir $@)
+	$(CC) $(CCFLAGS) -MMD -MP -I $(HEADER_DIR)/ -Ilibft -c $< -o $@
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
@@ -93,5 +93,6 @@ fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
+
 
 .PHONY: all bonus clean fclean re libft
